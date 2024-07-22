@@ -48,6 +48,8 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
+    implementation libs.fragment.ktx
+    implementation libs.lifecycle.viewmodel.ktx
     implementation libs.recyclerview
     implementation libs.adapter.rxjava3
     implementation libs.converter.gson

@@ -3,14 +3,19 @@ package com.example.first;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.first.Fragments.FavoritesFragment;
+import com.example.first.Fragments.PopularFragment;
 import com.example.first.databinding.ActivityMainBinding;
 import com.example.first.filmStrip.FilmItem;
 import com.example.first.filmStrip.ItemAdapter;
@@ -34,11 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
     //https://kinopoiskapiunofficial.tech/
     ActivityMainBinding binding;
-    private final static String Tag = "MoyaProgamma";
-    private final static String BaseURL = "https://kinopoiskapiunofficial.tech/";
-    ItemAdapter adapter = new ItemAdapter();
+    private boolean showingPopular = true;
+    public final static String Tag = "MoyaProgamma";
 
-    @SuppressLint({"CheckResult", "SetTextI18n", "MissingInflatedId"})
+    @SuppressLint({"CheckResult", "SetTextI18n", "MissingInflatedId", "CommitTransaction"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +56,31 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(adapter);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(binding.Fragments.getId(), PopularFragment.getInstance(), PopularFragment.Tag);
+        fragmentTransaction.add(binding.Fragments.getId(), FavoritesFragment.getInstance(), FavoritesFragment.Tag);
+        fragmentTransaction.hide(FavoritesFragment.getInstance()); // Скрываем второй фрагмент
+        fragmentTransaction.commit();
 
-        initFilmList();
+        binding.popularButton.setOnClickListener(view -> {
+            FragmentManager fragmentManager2 = getSupportFragmentManager();
+            fragmentManager2.beginTransaction()
+                    .hide(FavoritesFragment.getInstance())
+                    .show(PopularFragment.getInstance())
+                    .commit();
+        });
+
+        binding.favoritesButton.setOnClickListener(view -> {
+            FragmentManager fragmentManager3 = getSupportFragmentManager();
+            fragmentManager3.beginTransaction()
+                    .hide(PopularFragment.getInstance())
+                    .show(FavoritesFragment.getInstance())
+                    .commit();
+        });
+
+
     }
-
     @Override
     protected void onStart() {
         Log.i(Tag, "onStart");
@@ -85,37 +108,5 @@ public class MainActivity extends AppCompatActivity {
         binding.time.setText(currentTime);
     }
 
-    private void initFilmList(){
-        Retrofit retrofit = RetrofitClient.getClient(BaseURL);
-        RequestFilm requestFilm = retrofit.create(RequestFilm.class);
 
-        for (int i = 1; i <= 20; i++) {
-
-            Observable<FilmItem> observable = requestFilm.getFilm(300+i);
-
-            observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<FilmItem>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(FilmItem filmData) {
-                            adapter.addItems(filmData);
-                            Log.i(Tag, filmData.nameRu);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.e(Tag, Objects.requireNonNull(e.getMessage()));
-                        }
-                        @Override
-                        public void onComplete() {
-//                            Log.i(Tag, "onComplete");
-                        }
-                    });
-        }
-    }
 }
