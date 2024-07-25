@@ -13,11 +13,13 @@
         android:id="@+id/header_title"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#919191"
+        android:background="#FFFFFF"
         android:gravity="right"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/Fragments"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -27,14 +29,15 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="00:00:00"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#9D9C9C"
+        android:background="#FFFFFF"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,34 +47,40 @@
 
         <Button
             android:id="@+id/favoritesButton"
-            android:layout_width="1in"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
+            android:background="@drawable/rounded_border_button"
+            android:gravity="center"
             android:padding="15dp"
-            android:text="Избранное" />
+            android:text="Избранное"
+            android:textSize="18sp"
+            app:backgroundTint="@color/holo_blue_light" />
 
         <Button
             android:id="@+id/popularButton"
-            android:layout_width="1in"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:background="@drawable/rounded_border_button"
+            android:gravity="center"
             android:padding="15dp"
-            android:text="Популярное" />
-
+            android:text="Популярное"
+            android:textSize="18sp"
+            app:backgroundTint="@color/holo_blue_dark" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/Fragments"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/green"
+        android:background="#88C288"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/footer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.8"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_title"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/header_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

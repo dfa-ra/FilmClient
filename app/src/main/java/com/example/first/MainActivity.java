@@ -3,41 +3,35 @@ package com.example.first;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.first.Fragments.FavoritesFragment;
 import com.example.first.Fragments.PopularFragment;
 import com.example.first.databinding.ActivityMainBinding;
+import com.example.first.filmStrip.AdapterListener;
 import com.example.first.filmStrip.FilmItem;
-import com.example.first.filmStrip.ItemAdapter;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
-    //https://kinopoiskapiunofficial.tech/
     ActivityMainBinding binding;
     private boolean showingPopular = true;
     public final static String Tag = "MoyaProgamma";
@@ -64,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         binding.popularButton.setOnClickListener(view -> {
+
+            highlightButton(binding.popularButton);
+
             FragmentManager fragmentManager2 = getSupportFragmentManager();
             fragmentManager2.beginTransaction()
                     .hide(FavoritesFragment.getInstance())
@@ -72,20 +69,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.favoritesButton.setOnClickListener(view -> {
+
+            highlightButton(binding.favoritesButton);
+
             FragmentManager fragmentManager3 = getSupportFragmentManager();
             fragmentManager3.beginTransaction()
                     .hide(PopularFragment.getInstance())
                     .show(FavoritesFragment.getInstance())
                     .commit();
         });
-
-
     }
+
     @Override
     protected void onStart() {
         Log.i(Tag, "onStart");
         super.onStart();
-
 
         Disposable disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
@@ -94,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                         tick -> updateTime(),
                         throwable -> Log.e(Tag, "Error in timer", throwable)
                 );
-
     }
 
     @Override
@@ -108,5 +105,9 @@ public class MainActivity extends AppCompatActivity {
         binding.time.setText(currentTime);
     }
 
-
+    private void highlightButton(Button button) {
+        binding.favoritesButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.holo_blue_light));
+        binding.popularButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.holo_blue_light));
+        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.holo_blue_dark));
+    }
 }
