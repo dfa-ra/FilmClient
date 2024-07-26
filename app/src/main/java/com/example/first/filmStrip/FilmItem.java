@@ -28,6 +28,7 @@ public class FilmItem implements Serializable {
     public String logoUrl;
     public String description;
     public String ratingAgeLimits;
+    public boolean isChecked = false;
 
     @ToString
     public class Genre implements Serializable{

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.first.Fragments.PopularFragment;
@@ -48,7 +49,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
-        ListItemBinding binding;
+        public ListItemBinding binding;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,8 +64,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
             if (!item.genres.isEmpty()) {
                 binding.textGenre.setText(item.genres.get(0).genre);
             }
+            if (item.isChecked) {
+                binding.selectedItemImage.setImageDrawable(ContextCompat.getDrawable(binding.getRoot().getContext(), android.R.drawable.btn_star_big_on));
+            }
+            Log.d(Tag, item.toString());
+
             binding.filmLayout.setOnClickListener(view -> adapterListener.onClick(item));
-            binding.filmLayout.setOnLongClickListener(view -> adapterListener.longOnClick(item));
+            binding.filmLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Log.d(Tag, String.valueOf(getPosition()));
+                    items.get(getPosition()).isChecked = true;
+                    adapterListener.longOnClick(item);
+                    notifyItemChanged(getPosition());
+                    return false;
+                }
+            });
+
         }
     }
 

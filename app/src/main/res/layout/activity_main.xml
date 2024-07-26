@@ -16,7 +16,8 @@
         android:background="#FFFFFF"
         android:gravity="right"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/Fragments"
+        android:paddingLeft="25dp"
+        android:paddingRight="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.05"
         app:layout_constraintHorizontal_bias="1.0"
@@ -24,8 +25,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/fragmentTextView"
+            android:layout_width="99dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="Популярное"
+            android:textSize="17dp" />
+
+        <SearchView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+        <TextView
             android:id="@+id/time"
-            android:layout_width="80dp"
+            android:layout_width="58dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="00:00:00"
@@ -45,41 +60,22 @@
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/favoritesButton"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/rounded_border_button"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="Избранное"
-            android:textSize="18sp"
-            app:backgroundTint="@color/holo_blue_light" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            app:tabIndicatorHeight="0dp"
+            app:tabIndicatorColor="@android:color/transparent"/>
 
-        <Button
-            android:id="@+id/popularButton"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/rounded_border_button"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="Популярное"
-            android:textSize="18sp"
-            app:backgroundTint="@color/holo_blue_dark" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/Fragments"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#88C288"
-        android:gravity="center"
-        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/footer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_title" />
 

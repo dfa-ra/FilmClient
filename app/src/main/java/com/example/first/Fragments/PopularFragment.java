@@ -1,5 +1,6 @@
 package com.example.first.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -123,11 +124,12 @@ public class PopularFragment extends Fragment implements AdapterListener {
         startActivity(intent);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public boolean longOnClick(FilmItem filmItem) {
         Log.i(Tag, "Long click item");
-        model.selectItem(filmItem);
 
+        model.selectItem(filmItem);
         return true;
     }
 }

@@ -4,24 +4,33 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.first.Fragments.FavoritesFragment;
 import com.example.first.Fragments.PopularFragment;
 import com.example.first.databinding.ActivityMainBinding;
 import com.example.first.filmStrip.AdapterListener;
 import com.example.first.filmStrip.FilmItem;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +42,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity{
 
     ActivityMainBinding binding;
+    List<Fragment> fragmentList = new ArrayList<Fragment>(){{
+        add(PopularFragment.getInstance());
+        add(FavoritesFragment.getInstance());
+    }};
+
+    List<String> fragmentListNames = new ArrayList<String>(){{
+        add("Популярное");
+        add("Избранное");
+    }};
+
     private boolean showingPopular = true;
     public final static String Tag = "MoyaProgamma";
 
@@ -50,34 +69,49 @@ public class MainActivity extends AppCompatActivity{
             return insets;
         });
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(binding.Fragments.getId(), PopularFragment.getInstance(), PopularFragment.Tag);
-        fragmentTransaction.add(binding.Fragments.getId(), FavoritesFragment.getInstance(), FavoritesFragment.Tag);
-        fragmentTransaction.hide(FavoritesFragment.getInstance()); // Скрываем второй фрагмент
-        fragmentTransaction.commit();
 
-        binding.popularButton.setOnClickListener(view -> {
+        TabLayout tabLayout = binding.tabLayout;
+        ViewPager2 viewPager = binding.viewPagerFragment;
 
-            highlightButton(binding.popularButton);
+        // Настройте адаптер для ViewPager
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this, fragmentList);
+        viewPager.setAdapter(adapter);
 
-            FragmentManager fragmentManager2 = getSupportFragmentManager();
-            fragmentManager2.beginTransaction()
-                    .hide(FavoritesFragment.getInstance())
-                    .show(PopularFragment.getInstance())
-                    .commit();
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(fragmentListNames.get(position));
+            }
+        }).attach();
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                binding.fragmentTextView.setText(fragmentListNames.get(position));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
         });
 
-        binding.favoritesButton.setOnClickListener(view -> {
-
-            highlightButton(binding.favoritesButton);
-
-            FragmentManager fragmentManager3 = getSupportFragmentManager();
-            fragmentManager3.beginTransaction()
-                    .hide(PopularFragment.getInstance())
-                    .show(FavoritesFragment.getInstance())
-                    .commit();
-        });
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(R.layout.custom_tab);
+                TextView tabTextView = (TextView) tab.getCustomView();
+                if (tabTextView != null) {
+                    tabTextView.setText(fragmentListNames.get(i));
+                }
+            }
+        }
     }
 
     @Override
@@ -103,11 +137,5 @@ public class MainActivity extends AppCompatActivity{
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String currentTime = sdf.format(new Date());
         binding.time.setText(currentTime);
-    }
-
-    private void highlightButton(Button button) {
-        binding.favoritesButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.holo_blue_light));
-        binding.popularButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.holo_blue_light));
-        button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.holo_blue_dark));
     }
 }
