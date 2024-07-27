@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity{
         add("Избранное");
     }};
 
-    private boolean showingPopular = true;
     public final static String Tag = "MoyaProgamma";
 
     @SuppressLint({"CheckResult", "SetTextI18n", "MissingInflatedId", "CommitTransaction"})
@@ -87,8 +86,7 @@ public class MainActivity extends AppCompatActivity{
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                binding.fragmentTextView.setText(fragmentListNames.get(position));
+                binding.fragmentTextView.setText(fragmentListNames.get(tab.getPosition()));
             }
 
             @Override
@@ -116,16 +114,7 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onStart() {
-        Log.i(Tag, "onStart");
         super.onStart();
-
-        Disposable disposable = Observable.interval(1, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        tick -> updateTime(),
-                        throwable -> Log.e(Tag, "Error in timer", throwable)
-                );
     }
 
     @Override
@@ -133,9 +122,4 @@ public class MainActivity extends AppCompatActivity{
         super.onResume();
     }
 
-    private void updateTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        String currentTime = sdf.format(new Date());
-        binding.time.setText(currentTime);
-    }
 }

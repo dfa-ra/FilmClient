@@ -37,7 +37,7 @@ public class PopularFragment extends Fragment implements AdapterListener {
 
     FragmentPopularBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
-    SharedViewModel model;
+    SharedViewModel viewModel;
 
     public final static String Tag = "PopularFragmentTAG";
     private final static String BaseURL = "https://kinopoiskapiunofficial.tech/";
@@ -45,7 +45,7 @@ public class PopularFragment extends Fragment implements AdapterListener {
     private static PopularFragment fragment;
 
     public PopularFragment() {
-        // Required empty public constructor
+
     }
 
     public static PopularFragment getInstance() {
@@ -67,52 +67,43 @@ public class PopularFragment extends Fragment implements AdapterListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_popular, container, false);
         binding = FragmentPopularBinding.inflate(getLayoutInflater());
-        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        viewModel.getItems().observe(getViewLifecycleOwner(), items -> {
+            adapter.setItems(items);
+        });
+
         Log.d(Tag, "FstInit");
 
         RecyclerView recyclerView = view.findViewById(binding.PopularRecyclerView.getId());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
         Log.d(Tag, "FstInit2");
         initFilmList();
+
         Log.d(Tag, "FstInit3");
         // Inflate the layout for this fragment
         return view;
     }
 
 
+    @SuppressLint({"CheckResult", "NotifyDataSetChanged"})
     private void initFilmList(){
         Retrofit retrofit = RetrofitClient.getClient(BaseURL);
         RequestFilm requestFilm = retrofit.create(RequestFilm.class);
 
-        for (int i = 1; i <= 20; i++) {
-
-            Observable<FilmItem> observable = requestFilm.getFilm(300+i);
-
-            observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<FilmItem>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.e(Tag, Objects.requireNonNull(e.getMessage()));
-                        }
-
-                        @Override
-                        public void onNext(FilmItem filmData) {
-                            adapter.addItems(filmData);
-                            Log.i(Tag, filmData.nameRu);
-                        }
-                        @Override
-                        public void onComplete() {
-//                            Log.i(Tag, "onComplete");
-                        }
-                    });
-        }
+        Observable.range(1, 20)
+                .flatMap(number -> requestFilm.getFilmById(300 + number).
+                        subscribeOn(Schedulers.io())
+                        .onErrorResumeNext(throwable -> Observable.empty())
+                )
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        items -> viewModel.setItems(items),
+                        throwable -> Log.e(Tag, String.valueOf(throwable))
+                );
     }
 
     @Override
@@ -128,8 +119,7 @@ public class PopularFragment extends Fragment implements AdapterListener {
     @Override
     public boolean longOnClick(FilmItem filmItem) {
         Log.i(Tag, "Long click item");
-
-        model.selectItem(filmItem);
+        viewModel.selectItem(filmItem);
         return true;
     }
 }

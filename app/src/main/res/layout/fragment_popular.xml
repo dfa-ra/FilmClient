@@ -12,7 +12,6 @@
         android:id="@+id/PopularFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#C3C3C3"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/footer"
@@ -25,10 +24,7 @@
             android:id="@+id/PopularRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF"
-            android:paddingLeft="20dp"
             android:paddingTop="1dp"
-            android:paddingRight="20dp"
             android:paddingBottom="10dp" />
     </LinearLayout>
 

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.first.MainActivity;
 import com.example.first.R;
@@ -54,23 +55,29 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         Log.d(Tag, "onCreateView");
         Log.i(MainActivity.Tag, "FavoritesFragment");
+
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         binding = FragmentFavoritesBinding.inflate(getLayoutInflater());
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
         Log.d(Tag, "FstInit");
+
         RecyclerView recyclerView = view.findViewById(binding.FavoriteRecyclerView.getId());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         Log.d(Tag, "FstInit2");
 
         model.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
-            adapter.addItems(item);
-            Log.d(Tag, "add new item");
+            if (!adapter.addItem(item))
+                Toast.makeText(getContext(), "Данный элемент уже находится в избранное", Toast.LENGTH_SHORT).show();
         });
 
         Log.d(Tag, "FstInit3");
+
         return view;
     }
 

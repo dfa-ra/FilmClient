@@ -9,12 +9,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.first.Fragments.PopularFragment;
+import com.example.first.MainActivity;
 import com.example.first.R;
 import com.example.first.databinding.ListItemBinding;
 
@@ -64,30 +66,40 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
             if (!item.genres.isEmpty()) {
                 binding.textGenre.setText(item.genres.get(0).genre);
             }
+
             if (item.isChecked) {
                 binding.selectedItemImage.setImageDrawable(ContextCompat.getDrawable(binding.getRoot().getContext(), android.R.drawable.btn_star_big_on));
-            }
-            Log.d(Tag, item.toString());
+            } else {
+                binding.selectedItemImage.setImageDrawable(ContextCompat.getDrawable(binding.getRoot().getContext(), android.R.drawable.btn_star));
+            }Log.d(Tag, item.toString());
 
             binding.filmLayout.setOnClickListener(view -> adapterListener.onClick(item));
-            binding.filmLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    Log.d(Tag, String.valueOf(getPosition()));
-                    items.get(getPosition()).isChecked = true;
-                    adapterListener.longOnClick(item);
-                    notifyItemChanged(getPosition());
-                    return false;
-                }
+            binding.filmLayout.setOnLongClickListener(view -> {
+                Log.d(Tag, String.valueOf(getPosition()));
+                items.get(getPosition()).isChecked = true;
+                adapterListener.longOnClick(item);
+                notifyItemChanged(getPosition());
+                return false;
             });
 
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void addItems(FilmItem item){
+    public boolean addItem(FilmItem item){
         Log.i(Tag, this + "add new");
-        items.add(item);
+        if (!items.contains(item)) {
+            items.add(item);
+            notifyDataSetChanged();
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setItems(List<FilmItem> items){
+        this.items.clear();
+        this.items.addAll(items);
         notifyDataSetChanged();
     }
 }
