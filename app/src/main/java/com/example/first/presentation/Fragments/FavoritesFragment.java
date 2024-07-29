@@ -1,4 +1,4 @@
-package com.example.first.Fragments;
+package com.example.first.presentation.Fragments;
 
 import android.os.Bundle;
 
@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.first.MainActivity;
+import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.presentation.MainActivity;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
-import com.example.first.databinding.FragmentPopularBinding;
-import com.example.first.filmStrip.AdapterListener;
-import com.example.first.filmStrip.FilmItem;
-import com.example.first.filmStrip.ItemAdapter;
+import com.example.first.presentation.filmStrip.AdapterListener;
+import com.example.first.data.models.FilmModel;
+import com.example.first.presentation.filmStrip.ItemAdapter;
 
 public class FavoritesFragment extends Fragment implements AdapterListener {
 
@@ -82,12 +82,12 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
     }
 
     @Override
-    public void onClick(FilmItem filmItem) {
+    public void onClick(ShortFilmModel filmModel) {
 
     }
 
     @Override
-    public boolean longOnClick(FilmItem filmItem) {
+    public boolean longOnClick(ShortFilmModel filmModel) {
         return true;
     }
 }

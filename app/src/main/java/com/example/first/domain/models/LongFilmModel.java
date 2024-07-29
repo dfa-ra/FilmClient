@@ -1,4 +1,6 @@
-package com.example.first.filmStrip;
+package com.example.first.domain.models;
+
+import com.example.first.data.models.FilmModel;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,27 +12,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class FilmItem implements Serializable {
+public class LongFilmModel {
     public int kinopoiskId;
-    public String imdbId;
     public String nameRu;
-    public String nameEn;
-    public String nameOriginal;
-    public List<Country> countries;
-    public List<Genre> genres;
+    public List<com.example.first.data.models.FilmModel.Country> countries;
+    public List<com.example.first.data.models.FilmModel.Genre> genres;
     public String ratingKinopoisk;
     public String ratingImdb;
-    public int year;
-    public String type;
     public String posterUrl;
     public String posterUrlPreview;
-    public String coverUrl;
-    public String logoUrl;
-    public String description;
-    public String ratingAgeLimits;
-    public boolean isChecked = false;
 
-    @ToString
     public class Genre implements Serializable{
         public String genre;
     }
@@ -38,4 +29,3 @@ public class FilmItem implements Serializable {
         public String country;
     }
 }
-

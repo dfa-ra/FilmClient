@@ -1,4 +1,4 @@
-package com.example.first;
+package com.example.first.data.httpqueries;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;

@@ -1,4 +1,4 @@
-package com.example.first.Fragments;
+package com.example.first.presentation.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,43 +10,35 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.ContentInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.first.DescriptionFilmActivity;
+import com.example.first.data.DataFetchCallback;
+import com.example.first.data.FilmRepositoryImpl;
+import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.domain.repository.FilmsRepository;
+import com.example.first.domain.usecase.GetShortInformationAboutFilmsUseCase;
+import com.example.first.presentation.DescriptionFilmActivity;
 import com.example.first.R;
-import com.example.first.RequestFilm;
-import com.example.first.RetrofitClient;
 import com.example.first.databinding.FragmentPopularBinding;
-import com.example.first.filmStrip.AdapterListener;
-import com.example.first.filmStrip.FilmItem;
-import com.example.first.filmStrip.ItemAdapter;
+import com.example.first.presentation.filmStrip.AdapterListener;
+import com.example.first.presentation.filmStrip.ItemAdapter;
 
-import java.util.Objects;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Retrofit;
-
-public class PopularFragment extends Fragment implements AdapterListener {
+public class PopularFragment extends Fragment implements AdapterListener, DataFetchCallback {
 
     FragmentPopularBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
     SharedViewModel viewModel;
 
+    private FilmsRepository filmsRepository;
+    private GetShortInformationAboutFilmsUseCase getShortInformationAboutFilmsUseCase;
+
     public final static String Tag = "PopularFragmentTAG";
-    private final static String BaseURL = "https://kinopoiskapiunofficial.tech/";
 
     private static PopularFragment fragment;
 
-    public PopularFragment() {
-
-    }
+    public PopularFragment() {}
 
     public static PopularFragment getInstance() {
         synchronized (FavoritesFragment.class) {
@@ -78,48 +70,33 @@ public class PopularFragment extends Fragment implements AdapterListener {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-        Log.d(Tag, "FstInit2");
-        initFilmList();
-
-        Log.d(Tag, "FstInit3");
-        // Inflate the layout for this fragment
+        filmsRepository = new FilmRepositoryImpl(this);
+        getShortInformationAboutFilmsUseCase = new GetShortInformationAboutFilmsUseCase(filmsRepository);
         return view;
     }
 
 
-    @SuppressLint({"CheckResult", "NotifyDataSetChanged"})
-    private void initFilmList(){
-        Retrofit retrofit = RetrofitClient.getClient(BaseURL);
-        RequestFilm requestFilm = retrofit.create(RequestFilm.class);
-
-        Observable.range(1, 20)
-                .flatMap(number -> requestFilm.getFilmById(300 + number).
-                        subscribeOn(Schedulers.io())
-                        .onErrorResumeNext(throwable -> Observable.empty())
-                )
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        items -> viewModel.setItems(items),
-                        throwable -> Log.e(Tag, String.valueOf(throwable))
-                );
-    }
-
     @Override
-    public void onClick(FilmItem filmItem) {
+    public void onClick(ShortFilmModel filmModel) {
         Log.i(Tag, "on click item");
         Intent intent = new Intent(getActivity(), DescriptionFilmActivity.class);
-        intent.putExtra("filmItem", filmItem); //Optional parameters
+        intent.putExtra("filmModel", filmModel); //Optional parameters
         Log.i(Tag, "send data");
         startActivity(intent);
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public boolean longOnClick(FilmItem filmItem) {
+    public boolean longOnClick(ShortFilmModel filmModel) {
         Log.i(Tag, "Long click item");
-        viewModel.selectItem(filmItem);
+        viewModel.selectItem(filmModel);
         return true;
+    }
+
+    @Override
+    public void onDataFetched() {
+        Log.i(Tag, getShortInformationAboutFilmsUseCase.execute().get(0).toString());
+        viewModel.setItems(getShortInformationAboutFilmsUseCase.execute());
+        Log.i(Tag, "onDataFetched");
     }
 }

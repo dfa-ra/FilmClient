@@ -1,24 +1,19 @@
-package com.example.first.filmStrip;
+package com.example.first.presentation.filmStrip;
 
 import android.annotation.SuppressLint;
-import android.net.IpSecManager;
-import android.nfc.Tag;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.first.Fragments.PopularFragment;
-import com.example.first.MainActivity;
 import com.example.first.R;
 import com.example.first.databinding.ListItemBinding;
+import com.example.first.data.models.FilmModel;
+import com.example.first.domain.models.ShortFilmModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +21,7 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
     public static final String Tag = "ItemAdapterTag";
-    private List<FilmItem> items = new ArrayList<>();
+    private List<ShortFilmModel> items = new ArrayList<>();
     private AdapterListener adapterListener;
 
     public ItemAdapter(AdapterListener adapterListener){
@@ -59,13 +54,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        public void bind(FilmItem item, AdapterListener adapterListener){
+        public void bind(ShortFilmModel item, AdapterListener adapterListener){
             binding.nameView.setText(item.nameRu);
             binding.ratingKinoPoisk.setText(item.ratingKinopoisk);
             binding.ratingIMDB.setText(item.ratingImdb);
-            if (!item.genres.isEmpty()) {
-                binding.textGenre.setText(item.genres.get(0).genre);
-            }
+            binding.textGenre.setText(item.genre);
 
             if (item.isChecked) {
                 binding.selectedItemImage.setImageDrawable(ContextCompat.getDrawable(binding.getRoot().getContext(), android.R.drawable.btn_star_big_on));
@@ -86,7 +79,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public boolean addItem(FilmItem item){
+    public boolean addItem(ShortFilmModel item){
         Log.i(Tag, this + "add new");
         if (!items.contains(item)) {
             items.add(item);
@@ -97,7 +90,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setItems(List<FilmItem> items){
+    public void setItems(List<ShortFilmModel> items){
         this.items.clear();
         this.items.addAll(items);
         notifyDataSetChanged();
