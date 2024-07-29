@@ -12,9 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FilmRepositoryImpl implements FilmsRepository {
 
@@ -30,34 +34,32 @@ public class FilmRepositoryImpl implements FilmsRepository {
 
     @SuppressLint("CheckResult")
     private void loadPage(){
-        int id = 300;
-        httpQueries.getFilmById(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<FilmModel>() {
+        Observable.range(1, 20) // Генерирует последовательность чисел от 1 до 20
+                .flatMap(id -> httpQueries.getFilmById(300 + id)
+                        .subscribeOn(Schedulers.io())) // Выполняем каждый запрос на IO Scheduler
+                .toList() // Собираем результаты в список
+                .observeOn(AndroidSchedulers.mainThread()) // Наблюдаем на главном потоке
+                .subscribe(new SingleObserver<List<FilmModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         // Может быть полезно сохранить Disposable, чтобы можно было отменить запрос при необходимости
                     }
 
                     @Override
-                    public void onNext(FilmModel filmModel) {
+                    public void onSuccess(List<FilmModel> filmModels) {
                         // Обработка результата
-                        films.add(filmModel);
-                        Log.d("SomeClassTag", filmModel.toString());
+                        films = filmModels;
+
+                        // Запрос завершён, вызываем метод для дальнейшей обработки данных
+                        if (callback != null) {
+                            callback.onDataFetched();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         // Обработка ошибки
-                        Log.e("SomeClassTag", "Error fetching film: ", e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        // Запрос завершён, вызываем метод для дальнейшей обработки данных
-                        if (callback != null) {
-                            callback.onDataFetched();
-                        }
+                        Log.e("SomeClassTag", "Error fetching films: ", e);
                     }
                 });
     }

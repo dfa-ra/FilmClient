@@ -14,25 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.first.data.DataFetchCallback;
-import com.example.first.data.FilmRepositoryImpl;
 import com.example.first.domain.models.ShortFilmModel;
-import com.example.first.domain.repository.FilmsRepository;
-import com.example.first.domain.usecase.GetShortInformationAboutFilmsUseCase;
 import com.example.first.presentation.DescriptionFilmActivity;
 import com.example.first.R;
 import com.example.first.databinding.FragmentPopularBinding;
+import com.example.first.presentation.Fragments.ViewModel.SharedViewModel;
 import com.example.first.presentation.filmStrip.AdapterListener;
 import com.example.first.presentation.filmStrip.ItemAdapter;
 
-public class PopularFragment extends Fragment implements AdapterListener, DataFetchCallback {
+public class PopularFragment extends Fragment implements AdapterListener {
 
     FragmentPopularBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
     SharedViewModel viewModel;
-
-    private FilmsRepository filmsRepository;
-    private GetShortInformationAboutFilmsUseCase getShortInformationAboutFilmsUseCase;
 
     public final static String Tag = "PopularFragmentTAG";
 
@@ -70,8 +64,6 @@ public class PopularFragment extends Fragment implements AdapterListener, DataFe
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        filmsRepository = new FilmRepositoryImpl(this);
-        getShortInformationAboutFilmsUseCase = new GetShortInformationAboutFilmsUseCase(filmsRepository);
         return view;
     }
 
@@ -93,10 +85,4 @@ public class PopularFragment extends Fragment implements AdapterListener, DataFe
         return true;
     }
 
-    @Override
-    public void onDataFetched() {
-        Log.i(Tag, getShortInformationAboutFilmsUseCase.execute().get(0).toString());
-        viewModel.setItems(getShortInformationAboutFilmsUseCase.execute());
-        Log.i(Tag, "onDataFetched");
-    }
 }

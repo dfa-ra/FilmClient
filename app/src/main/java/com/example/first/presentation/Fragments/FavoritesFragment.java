@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.presentation.Fragments.ViewModel.SharedViewModel;
 import com.example.first.presentation.MainActivity;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
 import com.example.first.presentation.filmStrip.AdapterListener;
-import com.example.first.data.models.FilmModel;
 import com.example.first.presentation.filmStrip.ItemAdapter;
 
 public class FavoritesFragment extends Fragment implements AdapterListener {
