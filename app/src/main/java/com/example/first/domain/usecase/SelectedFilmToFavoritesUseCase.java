@@ -1,7 +1,15 @@
 package com.example.first.domain.usecase;
 
-public class SelectedFilmToFavoritesUseCase {
-    public void execute(){
+import com.example.first.domain.repository.FilmsRepository;
 
+public class SelectedFilmToFavoritesUseCase {
+    private final FilmsRepository filmsRepository;
+
+    public SelectedFilmToFavoritesUseCase(FilmsRepository filmsRepository){
+        this.filmsRepository = filmsRepository;
+    }
+
+    public void execute(int id){
+        filmsRepository.selectedFilmToFavoritesUseCase(id);
     }
 }

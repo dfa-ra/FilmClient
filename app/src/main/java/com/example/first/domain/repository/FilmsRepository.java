@@ -9,4 +9,5 @@ public interface FilmsRepository {
     ShortFilmModel getShortFilmInformationById(int id);
     FilmModel getFilmInformationById(int id);
     List<ShortFilmModel> getAllShortFilmsInformation();
+    void selectedFilmToFavoritesUseCase(int id);
 }

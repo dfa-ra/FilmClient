@@ -1,33 +1,41 @@
 package com.example.first.presentation.Fragments.ViewModel;
 
-import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.first.data.DataFetchCallback;
-import com.example.first.data.FilmRepositoryImpl;
+import com.example.first.data.FilmsRepositoryImpl;
 import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.domain.repository.FilmsRepository;
 import com.example.first.domain.usecase.GetShortInformationAboutFilmsUseCase;
-import com.example.first.presentation.Fragments.PopularFragment;
+import com.example.first.domain.usecase.SelectedFilmToFavoritesUseCase;
 
 import java.util.List;
 
-public class SharedViewModel extends ViewModel implements DataFetchCallback {
+public class FragmentsViewModel extends ViewModel implements DataFetchCallback {
+
     private final MutableLiveData<ShortFilmModel> selectedItem = new MutableLiveData<>();
     private final MutableLiveData<List<ShortFilmModel>> itemsLiveData = new MutableLiveData<>();
 
-    private FilmRepositoryImpl filmsRepository;
-    private GetShortInformationAboutFilmsUseCase getShortInformationAboutFilmsUseCase;
 
-    public SharedViewModel(){
-        filmsRepository = new FilmRepositoryImpl(this);
+    private FilmsRepository filmsRepository;
+    private GetShortInformationAboutFilmsUseCase getShortInformationAboutFilmsUseCase;
+    private SelectedFilmToFavoritesUseCase selectedFilmToFavoritesUseCase;
+
+    public FragmentsViewModel(){
+        filmsRepository = new FilmsRepositoryImpl(this);
         getShortInformationAboutFilmsUseCase = new GetShortInformationAboutFilmsUseCase(filmsRepository);
+        selectedFilmToFavoritesUseCase = new SelectedFilmToFavoritesUseCase(filmsRepository);
+
     }
+
 
     public void selectItem(ShortFilmModel item) {
         selectedItem.setValue(item);
+        selectedFilmToFavoritesUseCase.execute(item.kinopoiskId);
     }
 
     public LiveData<ShortFilmModel> getSelectedItem() {
@@ -41,6 +49,7 @@ public class SharedViewModel extends ViewModel implements DataFetchCallback {
     public LiveData<List<ShortFilmModel>> getItems() {
         return itemsLiveData;
     }
+
 
     @Override
     public void onDataFetched() {

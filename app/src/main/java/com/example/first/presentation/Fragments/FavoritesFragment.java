@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.first.domain.models.ShortFilmModel;
-import com.example.first.presentation.Fragments.ViewModel.SharedViewModel;
+import com.example.first.presentation.Fragments.ViewModel.FragmentsViewModel;
 import com.example.first.presentation.MainActivity;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
@@ -25,7 +25,7 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
 
     FragmentFavoritesBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
-    SharedViewModel model;
+    FragmentsViewModel model;
 
     public final static String Tag = "FavoritesFragmentTAG";
 
@@ -61,7 +61,7 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
 
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         binding = FragmentFavoritesBinding.inflate(getLayoutInflater());
-        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(FragmentsViewModel.class);
 
         Log.d(Tag, "FstInit");
 

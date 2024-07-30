@@ -18,7 +18,7 @@ import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.presentation.DescriptionFilmActivity;
 import com.example.first.R;
 import com.example.first.databinding.FragmentPopularBinding;
-import com.example.first.presentation.Fragments.ViewModel.SharedViewModel;
+import com.example.first.presentation.Fragments.ViewModel.FragmentsViewModel;
 import com.example.first.presentation.filmStrip.AdapterListener;
 import com.example.first.presentation.filmStrip.ItemAdapter;
 
@@ -26,7 +26,7 @@ public class PopularFragment extends Fragment implements AdapterListener {
 
     FragmentPopularBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
-    SharedViewModel viewModel;
+    FragmentsViewModel viewModel;
 
     public final static String Tag = "PopularFragmentTAG";
 
@@ -53,7 +53,7 @@ public class PopularFragment extends Fragment implements AdapterListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_popular, container, false);
         binding = FragmentPopularBinding.inflate(getLayoutInflater());
-        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(FragmentsViewModel.class);
         viewModel.getItems().observe(getViewLifecycleOwner(), items -> {
             adapter.setItems(items);
         });
@@ -84,5 +84,4 @@ public class PopularFragment extends Fragment implements AdapterListener {
         viewModel.selectItem(filmModel);
         return true;
     }
-
 }

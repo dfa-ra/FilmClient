@@ -2,31 +2,34 @@ package com.example.first.data;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+import android.util.MonthDisplayHelper;
 
 import com.example.first.data.httpqueries.HttpQueries;
 import com.example.first.data.models.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.domain.repository.FilmsRepository;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class FilmRepositoryImpl implements FilmsRepository {
+public class FilmsRepositoryImpl implements FilmsRepository {
 
-    private List<FilmModel> films = new ArrayList<>();
+    private HashMap<Integer, FilmModel> films = new HashMap<>();
+    private HashMap<Integer, FilmModel> selectedFilms = new HashMap<>();
     private HttpQueries httpQueries;
     private DataFetchCallback callback;
 
-    public FilmRepositoryImpl(DataFetchCallback callback){
+    private static final String Tag = "FilmsRepositoryImplTag";
+
+    public FilmsRepositoryImpl(DataFetchCallback callback){
         httpQueries = new HttpQueries();
         this.callback = callback;
         loadPage();
@@ -48,7 +51,9 @@ public class FilmRepositoryImpl implements FilmsRepository {
                     @Override
                     public void onSuccess(List<FilmModel> filmModels) {
                         // Обработка результата
-                        films = filmModels;
+                        for (FilmModel filmModel: filmModels){
+                            films.put(filmModel.getKinopoiskId(), filmModel);
+                        };
 
                         // Запрос завершён, вызываем метод для дальнейшей обработки данных
                         if (callback != null) {
@@ -68,7 +73,7 @@ public class FilmRepositoryImpl implements FilmsRepository {
     public List<ShortFilmModel> getAllShortFilmsInformation() {
         List<ShortFilmModel> returnedList = new ArrayList<>();
 
-        for (FilmModel model: films){
+        for (FilmModel model: films.values()){
             returnedList.add(new ShortFilmModel(
                     model.kinopoiskId,
                     model.nameRu,
@@ -81,14 +86,22 @@ public class FilmRepositoryImpl implements FilmsRepository {
     }
 
     @Override
+    public void selectedFilmToFavoritesUseCase(int id) {
+        selectedFilms.put(id, films.get(id));
+    }
+
+    @Override
     public ShortFilmModel getShortFilmInformationById(int id) {
+        FilmModel filmModel = films.get(id);
+        assert filmModel != null;
+
         return new ShortFilmModel(
-                films.get(id).kinopoiskId,
-                films.get(id).nameRu,
-                films.get(id).ratingKinopoisk,
-                films.get(id).ratingImdb,
-                films.get(id).genres.get(0).genre,
-                films.get(id).isChecked);
+                filmModel.kinopoiskId,
+                filmModel.nameRu,
+                filmModel.ratingKinopoisk,
+                filmModel.ratingImdb,
+                filmModel.genres.get(0).genre,
+                filmModel.isChecked);
     }
 
     @Override
