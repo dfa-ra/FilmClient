@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 public class FilmModel implements Serializable {
     public int kinopoiskId;
+    public int filmId;
     public String imdbId;
     public String nameRu;
     public String nameEn;

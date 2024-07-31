@@ -4,14 +4,14 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.example.first.data.models.FilmModel;
+import com.example.first.data.models.KeywordCollectionModel;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 
-public class HttpQueries {
+public class HttpQueries{
 
     private final static String Tag = "HttpQueriesTag";
     private final static String BaseURL = "https://kinopoiskapiunofficial.tech/";
@@ -26,5 +26,10 @@ public class HttpQueries {
                     Log.e(Tag, "Error in requestFilm.getFilmById: ", throwable);
                     return Observable.empty(); // или Observable.error(throwable)
                 });
+    }
+
+
+    public Observable<KeywordCollectionModel> getFilmByName(String name, Integer page) {
+        return requestFilm.getFilmByName(name, page);
     }
 }

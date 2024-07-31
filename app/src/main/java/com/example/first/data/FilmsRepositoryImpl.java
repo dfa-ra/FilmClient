@@ -2,14 +2,13 @@ package com.example.first.data;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-import android.util.MonthDisplayHelper;
 
 import com.example.first.data.httpqueries.HttpQueries;
 import com.example.first.data.models.FilmModel;
+import com.example.first.data.models.KeywordCollectionModel;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.domain.repository.FilmsRepository;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +18,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Call;
 
 public class FilmsRepositoryImpl implements FilmsRepository {
 
@@ -27,7 +27,7 @@ public class FilmsRepositoryImpl implements FilmsRepository {
     private HttpQueries httpQueries;
     private DataFetchCallback callback;
 
-    private static final String Tag = "FilmsRepositoryImplTag";
+    public static final String Tag = "FilmsRepositoryImplTag";
 
     public FilmsRepositoryImpl(DataFetchCallback callback){
         httpQueries = new HttpQueries();
@@ -88,6 +88,48 @@ public class FilmsRepositoryImpl implements FilmsRepository {
     @Override
     public void selectedFilmToFavoritesUseCase(int id) {
         selectedFilms.put(id, films.get(id));
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void getShortFilmsInformationByName(String name, int page) {
+        Log.i(Tag, "search in FilmRepository1");
+        films.clear();
+
+        httpQueries.getFilmByName(name, page).subscribeOn(Schedulers.io()) // Выполняем запрос в фоновом потоке
+                .observeOn(AndroidSchedulers.mainThread()) // Получаем результат в главном потоке
+                .subscribe(
+                        keywordCollectionModel -> {
+                            // Обработка успешного ответа
+                            films.clear();
+
+                            Log.d(Tag, keywordCollectionModel.films.toString());
+
+                            Observable.fromIterable(keywordCollectionModel.films)
+                                    .doOnNext(filmModel -> films.put(filmModel.filmId, filmModel))
+                                    .subscribe(
+                                            filmModel -> {
+                                                // Дополнительная обработка каждого элемента, если необходимо
+                                            },
+                                            throwable -> {
+                                                // Обработка ошибок в процессе обработки фильмов
+                                                Log.e(Tag, "Error processing films", throwable);
+                                            },
+                                            () -> {
+                                                // Завершение обработки
+                                                Log.i(Tag, "Finished processing films");
+                                                // Запрос завершён, вызываем метод для дальнейшей обработки данных
+                                                if (callback != null) {
+                                                    callback.onDataFetched();
+                                                }
+                                            }
+                                    );
+                        },
+                        throwable -> {
+                            // Обработка ошибок при запросе
+                            Log.e(Tag, "API call failed", throwable);
+                        }
+                );
     }
 
     @Override

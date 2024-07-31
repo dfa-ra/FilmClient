@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.first.data.FilmsRepositoryImpl;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.presentation.DescriptionFilmActivity;
 import com.example.first.R;
@@ -83,5 +84,10 @@ public class PopularFragment extends Fragment implements AdapterListener {
         Log.i(Tag, "Long click item");
         viewModel.selectItem(filmModel);
         return true;
+    }
+
+    public void searchFilmByName(String name){
+        Log.i(FilmsRepositoryImpl.Tag, "search in Popular Fragment");
+        viewModel.searchFilmByName(name);
     }
 }

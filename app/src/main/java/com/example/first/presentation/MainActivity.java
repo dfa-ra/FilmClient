@@ -3,6 +3,7 @@ package com.example.first.presentation;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -14,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.first.data.FilmsRepositoryImpl;
 import com.example.first.presentation.Fragments.FavoritesFragment;
 import com.example.first.presentation.Fragments.PopularFragment;
 import com.example.first.R;
@@ -82,6 +84,22 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 // Do nothing
+            }
+        });
+
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Здесь вы можете обработать текст поиска, когда пользователь нажимает кнопку поиска
+                Log.i(FilmsRepositoryImpl.Tag, query);
+                ((PopularFragment) fragmentList.get(0)).searchFilmByName(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Здесь вы можете обработать текст поиска, когда пользователь вводит текст
+                return false;
             }
         });
 
