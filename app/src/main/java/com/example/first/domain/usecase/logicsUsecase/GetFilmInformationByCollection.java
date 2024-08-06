@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.example.first.data.dbqueries.DBLocal;
-import com.example.first.data.httpqueries.RequestFilm;
-import com.example.first.data.models.FilmModel;
 import com.example.first.domain.interfaces.DataFetchCallback;
 import com.example.first.domain.interfaces.Requests;
 

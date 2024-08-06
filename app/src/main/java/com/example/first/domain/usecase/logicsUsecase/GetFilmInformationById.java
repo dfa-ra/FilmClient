@@ -1,9 +1,11 @@
 package com.example.first.domain.usecase.logicsUsecase;
 
 import android.annotation.SuppressLint;
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.example.first.data.dbqueries.DBLocal;
+import com.example.first.data.dbqueries.DbQueries;
 import com.example.first.data.httpqueries.HttpQueries;
 import com.example.first.data.httpqueries.RequestFilm;
 import com.example.first.data.models.FilmModel;
@@ -46,6 +48,8 @@ public class GetFilmInformationById {
                     public void onSuccess(List<FilmModel> filmModels) {
                         // Обработка результата
                         for (FilmModel filmModel: filmModels){
+                            filmModel.isChecked = DbQueries.getInstance().isFilmHere(filmModel);
+                            Log.d("DbQueries", String.valueOf(filmModel.isChecked));
                             DBLocal.getInstance().addNewFilm(filmModel);
                         };
 

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.presentation.Fragments.ViewModel.FavoritesViewModel;
 import com.example.first.presentation.Fragments.ViewModel.SendViewModel;
 import com.example.first.presentation.MainActivity;
 import com.example.first.R;
@@ -25,7 +26,8 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
 
     FragmentFavoritesBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
-    SendViewModel model;
+    SendViewModel sendViewModel;
+    FavoritesViewModel favoritesViewModel;
 
     public final static String Tag = "FavoritesFragmentTAG";
 
@@ -61,8 +63,8 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
 
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         binding = FragmentFavoritesBinding.inflate(getLayoutInflater());
-        model = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
-
+        sendViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
+        favoritesViewModel = new ViewModelProvider(requireActivity()).get(FavoritesViewModel.class);
         Log.d(Tag, "FstInit");
 
         RecyclerView recyclerView = view.findViewById(binding.FavoriteRecyclerView.getId());
@@ -71,7 +73,7 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
 
         Log.d(Tag, "FstInit2");
 
-        model.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
+        sendViewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
             if (!adapter.addItem(item))
                 Toast.makeText(getContext(), "Данный элемент уже находится в избранное", Toast.LENGTH_SHORT).show();
         });

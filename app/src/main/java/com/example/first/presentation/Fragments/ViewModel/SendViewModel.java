@@ -22,31 +22,14 @@ import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFi
 import java.util.Collections;
 import java.util.List;
 
-public class SendViewModel extends ViewModel implements DataFetchCallback {
+public class SendViewModel extends ViewModel{
 
     private final MutableLiveData<ShortFilmModel> selectedItem = new MutableLiveData<>();
-    private final MutableLiveData<List<ShortFilmModel>> itemsLiveData = new MutableLiveData<>();
 
-
-    private final Requests requestFilm;
-    private final GetFilmInformationById getFilmInformationById;
     private final SelectedFilmToFavorites selectedFilmToFavorites;
-    private final GetFilmsInformationByName getFilmsInformationByName;
-    private final GetShortFilmInformationById getShortFilmInformationById;
-    private final GetShortInformationAboutFilms getShortInformationAboutFilms;
-    private final GetFilmInformationByCollection getFilmInformationByCollection;
 
     public SendViewModel(){
-        requestFilm = new HttpQueries();
-        getFilmInformationById = new GetFilmInformationById(requestFilm, this);
         selectedFilmToFavorites = new SelectedFilmToFavorites();
-        getFilmsInformationByName = new GetFilmsInformationByName(requestFilm, getFilmInformationById, this);
-        getFilmInformationByCollection = new GetFilmInformationByCollection(requestFilm, getFilmInformationById, this);
-        getShortFilmInformationById = new GetShortFilmInformationById();
-        getShortInformationAboutFilms = new GetShortInformationAboutFilms();
-
-        getFilmInformationByCollection.execute(CollectionType.TOP_250_MOVIES
-                .getNameCollections(), 1);
     }
 
     public void selectItem(ShortFilmModel item) {
@@ -56,24 +39,5 @@ public class SendViewModel extends ViewModel implements DataFetchCallback {
 
     public LiveData<ShortFilmModel> getSelectedItem() {
         return selectedItem;
-    }
-
-    public void setItems(List<ShortFilmModel> items) {
-        itemsLiveData.setValue(items);
-    }
-
-    public LiveData<List<ShortFilmModel>> getItems() {
-        return itemsLiveData;
-    }
-
-    @Override
-    public void onDataFetched() {
-
-        Log.d("msRepositoryImplTag", "onDataFetched");
-        setItems(getShortInformationAboutFilms.execute());
-    }
-
-    public void searchFilmByName(String name) {
-        getFilmsInformationByName.execute(name, 1);
     }
 }

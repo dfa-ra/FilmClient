@@ -81,12 +81,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     @SuppressLint("NotifyDataSetChanged")
     public boolean addItem(ShortFilmModel item){
         Log.i(Tag, this + "add new");
-        if (!items.contains(item)) {
-            items.add(item);
-            notifyDataSetChanged();
-            return true;
+        for (ShortFilmModel film : items){
+            if (film.equals(item)) return false;
         }
-        return false;
+
+        items.add(item);
+        notifyDataSetChanged();
+        return true;
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

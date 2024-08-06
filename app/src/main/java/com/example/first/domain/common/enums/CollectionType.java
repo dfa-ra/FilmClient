@@ -2,6 +2,7 @@ package com.example.first.domain.common.enums;
 
 import lombok.Getter;
 
+
 @Getter
 public enum CollectionType {
 

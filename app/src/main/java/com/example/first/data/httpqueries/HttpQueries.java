@@ -19,6 +19,16 @@ public class HttpQueries implements RequestFilm, Requests {
     private final static String BaseURL = "https://kinopoiskapiunofficial.tech/";
     private Retrofit retrofit = RetrofitClient.getClient(BaseURL);
     private RequestFilm requestFilm = retrofit.create(RequestFilm.class);
+    private static HttpQueries httpQueries = null;
+
+    public static HttpQueries getInstance(){
+        if (httpQueries == null) httpQueries = new HttpQueries();
+        return httpQueries;
+    }
+
+    private HttpQueries(){}
+
+
 
     @SuppressLint("CheckResult")
     @NonNull

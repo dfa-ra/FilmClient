@@ -18,6 +18,7 @@ import com.example.first.databinding.FragmentMainBinding;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.presentation.DescriptionFilmActivity;
 import com.example.first.R;
+import com.example.first.presentation.Fragments.ViewModel.MainViewModel;
 import com.example.first.presentation.Fragments.ViewModel.SendViewModel;
 import com.example.first.presentation.filmStrip.AdapterListener;
 import com.example.first.presentation.filmStrip.ItemAdapter;
@@ -27,6 +28,7 @@ public class MainFragment extends Fragment implements AdapterListener {
     FragmentMainBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
     SendViewModel senderViewModel;
+    MainViewModel mainViewModel;
 
     public final static String Tag = "PopularFragmentTAG";
 
@@ -54,10 +56,11 @@ public class MainFragment extends Fragment implements AdapterListener {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         binding = FragmentMainBinding.inflate(getLayoutInflater());
         senderViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
-        senderViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        mainViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
             adapter.setItems(items);
         });
-
 
         Log.d(Tag, "FstInit");
 
@@ -87,6 +90,6 @@ public class MainFragment extends Fragment implements AdapterListener {
     }
 
     public void searchFilmByName(String name){
-        senderViewModel.searchFilmByName(name);
+        mainViewModel.searchFilmByName(name);
     }
 }
