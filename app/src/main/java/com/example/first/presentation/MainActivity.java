@@ -15,9 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.first.data.FilmsRepositoryImpl;
 import com.example.first.presentation.Fragments.FavoritesFragment;
-import com.example.first.presentation.Fragments.PopularFragment;
+import com.example.first.presentation.Fragments.MainFragment;
 import com.example.first.R;
 import com.example.first.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayout;
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
 
     ActivityMainBinding binding;
     List<Fragment> fragmentList = new ArrayList<Fragment>(){{
-        add(PopularFragment.getInstance());
+        add(MainFragment.getInstance());
         add(FavoritesFragment.getInstance());
     }};
 
@@ -91,8 +90,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Здесь вы можете обработать текст поиска, когда пользователь нажимает кнопку поиска
-                Log.i(FilmsRepositoryImpl.Tag, query);
-                ((PopularFragment) fragmentList.get(0)).searchFilmByName(query);
+                ((MainFragment) fragmentList.get(0)).searchFilmByName(query);
                 return false;
             }
 

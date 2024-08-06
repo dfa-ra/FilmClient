@@ -1,4 +1,4 @@
-package com.example.first.data;
+package com.example.first.domain.interfaces;
 
 public interface DataFetchCallback {
     void onDataFetched();

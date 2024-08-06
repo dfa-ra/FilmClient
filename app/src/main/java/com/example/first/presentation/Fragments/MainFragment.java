@@ -14,31 +14,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.first.data.FilmsRepositoryImpl;
+import com.example.first.databinding.FragmentMainBinding;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.presentation.DescriptionFilmActivity;
 import com.example.first.R;
-import com.example.first.databinding.FragmentPopularBinding;
-import com.example.first.presentation.Fragments.ViewModel.FragmentsViewModel;
+import com.example.first.presentation.Fragments.ViewModel.SendViewModel;
 import com.example.first.presentation.filmStrip.AdapterListener;
 import com.example.first.presentation.filmStrip.ItemAdapter;
 
-public class PopularFragment extends Fragment implements AdapterListener {
+public class MainFragment extends Fragment implements AdapterListener {
 
-    FragmentPopularBinding binding;
+    FragmentMainBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
-    FragmentsViewModel viewModel;
+    SendViewModel senderViewModel;
 
     public final static String Tag = "PopularFragmentTAG";
 
-    private static PopularFragment fragment;
+    private static MainFragment fragment;
 
-    public PopularFragment() {}
+    public MainFragment() {}
 
-    public static PopularFragment getInstance() {
+    public static MainFragment getInstance() {
         synchronized (FavoritesFragment.class) {
             if (fragment == null) {
-                fragment = new PopularFragment();
+                fragment = new MainFragment();
             }
         }
         return fragment;
@@ -52,12 +51,13 @@ public class PopularFragment extends Fragment implements AdapterListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_popular, container, false);
-        binding = FragmentPopularBinding.inflate(getLayoutInflater());
-        viewModel = new ViewModelProvider(requireActivity()).get(FragmentsViewModel.class);
-        viewModel.getItems().observe(getViewLifecycleOwner(), items -> {
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        binding = FragmentMainBinding.inflate(getLayoutInflater());
+        senderViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
+        senderViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
             adapter.setItems(items);
         });
+
 
         Log.d(Tag, "FstInit");
 
@@ -82,12 +82,11 @@ public class PopularFragment extends Fragment implements AdapterListener {
     @Override
     public boolean longOnClick(ShortFilmModel filmModel) {
         Log.i(Tag, "Long click item");
-        viewModel.selectItem(filmModel);
+        senderViewModel.selectItem(filmModel);
         return true;
     }
 
     public void searchFilmByName(String name){
-        Log.i(FilmsRepositoryImpl.Tag, "search in Popular Fragment");
-        viewModel.searchFilmByName(name);
+        senderViewModel.searchFilmByName(name);
     }
 }
