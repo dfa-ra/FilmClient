@@ -1,7 +1,5 @@
 package com.example.first.domain.models;
 
-import com.example.first.data.models.FilmModel;
-
 import java.io.Serializable;
 import java.util.List;
 

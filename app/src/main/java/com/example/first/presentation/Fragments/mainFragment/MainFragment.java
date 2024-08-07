@@ -1,4 +1,4 @@
-package com.example.first.presentation.Fragments;
+package com.example.first.presentation.Fragments.mainFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,17 +13,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.first.databinding.FragmentMainBinding;
+import com.example.first.domain.interfaces.DataFetchCallback;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.presentation.DescriptionFilmActivity;
 import com.example.first.R;
-import com.example.first.presentation.Fragments.ViewModel.MainViewModel;
-import com.example.first.presentation.Fragments.ViewModel.SendViewModel;
+import com.example.first.presentation.Fragments.favoritesFragment.FavoritesFragment;
+import com.example.first.presentation.Fragments.SendViewModel;
 import com.example.first.presentation.filmStrip.AdapterListener;
 import com.example.first.presentation.filmStrip.ItemAdapter;
 
-public class MainFragment extends Fragment implements AdapterListener {
+public class MainFragment extends Fragment implements AdapterListener, DataFetchCallback {
 
     FragmentMainBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
@@ -56,13 +58,12 @@ public class MainFragment extends Fragment implements AdapterListener {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         binding = FragmentMainBinding.inflate(getLayoutInflater());
         senderViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
-        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(requireActivity(), new MainViewModelFactory(this)).get(MainViewModel.class);
 
         mainViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
             adapter.setItems(items);
         });
 
-        Log.d(Tag, "FstInit");
 
         RecyclerView recyclerView = view.findViewById(binding.PopularRecyclerView.getId());
         recyclerView.setAdapter(adapter);
@@ -74,22 +75,26 @@ public class MainFragment extends Fragment implements AdapterListener {
 
     @Override
     public void onClick(ShortFilmModel filmModel) {
-        Log.i(Tag, "on click item");
         Intent intent = new Intent(getActivity(), DescriptionFilmActivity.class);
         intent.putExtra("filmModel", filmModel); //Optional parameters
-        Log.i(Tag, "send data");
         startActivity(intent);
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public boolean longOnClick(ShortFilmModel filmModel) {
-        Log.i(Tag, "Long click item");
-        senderViewModel.selectItem(filmModel);
+
+        if (!senderViewModel.selectItem(filmModel))
+            Toast.makeText(getContext(), "Данный элемент уже находится в избранное", Toast.LENGTH_SHORT).show();
         return true;
     }
 
-    public void searchFilmByName(String name){
+    public void searchFilmByName(String name) {
         mainViewModel.searchFilmByName(name);
+    }
+
+    @Override
+    public void onDataFetched() {
+        mainViewModel.updateShortInformationAboutFilms();
     }
 }

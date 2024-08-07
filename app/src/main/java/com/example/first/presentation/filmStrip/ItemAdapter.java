@@ -79,20 +79,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public boolean addItem(ShortFilmModel item){
+    public void addItem(ShortFilmModel item){
         Log.i(Tag, this + "add new");
-        for (ShortFilmModel film : items){
-            if (film.equals(item)) return false;
-        }
-
         items.add(item);
         notifyDataSetChanged();
-        return true;
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setItems(List<ShortFilmModel> items){
+
+        Log.d("msRepositoryImplTag", " setItems(List<ShortFilmModel> items)");
+        Log.d("msRepositoryImplTag", items.toString());
+
         this.items.clear();
         this.items.addAll(items);
         notifyDataSetChanged();

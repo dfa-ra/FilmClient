@@ -11,7 +11,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.first.R;
 import com.example.first.databinding.ActivityDescriptionFilmBinding;
-import com.example.first.data.models.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 
 public class DescriptionFilmActivity extends AppCompatActivity {

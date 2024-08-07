@@ -51,12 +51,17 @@ dependencies {
 
     implementation libs.lifecycle.viewmodel.ktx.v251
     implementation libs.lifecycle.livedata.ktx
-    implementation libs.fragment.ktx
     implementation libs.lifecycle.viewmodel.ktx
+    implementation libs.fragment.ktx
     implementation libs.recyclerview
     implementation libs.adapter.rxjava3
     implementation libs.converter.gson
     implementation libs.retrofit
     implementation libs.rxjava
     implementation libs.rxandroid
+
+    //Dagger
+    implementation libs.dagger.android
+    implementation libs.dagger.android.support // if you use the support libraries
+    annotationProcessor libs.dagger.android.processor
 }

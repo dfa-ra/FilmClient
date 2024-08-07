@@ -1,16 +1,14 @@
 package com.example.first.domain.usecase.logicsUsecase;
 
 import android.annotation.SuppressLint;
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.example.first.data.dbqueries.DBLocal;
 import com.example.first.data.dbqueries.DbQueries;
-import com.example.first.data.httpqueries.HttpQueries;
-import com.example.first.data.httpqueries.RequestFilm;
 import com.example.first.data.models.FilmModel;
 import com.example.first.domain.interfaces.DataFetchCallback;
 import com.example.first.domain.interfaces.Requests;
+import com.example.first.presentation.Fragments.mainFragment.MainFragment;
 
 import java.util.List;
 
@@ -41,6 +39,7 @@ public class GetFilmInformationById {
                 .subscribe(new SingleObserver<List<FilmModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+
                         // Может быть полезно сохранить Disposable, чтобы можно было отменить запрос при необходимости
                     }
 
@@ -49,14 +48,11 @@ public class GetFilmInformationById {
                         // Обработка результата
                         for (FilmModel filmModel: filmModels){
                             filmModel.isChecked = DbQueries.getInstance().isFilmHere(filmModel);
-                            Log.d("DbQueries", String.valueOf(filmModel.isChecked));
                             DBLocal.getInstance().addNewFilm(filmModel);
                         };
 
-                        // Запрос завершён, вызываем метод для дальнейшей обработки данных
                         if (callback != null) {
                             callback.onDataFetched();
-                            Log.d("msRepositoryImplTag", "poos data fetch");
                         }
                     }
 

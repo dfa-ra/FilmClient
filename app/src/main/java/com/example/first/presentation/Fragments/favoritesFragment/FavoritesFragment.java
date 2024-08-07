@@ -1,4 +1,4 @@
-package com.example.first.presentation.Fragments;
+package com.example.first.presentation.Fragments.favoritesFragment;
 
 import android.os.Bundle;
 
@@ -13,9 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.first.data.dbqueries.DbQueries;
+import com.example.first.domain.interfaces.DataFetchCallback;
 import com.example.first.domain.models.ShortFilmModel;
-import com.example.first.presentation.Fragments.ViewModel.FavoritesViewModel;
-import com.example.first.presentation.Fragments.ViewModel.SendViewModel;
+import com.example.first.presentation.Fragments.SendViewModel;
 import com.example.first.presentation.MainActivity;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
@@ -25,7 +26,8 @@ import com.example.first.presentation.filmStrip.ItemAdapter;
 public class FavoritesFragment extends Fragment implements AdapterListener {
 
     FragmentFavoritesBinding binding;
-    ItemAdapter adapter = new ItemAdapter(this);
+    private final ItemAdapter adapter = new ItemAdapter(this);
+
     SendViewModel sendViewModel;
     FavoritesViewModel favoritesViewModel;
 
@@ -33,9 +35,7 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
 
     private static volatile FavoritesFragment fragment = null;
 
-    public FavoritesFragment() {
-        // Required empty public constructor
-    }
+    public FavoritesFragment() {}
 
     public static FavoritesFragment getInstance() {
         if (fragment == null) {
@@ -56,29 +56,22 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        Log.d(Tag, "onCreateView");
-        Log.i(MainActivity.Tag, "FavoritesFragment");
-
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         binding = FragmentFavoritesBinding.inflate(getLayoutInflater());
+        favoritesViewModel = new ViewModelProvider(requireActivity(), new FavoritesViewModelFactory()).get(FavoritesViewModel.class);
         sendViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
-        favoritesViewModel = new ViewModelProvider(requireActivity()).get(FavoritesViewModel.class);
-        Log.d(Tag, "FstInit");
+
+        favoritesViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
+            adapter.setItems(items);
+        });
+
+        sendViewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
+            favoritesViewModel.addToFavoritesList(item);
+        });
 
         RecyclerView recyclerView = view.findViewById(binding.FavoriteRecyclerView.getId());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        Log.d(Tag, "FstInit2");
-
-        sendViewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
-            if (!adapter.addItem(item))
-                Toast.makeText(getContext(), "Данный элемент уже находится в избранное", Toast.LENGTH_SHORT).show();
-        });
-
-        Log.d(Tag, "FstInit3");
 
         return view;
     }

@@ -13,10 +13,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.first.presentation.Fragments.FavoritesFragment;
-import com.example.first.presentation.Fragments.MainFragment;
+import com.example.first.presentation.Fragments.SendViewModel;
+import com.example.first.presentation.Fragments.favoritesFragment.FavoritesFragment;
+import com.example.first.presentation.Fragments.favoritesFragment.FavoritesViewModel;
+import com.example.first.presentation.Fragments.mainFragment.MainFragment;
 import com.example.first.R;
 import com.example.first.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayout;
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }
     }
+
 
     @Override
     protected void onStart() {

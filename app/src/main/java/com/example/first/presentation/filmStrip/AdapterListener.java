@@ -1,6 +1,5 @@
 package com.example.first.presentation.filmStrip;
 
-import com.example.first.data.models.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 
 public interface AdapterListener{

@@ -25,7 +25,8 @@ public class GetFilmInformationByCollection {
 
     @SuppressLint("CheckResult")
     public void execute(String type, Integer page) {
-        Log.i("msRepositoryImplTag", "=======");
+        Log.i("msRepositoryImplTag", "Начало выполнения главного конвейера");
+
         requestFilm.getFilmByCollection(type, page)
                 .subscribeOn(Schedulers.io()) // Выполняем запрос в фоновом потоке
                 .observeOn(AndroidSchedulers.mainThread()) // Получаем результат в главном потоке
