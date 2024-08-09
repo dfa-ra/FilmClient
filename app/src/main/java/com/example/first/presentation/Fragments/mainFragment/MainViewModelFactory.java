@@ -4,33 +4,29 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.first.data.httpqueries.HttpQueries;
-import com.example.first.domain.interfaces.DataFetchCallback;
-import com.example.first.domain.interfaces.Requests;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmsInformationByName;
-import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsLocal;
+import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
 
 public class MainViewModelFactory implements ViewModelProvider.Factory {
 
-    private final GetFilmsInformationByName getFilmsInformationByName;
-    private final GetShortInformationAboutFilmsLocal getShortInformationAboutFilmsLocal;
+    private final GetFilmInformationByName getFilmInformationByName;
+    private final AllToShortFilmsInformation allToShortFilmsInformation;
     private final GetFilmInformationByCollection getFilmInformationByCollection;
 
-    public MainViewModelFactory(DataFetchCallback callback){
+    public MainViewModelFactory(
+            GetFilmInformationByName getFilmInformationByName,
+            AllToShortFilmsInformation allToShortFilmsInformation,
+            GetFilmInformationByCollection getFilmInformationByCollection){
 
-        Requests requestFilm = HttpQueries.getInstance();
-
-        GetFilmInformationById getFilmInformationById = new GetFilmInformationById(requestFilm, callback);
-        getFilmsInformationByName = new GetFilmsInformationByName(requestFilm,getFilmInformationById, callback);
-        getShortInformationAboutFilmsLocal = new GetShortInformationAboutFilmsLocal();
-        getFilmInformationByCollection = new GetFilmInformationByCollection(requestFilm, getFilmInformationById, callback);
+        this.getFilmInformationByName = getFilmInformationByName;
+        this.allToShortFilmsInformation = allToShortFilmsInformation;
+        this.getFilmInformationByCollection = getFilmInformationByCollection;
 
     }
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new MainViewModel(getFilmsInformationByName, getShortInformationAboutFilmsLocal, getFilmInformationByCollection);
+        return (T) new MainViewModel(getFilmInformationByName, allToShortFilmsInformation, getFilmInformationByCollection);
     }
 }

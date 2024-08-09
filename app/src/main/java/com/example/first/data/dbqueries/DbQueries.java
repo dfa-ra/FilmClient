@@ -11,6 +11,7 @@ public class DbQueries {
     private static String Tag = "DbQueries";
     private static DbQueries dbQueries = null;
 
+    private final HashMap<Integer, FilmModel> localFilms = new HashMap<>();
     private final HashMap<Integer, FilmModel> films = new HashMap<>();
 
     public static DbQueries getInstance(){
@@ -20,9 +21,17 @@ public class DbQueries {
 
     private DbQueries(){}
 
+    public void selectById(Integer id){
+        films.put(id, localFilms.get(id));
+    }
+
     public void addNewFilm(FilmModel film){
         Log.i(Tag, "add new item");
-        films.put(film.getKinopoiskId(), film);
+        localFilms.put(film.getKinopoiskId(), film);
+    }
+
+    public FilmModel getLocalFilm(Integer id){
+        return localFilms.get(id);
     }
 
     public FilmModel getFilm(Integer id){
@@ -34,9 +43,6 @@ public class DbQueries {
     }
 
     public boolean isFilmHere(FilmModel film){
-        Log.i(Tag, films.toString());
-        Log.i(Tag, String.valueOf(film.kinopoiskId));
-        Log.i(Tag, film.nameRu + " " + String.valueOf(films.containsKey(film.kinopoiskId)));
         return films.containsKey(film.kinopoiskId);
     }
 

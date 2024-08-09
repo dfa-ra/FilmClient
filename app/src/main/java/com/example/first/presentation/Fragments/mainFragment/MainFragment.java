@@ -1,5 +1,6 @@
 package com.example.first.presentation.Fragments.mainFragment;
 
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +10,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.first.databinding.FragmentMainBinding;
-import com.example.first.domain.interfaces.DataFetchCallback;
 import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.injection.app.App;
 import com.example.first.presentation.DescriptionFilmActivity;
 import com.example.first.R;
 import com.example.first.presentation.Fragments.favoritesFragment.FavoritesFragment;
@@ -25,10 +25,16 @@ import com.example.first.presentation.Fragments.SendViewModel;
 import com.example.first.presentation.filmStrip.AdapterListener;
 import com.example.first.presentation.filmStrip.ItemAdapter;
 
-public class MainFragment extends Fragment implements AdapterListener, DataFetchCallback {
+import javax.inject.Inject;
+
+public class MainFragment extends Fragment implements AdapterListener {
 
     FragmentMainBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
+
+    @Inject
+    MainViewModelFactory mainViewModelFactory;
+
     SendViewModel senderViewModel;
     MainViewModel mainViewModel;
 
@@ -50,6 +56,9 @@ public class MainFragment extends Fragment implements AdapterListener, DataFetch
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        assert getActivity() != null;
+        ((App) getActivity().getApplication()).getAppComponent().inject(this);
     }
 
     @Override
@@ -57,12 +66,14 @@ public class MainFragment extends Fragment implements AdapterListener, DataFetch
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         binding = FragmentMainBinding.inflate(getLayoutInflater());
+
         senderViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
-        mainViewModel = new ViewModelProvider(requireActivity(), new MainViewModelFactory(this)).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(requireActivity(), mainViewModelFactory).get(MainViewModel.class);
 
         mainViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
             adapter.setItems(items);
         });
+
 
 
         RecyclerView recyclerView = view.findViewById(binding.PopularRecyclerView.getId());
@@ -93,8 +104,4 @@ public class MainFragment extends Fragment implements AdapterListener, DataFetch
         mainViewModel.searchFilmByName(name);
     }
 
-    @Override
-    public void onDataFetched() {
-        mainViewModel.updateShortInformationAboutFilms();
-    }
 }

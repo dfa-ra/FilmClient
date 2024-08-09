@@ -1,60 +1,95 @@
 package com.example.first.presentation.Fragments.mainFragment;
 
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.first.data.models.FilmModel;
 import com.example.first.domain.common.enums.CollectionType;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmsInformationByName;
-import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsLocal;
+import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class MainViewModel extends ViewModel{
 
     private final MutableLiveData<List<ShortFilmModel>> itemsLiveData = new MutableLiveData<>();
 
-    private final GetFilmsInformationByName getFilmsInformationByName;
-    private final GetShortInformationAboutFilmsLocal getShortInformationAboutFilmsLocal;
+    private final GetFilmInformationByName getFilmsInformationByName;
+    private final AllToShortFilmsInformation allToShortFilmsInformation;
     private final GetFilmInformationByCollection getFilmInformationByCollection;
 
     public MainViewModel(
-            GetFilmsInformationByName getFilmsInformationByName,
-            GetShortInformationAboutFilmsLocal getShortInformationAboutFilmsLocal,
+            GetFilmInformationByName getFilmsInformationByName,
+            AllToShortFilmsInformation allToShortFilmsInformation,
             GetFilmInformationByCollection getFilmInformationByCollection) {
 
         this.getFilmsInformationByName = getFilmsInformationByName;
         this.getFilmInformationByCollection = getFilmInformationByCollection;
-        this.getShortInformationAboutFilmsLocal = getShortInformationAboutFilmsLocal;
+        this.allToShortFilmsInformation = allToShortFilmsInformation;
 
         init();
     }
 
     public void init(){
-        getFilmInformationByCollection.execute(CollectionType.TOP_250_MOVIES.getNameCollections(), 1);
+        getFilmInformationByCollection.execute(CollectionType.TOP_250_MOVIES.getNameCollections(), 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<FilmModel>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<FilmModel> filmModels) {
+                        setItems(allToShortFilmsInformation.execute(filmModels));
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
     }
 
     public void setItems(List<ShortFilmModel> items) {
         itemsLiveData.setValue(items);
-        Log.d("msRepositoryImplTag", "setItems");
     }
 
     public LiveData<List<ShortFilmModel>> getItems() {
-        Log.d("msRepositoryImplTag", "getItems");
         return itemsLiveData;
     }
 
-    public void updateShortInformationAboutFilms() {
-        Log.d("msRepositoryImplTag", "onDataFetched");
-        setItems(getShortInformationAboutFilmsLocal.execute());
-    }
-
     public void searchFilmByName(String name) {
-        getFilmsInformationByName.execute(name, 1);
+        getFilmsInformationByName.execute(name, 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<FilmModel>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<FilmModel> filmModels) {
+                        setItems(allToShortFilmsInformation.execute(filmModels));
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
     }
 }

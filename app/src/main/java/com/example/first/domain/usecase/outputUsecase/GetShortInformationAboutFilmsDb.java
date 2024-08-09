@@ -1,8 +1,5 @@
 package com.example.first.domain.usecase.outputUsecase;
 
-import android.util.Log;
-
-import com.example.first.data.dbqueries.DBLocal;
 import com.example.first.data.dbqueries.DbQueries;
 import com.example.first.data.models.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;

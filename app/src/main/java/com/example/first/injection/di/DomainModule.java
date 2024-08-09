@@ -1,43 +1,42 @@
 package com.example.first.injection.di;
 
-import com.example.first.domain.interfaces.DataFetchCallback;
-import com.example.first.domain.interfaces.Requests;
-import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.data.httpqueries.IRetrofit;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmsInformationByName;
-import com.example.first.domain.usecase.logicsUsecase.SetFilmInformationToDb;
-import com.example.first.domain.usecase.outputUsecase.GetShortFilmInformationById;
+import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsDb;
-import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsLocal;
+import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
 
 import dagger.Module;
+import dagger.Provides;
 
 @Module
 public class DomainModule {
 
-    public SetFilmInformationToDb provideSetFilmInformationToDb(ShortFilmModel shortFilmModel){
-        return new SetFilmInformationToDb();
-    }
 
-    public GetShortInformationAboutFilmsDb provideGetShortInformationAboutFilmsDb(){
+    @Provides
+    GetShortInformationAboutFilmsDb provideGetShortInformationAboutFilmsDb(){
         return new GetShortInformationAboutFilmsDb();
     }
 
-    public GetFilmInformationById provideGetFilmInformationById(Requests requests, DataFetchCallback callback){
-        return new GetFilmInformationById(requests, callback);
+    @Provides
+    GetFilmInformationById provideGetFilmInformationById(IRetrofit requests){
+        return new GetFilmInformationById(requests);
     }
 
-    public GetShortInformationAboutFilmsLocal provideGetShortInformationAboutFilmsLocal(){
-        return new GetShortInformationAboutFilmsLocal();
+    @Provides
+    AllToShortFilmsInformation provideGetShortInformationAboutFilmsLocal(){
+        return new AllToShortFilmsInformation();
     }
 
-    public GetFilmsInformationByName provideGetFilmsInformationByName(Requests requests, GetFilmInformationById getFilmInformationById, DataFetchCallback callback){
-        return new GetFilmsInformationByName(requests, getFilmInformationById, callback);
+    @Provides
+    GetFilmInformationByName provideGetFilmsInformationByName(IRetrofit requests, GetFilmInformationById getFilmInformationById) {
+        return new GetFilmInformationByName(requests, getFilmInformationById);
     }
 
-    public GetFilmInformationByCollection provideGetFilmInformationByCollection(Requests requests, GetFilmInformationById getFilmInformationById, DataFetchCallback callback){
-        return new GetFilmInformationByCollection(requests, getFilmInformationById, callback);
+    @Provides
+    GetFilmInformationByCollection provideGetFilmInformationByCollection(IRetrofit requests, GetFilmInformationById getFilmInformationById) {
+        return new GetFilmInformationByCollection(requests, getFilmInformationById);
     }
 
 }

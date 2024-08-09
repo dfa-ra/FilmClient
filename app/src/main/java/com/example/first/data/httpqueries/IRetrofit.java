@@ -11,7 +11,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
-public interface RequestFilm {
+public interface IRetrofit {
     @Headers({
             "X-API-KEY: e30ffed0-76ab-4dd6-b41f-4c9da2b2735b",
             "Content-Type: application/json"

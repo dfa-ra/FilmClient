@@ -1,21 +1,17 @@
 package com.example.first.domain.usecase.outputUsecase;
 
-import android.util.Log;
-
-import com.example.first.data.dbqueries.DBLocal;
 import com.example.first.data.models.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetShortInformationAboutFilmsLocal {
+public class AllToShortFilmsInformation {
 
-    public List<ShortFilmModel> execute(){
+    public List<ShortFilmModel> execute(List<FilmModel> films){
         List<ShortFilmModel> returnedList = new ArrayList<>();
 
-        Log.d("msRepositoryImplTag", "=====" + DBLocal.getInstance().getFilms().toString());
-        for (FilmModel model: DBLocal.getInstance().getFilms()){
+        for (FilmModel model: films){
             returnedList.add(new ShortFilmModel(
                     model.kinopoiskId,
                     model.nameRu,

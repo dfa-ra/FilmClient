@@ -61,7 +61,7 @@ dependencies {
     implementation libs.rxandroid
 
     //Dagger
-    implementation libs.dagger.android
-    implementation libs.dagger.android.support // if you use the support libraries
-    annotationProcessor libs.dagger.android.processor
+    implementation libs.javax.inject
+    implementation libs.dagger
+    annotationProcessor libs.dagger.compiler
 }

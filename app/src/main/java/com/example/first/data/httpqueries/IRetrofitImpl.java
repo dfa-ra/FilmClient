@@ -6,28 +6,19 @@ import android.util.Log;
 import com.example.first.data.models.CollectionModel;
 import com.example.first.data.models.FilmModel;
 import com.example.first.data.models.KeywordCollectionModel;
-import com.example.first.domain.interfaces.Requests;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Retrofit;
 
-public class HttpQueries implements RequestFilm, Requests {
+public class IRetrofitImpl implements IRetrofit {
 
     private final static String Tag = "HttpQueriesTag";
     private final static String BaseURL = "https://kinopoiskapiunofficial.tech/";
     private Retrofit retrofit = RetrofitClient.getClient(BaseURL);
-    private RequestFilm requestFilm = retrofit.create(RequestFilm.class);
-    private static HttpQueries httpQueries = null;
+    private IRetrofit requestFilm = retrofit.create(IRetrofit.class);
 
-    public static HttpQueries getInstance(){
-        if (httpQueries == null) httpQueries = new HttpQueries();
-        return httpQueries;
-    }
-
-    private HttpQueries(){}
-
-
+    public IRetrofitImpl(){}
 
     @SuppressLint("CheckResult")
     @NonNull

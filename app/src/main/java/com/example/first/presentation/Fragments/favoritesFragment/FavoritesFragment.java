@@ -7,26 +7,27 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.first.data.dbqueries.DbQueries;
-import com.example.first.domain.interfaces.DataFetchCallback;
 import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.injection.app.App;
 import com.example.first.presentation.Fragments.SendViewModel;
-import com.example.first.presentation.MainActivity;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
 import com.example.first.presentation.filmStrip.AdapterListener;
 import com.example.first.presentation.filmStrip.ItemAdapter;
 
+import javax.inject.Inject;
+
 public class FavoritesFragment extends Fragment implements AdapterListener {
 
     FragmentFavoritesBinding binding;
     private final ItemAdapter adapter = new ItemAdapter(this);
+
+    @Inject
+    FavoritesViewModelFactory favoritesViewModelFactory;
 
     SendViewModel sendViewModel;
     FavoritesViewModel favoritesViewModel;
@@ -51,6 +52,9 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        assert getActivity() != null;
+        ((App) getActivity().getApplication()).getAppComponent().inject(this);
     }
 
     @Override
@@ -58,15 +62,16 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         binding = FragmentFavoritesBinding.inflate(getLayoutInflater());
-        favoritesViewModel = new ViewModelProvider(requireActivity(), new FavoritesViewModelFactory()).get(FavoritesViewModel.class);
+
+        favoritesViewModel = new ViewModelProvider(requireActivity(), favoritesViewModelFactory).get(FavoritesViewModel.class);
         sendViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
+
+        sendViewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
+            favoritesViewModel.addToFavoritesList();
+        });
 
         favoritesViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
             adapter.setItems(items);
-        });
-
-        sendViewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
-            favoritesViewModel.addToFavoritesList(item);
         });
 
         RecyclerView recyclerView = view.findViewById(binding.FavoriteRecyclerView.getId());

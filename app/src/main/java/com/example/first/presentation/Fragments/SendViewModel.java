@@ -1,7 +1,6 @@
 package com.example.first.presentation.Fragments;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,8 +11,6 @@ import com.example.first.domain.usecase.logicsUsecase.SelectedFilmToFavorites;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 
 public class SendViewModel extends ViewModel{
 
@@ -33,8 +30,8 @@ public class SendViewModel extends ViewModel{
             if (film.kinopoiskId == item.kinopoiskId) return false;
         }
         allSelectedItem.add(item);
-        selectedItem.setValue(item);
         selectedFilmToFavorites.execute(item.kinopoiskId);
+        selectedItem.setValue(item);
         return true;
     }
 
