@@ -8,9 +8,9 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ShortFilmModel implements Serializable{
     public int kinopoiskId;
-    public String nameRu;
-    public String ratingKinopoisk;
-    public String ratingImdb;
-    public String genre;
+    public String nameRu = "";
+    public String ratingKinopoisk = "";
+    public String ratingImdb = "";
+    public String genre = "";
     public boolean isChecked = false;
 }

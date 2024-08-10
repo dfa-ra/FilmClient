@@ -27,18 +27,17 @@ public class GetFilmInformationByName {
     @SuppressLint("CheckResult")
     public Single<List<FilmModel>> execute(String name, Integer page) {
         return requestFilm.getFilmByName(name, page)
-                .subscribeOn(Schedulers.io())  // Выполняем запрос в фоновом потоке
-                .observeOn(AndroidSchedulers.mainThread())  // Получаем результат в главном потоке
-                .flatMapSingle(keywordCollectionModel -> {
-                    // Обрабатываем каждый фильм в коллекции и собираем результаты в список
-                    Single<List<FilmModel>> list = Observable.fromIterable(keywordCollectionModel.films)
-                            .concatMapSingle(filmModel -> {
-                                    DbQueries.getInstance().addNewFilm(filmModel);
-                                    return getFilmInformationById.execute(filmModel.kinopoiskId);
-                                }
-                            ).toList();
-                    return list;
-                }).last(Collections.emptyList());
+            .subscribeOn(Schedulers.io())  // Выполняем запрос в фоновом потоке
+            .observeOn(AndroidSchedulers.mainThread())  // Получаем результат в главном потоке
+            .flatMapSingle(keywordCollectionModel -> {
+                // Обрабатываем каждый фильм в коллекции и собираем результаты в список
+                Single<List<FilmModel>> list = Observable.fromIterable(keywordCollectionModel.films)
+                    .concatMapSingle(filmModel -> {
+                            DbQueries.getInstance().addNewFilm(filmModel);
+                            return getFilmInformationById.execute(filmModel.filmId);
+                        }
+                    ).toList();
+                return list;
+            }).last(Collections.emptyList());
     }
-
 }

@@ -12,13 +12,23 @@ public class AllToShortFilmsInformation {
         List<ShortFilmModel> returnedList = new ArrayList<>();
 
         for (FilmModel model: films){
-            returnedList.add(new ShortFilmModel(
-                    model.kinopoiskId,
-                    model.nameRu,
-                    model.ratingKinopoisk,
-                    model.ratingImdb,
-                    model.genres.get(0).genre,
-                    model.isChecked));
+            if (model.genres.isEmpty()){
+                returnedList.add(new ShortFilmModel(
+                        model.kinopoiskId,
+                        model.nameRu,
+                        model.ratingKinopoisk,
+                        model.ratingImdb,
+                        "-",
+                        model.isChecked));
+            } else {
+                returnedList.add(new ShortFilmModel(
+                        model.kinopoiskId,
+                        model.nameRu,
+                        model.ratingKinopoisk,
+                        model.ratingImdb,
+                        model.genres.get(0).genre,
+                        model.isChecked));
+            }
         }
         return returnedList;
     }

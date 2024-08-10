@@ -1,6 +1,8 @@
 package com.example.first.presentation.Fragments.mainFragment;
 
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -83,6 +85,8 @@ public class MainViewModel extends ViewModel{
 
                     @Override
                     public void onSuccess(@NonNull List<FilmModel> filmModels) {
+                        Log.i("aa99", filmModels.toString());
+                        Log.i("aa99", allToShortFilmsInformation.execute(filmModels).toString());
                         setItems(allToShortFilmsInformation.execute(filmModels));
                     }
 

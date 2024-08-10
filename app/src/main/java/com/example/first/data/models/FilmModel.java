@@ -13,22 +13,22 @@ import lombok.ToString;
 public class FilmModel implements Serializable {
     public int kinopoiskId;
     public int filmId;
-    public String imdbId;
-    public String nameRu;
-    public String nameEn;
-    public String nameOriginal;
-    public List<Country> countries;
-    public List<Genre> genres;
-    public String ratingKinopoisk;
-    public String ratingImdb;
+    public String imdbId = "";
+    public String nameRu = "";
+    public String nameEn = "";
+    public String nameOriginal = "";
+    public List<Country> countries = null;
+    public List<Genre> genres = null;
+    public String ratingKinopoisk = "";
+    public String ratingImdb = "";
     public int year;
-    public String type;
-    public String posterUrl;
-    public String posterUrlPreview;
-    public String coverUrl;
-    public String logoUrl;
-    public String description;
-    public String ratingAgeLimits;
+    public String type = "";
+    public String posterUrl = "";
+    public String posterUrlPreview = "";
+    public String coverUrl = "";
+    public String logoUrl = "";
+    public String description = "";
+    public String ratingAgeLimits = "";
     public boolean isChecked = false;
 
     public class Genre implements Serializable{
