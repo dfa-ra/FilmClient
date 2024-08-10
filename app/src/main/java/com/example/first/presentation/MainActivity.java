@@ -3,25 +3,29 @@ package com.example.first.presentation;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.first.presentation.Fragments.SendViewModel;
 import com.example.first.presentation.Fragments.favoritesFragment.FavoritesFragment;
-import com.example.first.presentation.Fragments.favoritesFragment.FavoritesViewModel;
 import com.example.first.presentation.Fragments.mainFragment.MainFragment;
 import com.example.first.R;
 import com.example.first.databinding.ActivityMainBinding;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -30,7 +34,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
+    protected String collectionName = "Популярное";
+    protected String favoriteFragmentName = "Избранное";
+
     List<Fragment> fragmentList = new ArrayList<Fragment>(){{
         add(MainFragment.getInstance());
         add(FavoritesFragment.getInstance());
@@ -51,12 +58,14 @@ public class MainActivity extends AppCompatActivity{
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Log.i(Tag, "onCreate");
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        Log.i("aa99", "onCreate");
 
         TabLayout tabLayout = binding.tabLayout;
         ViewPager2 viewPager = binding.viewPagerFragment;
@@ -64,6 +73,8 @@ public class MainActivity extends AppCompatActivity{
         // Настройте адаптер для ViewPager
         ViewPagerAdapter adapter = new ViewPagerAdapter(this, fragmentList);
         viewPager.setAdapter(adapter);
+
+        binding.fragmentNameTextView.setText(collectionName);
 
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -75,7 +86,11 @@ public class MainActivity extends AppCompatActivity{
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                binding.fragmentTextView.setText(fragmentListNames.get(tab.getPosition()));
+                if (tab.getPosition() == 0){
+                    binding.fragmentNameTextView.setText(collectionName);
+                }else {
+                    binding.fragmentNameTextView.setText(favoriteFragmentName);
+                }
             }
 
             @Override
@@ -86,6 +101,42 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 // Do nothing
+            }
+        });
+
+        binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                ((MainFragment) fragmentList.get(0)).searchFilmCollection(String.valueOf(item.getTitleCondensed()));
+                collectionName = (String) item.getTitle();
+                binding.fragmentNameTextView.setText(collectionName);
+                binding.drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
+        binding.navigationImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.drawer.openDrawer(GravityCompat.START);
+            }
+        });
+
+        binding.searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("aa99", "setOnSearchClickListener");
+                binding.fragmentNameTextView.setVisibility(View.GONE);
+                binding.navigationImage.setVisibility(View.GONE);
+            }
+        });
+
+        binding.searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                binding.fragmentNameTextView.setVisibility(View.VISIBLE);
+                binding.navigationImage.setVisibility(View.VISIBLE);
+                return false;
             }
         });
 
@@ -104,6 +155,8 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+
+
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             if (tab != null) {
@@ -115,6 +168,8 @@ public class MainActivity extends AppCompatActivity{
             }
         }
     }
+
+
 
 
     @Override

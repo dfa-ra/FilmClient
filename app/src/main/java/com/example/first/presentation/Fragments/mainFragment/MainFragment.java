@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.first.databinding.FragmentMainBinding;
+import com.example.first.domain.common.enums.CollectionType;
+import com.example.first.domain.models.LongFilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.injection.app.App;
 import com.example.first.presentation.DescriptionFilmActivity;
@@ -62,8 +64,7 @@ public class MainFragment extends Fragment implements AdapterListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         binding = FragmentMainBinding.inflate(getLayoutInflater());
 
@@ -73,8 +74,6 @@ public class MainFragment extends Fragment implements AdapterListener {
         mainViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
             adapter.setItems(items);
         });
-
-
 
         RecyclerView recyclerView = view.findViewById(binding.PopularRecyclerView.getId());
         recyclerView.setAdapter(adapter);
@@ -86,15 +85,15 @@ public class MainFragment extends Fragment implements AdapterListener {
 
     @Override
     public void onClick(ShortFilmModel filmModel) {
+
         Intent intent = new Intent(getActivity(), DescriptionFilmActivity.class);
-        intent.putExtra("filmModel", filmModel); //Optional parameters
+        intent.putExtra("filmModel", mainViewModel.getLongFilmModel(filmModel)); //Optional parameters
         startActivity(intent);
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public boolean longOnClick(ShortFilmModel filmModel) {
-
         if (!senderViewModel.selectItem(filmModel))
             Toast.makeText(getContext(), "Данный элемент уже находится в избранное", Toast.LENGTH_SHORT).show();
         return true;
@@ -102,6 +101,10 @@ public class MainFragment extends Fragment implements AdapterListener {
 
     public void searchFilmByName(String name) {
         mainViewModel.searchFilmByName(name);
+    }
+
+    public void searchFilmCollection(String name) {
+        mainViewModel.searchFilmByCollection(CollectionType.valueOf(name));
     }
 
 }

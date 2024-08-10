@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.first.R;
 import com.example.first.databinding.ActivityDescriptionFilmBinding;
+import com.example.first.domain.models.LongFilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 
 public class DescriptionFilmActivity extends AppCompatActivity {
@@ -22,7 +23,9 @@ public class DescriptionFilmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         binding = ActivityDescriptionFilmBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -30,7 +33,7 @@ public class DescriptionFilmActivity extends AppCompatActivity {
         });
 
         Log.i(Tag, "start");
-        ShortFilmModel filmModel = (ShortFilmModel) getIntent().getSerializableExtra("filmModel");
+        LongFilmModel filmModel = (LongFilmModel) getIntent().getSerializableExtra("filmModel");
         if (filmModel != null) {
             binding.filmName.setText(filmModel.nameRu);
 //            binding.descriptionFilm.setText(filmModel.description);

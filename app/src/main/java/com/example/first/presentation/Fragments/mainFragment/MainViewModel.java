@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.first.data.models.FilmModel;
 import com.example.first.domain.common.enums.CollectionType;
+import com.example.first.domain.models.LongFilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
+import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById;
 
 import java.util.List;
 
@@ -30,39 +32,24 @@ public class MainViewModel extends ViewModel{
     private final GetFilmInformationByName getFilmsInformationByName;
     private final AllToShortFilmsInformation allToShortFilmsInformation;
     private final GetFilmInformationByCollection getFilmInformationByCollection;
+    private final GetLongFilmInformationById getLongFilmInformationById;
 
     public MainViewModel(
             GetFilmInformationByName getFilmsInformationByName,
             AllToShortFilmsInformation allToShortFilmsInformation,
-            GetFilmInformationByCollection getFilmInformationByCollection) {
+            GetFilmInformationByCollection getFilmInformationByCollection,
+            GetLongFilmInformationById getLongFilmInformationById) {
 
         this.getFilmsInformationByName = getFilmsInformationByName;
         this.getFilmInformationByCollection = getFilmInformationByCollection;
         this.allToShortFilmsInformation = allToShortFilmsInformation;
+        this.getLongFilmInformationById = getLongFilmInformationById;
 
         init();
     }
 
     public void init(){
-        getFilmInformationByCollection.execute(CollectionType.TOP_250_MOVIES.getNameCollections(), 1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<FilmModel>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(@NonNull List<FilmModel> filmModels) {
-                        setItems(allToShortFilmsInformation.execute(filmModels));
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
+       searchFilmByCollection(CollectionType.TOP_250_MOVIES);
     }
 
     public void setItems(List<ShortFilmModel> items) {
@@ -75,25 +62,50 @@ public class MainViewModel extends ViewModel{
 
     public void searchFilmByName(String name) {
         getFilmsInformationByName.execute(name, 1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<FilmModel>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new SingleObserver<List<FilmModel>>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
 
-                    }
+                }
 
-                    @Override
-                    public void onSuccess(@NonNull List<FilmModel> filmModels) {
-                        Log.i("aa99", filmModels.toString());
-                        Log.i("aa99", allToShortFilmsInformation.execute(filmModels).toString());
-                        setItems(allToShortFilmsInformation.execute(filmModels));
-                    }
+                @Override
+                public void onSuccess(@NonNull List<FilmModel> filmModels) {
+                    setItems(allToShortFilmsInformation.execute(filmModels));
+                }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
+                @Override
+                public void onError(@NonNull Throwable e) {
 
-                    }
-                });
+                }
+            });
     }
+
+    public void searchFilmByCollection(CollectionType collectionType){
+        getFilmInformationByCollection.execute(collectionType.getNameCollections(), 1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new SingleObserver<List<FilmModel>>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onSuccess(@NonNull List<FilmModel> filmModels) {
+                    setItems(allToShortFilmsInformation.execute(filmModels));
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+            });
+    }
+
+    public LongFilmModel getLongFilmModel(ShortFilmModel shortFilmModel){
+        return getLongFilmInformationById.execute(shortFilmModel.kinopoiskId);
+    }
+
 }

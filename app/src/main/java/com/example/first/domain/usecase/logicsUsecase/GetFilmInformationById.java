@@ -19,8 +19,6 @@ public class GetFilmInformationById {
 
     @SuppressLint("CheckResult")
     public Single<FilmModel> execute(int id) {
-
-        Log.i("aa99", "byId");
         return requestFilm.getFilmById(id)
                 .singleOrError()
                 .doOnError(e -> Log.e("aa99", "Ошибка: " + e.getMessage()))

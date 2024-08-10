@@ -3,24 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".presentation.MainActivity"
-    tools:openDrawer="start">
+    tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:id="@+id/header_title"
+
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
-            android:gravity="right"
+            android:gravity="center|center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
@@ -30,20 +33,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/fragmentTextView"
-                android:layout_width="99dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0"
-                android:gravity="center"
-                android:text="Популярное"
-                android:textSize="17dp" />
+            <ImageView
+                android:id="@+id/navigationImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            <SearchView
-                android:id="@+id/searchView"
-                android:layout_width="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+            <TextView
+                android:id="@+id/fragmentNameTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="2" />
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="0.008"
+                android:gravity="center"
+                android:iconifiedByDefault="true"
+                android:queryHint="Поиск"
+                app:iconifiedByDefault="true"
+                app:layout_collapseMode="pin"
+                app:showAsAction="ifRoom|collapseActionView" />
+
 
         </LinearLayout>
 
@@ -81,8 +102,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start"
+        app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class LongFilmModel {
+public class LongFilmModel implements Serializable{
     public int kinopoiskId;
     public String nameRu;
     public List<com.example.first.data.models.FilmModel.Country> countries;

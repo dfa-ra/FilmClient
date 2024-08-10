@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="   Категории">
+        <menu>
+            <item android:title="Популярное (вообще всё)" android:id="@+id/TOP_POPULAR_ALL" android:titleCondensed="TOP_POPULAR_ALL"/>
+            <item android:title="Популярные фильмы" android:id="@+id/TOP_POPULAR_MOVIES" android:titleCondensed="TOP_POPULAR_MOVIES"/>
+            <item android:title="Топ 250 фильмов" android:id="@+id/TOP_250_MOVIES" android:titleCondensed="TOP_250_MOVIES"/>
+            <item android:title="Топ 250 телешоу" android:id="@+id/TOP_250_TV_SHOWS" android:titleCondensed="TOP_250_TV_SHOWS"/>
+            <item android:title="Тема вампиров" android:id="@+id/VAMPIRE_THEME" android:titleCondensed="VAMPIRE_THEME"/>
+            <item android:title="Тема комиксов" android:id="@+id/COMICS_THEME" android:titleCondensed="COMICS_THEME"/>
+        </menu>
+    </item>
+</menu>
+
+
+<!--    TOP_POPULAR_ALL("TOP_POPULAR_ALL"),-->
+<!--    TOP_POPULAR_MOVIES("TOP_POPULAR_MOVIES"),-->
+<!--    TOP_250_MOVIES("TOP_250_MOVIES"),-->
+<!--    TOP_250_TV_SHOWS("TOP_250_TV_SHOWS"),-->
+<!--    VAMPIRE_THEME("VAMPIRE_THEME"),-->
+<!--    COMICS_THEME("COMICS_THEME");-->
