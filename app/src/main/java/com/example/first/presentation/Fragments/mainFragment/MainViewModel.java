@@ -1,13 +1,11 @@
 package com.example.first.presentation.Fragments.mainFragment;
 
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.first.data.models.FilmModel;
+import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.common.enums.CollectionType;
 import com.example.first.domain.models.LongFilmModel;
 import com.example.first.domain.models.ShortFilmModel;
@@ -107,5 +105,4 @@ public class MainViewModel extends ViewModel{
     public LongFilmModel getLongFilmModel(ShortFilmModel shortFilmModel){
         return getLongFilmInformationById.execute(shortFilmModel.kinopoiskId);
     }
-
 }

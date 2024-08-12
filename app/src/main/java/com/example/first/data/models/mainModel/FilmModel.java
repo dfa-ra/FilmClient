@@ -1,4 +1,4 @@
-package com.example.first.data.models;
+package com.example.first.data.models.mainModel;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,11 +31,5 @@ public class FilmModel implements Serializable {
     public String ratingAgeLimits = "";
     public boolean isChecked = false;
 
-    public class Genre implements Serializable{
-        public String genre;
-    }
-    public class Country implements Serializable{
-        public String country;
-    }
 }
 

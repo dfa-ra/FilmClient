@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,9 +86,9 @@ public class MainFragment extends Fragment implements AdapterListener {
 
     @Override
     public void onClick(ShortFilmModel filmModel) {
-
         Intent intent = new Intent(getActivity(), DescriptionFilmActivity.class);
-        intent.putExtra("filmModel", mainViewModel.getLongFilmModel(filmModel)); //Optional parameters
+        LongFilmModel model = mainViewModel.getLongFilmModel(filmModel);
+        intent.putExtra("filmModel", model); //Optional parameters
         startActivity(intent);
     }
 

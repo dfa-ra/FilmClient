@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.first.R;
 import com.example.first.databinding.ListItemBinding;
-import com.example.first.data.models.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 
 import java.util.ArrayList;

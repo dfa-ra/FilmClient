@@ -1,6 +1,6 @@
 package com.example.first.domain.usecase.outputUsecase;
 
-import com.example.first.data.models.FilmModel;
+import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 
 import java.util.ArrayList;

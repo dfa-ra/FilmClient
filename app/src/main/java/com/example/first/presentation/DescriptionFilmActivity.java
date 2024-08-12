@@ -9,10 +9,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.first.R;
+import com.example.first.data.models.mainModel.Country;
+import com.example.first.data.models.mainModel.Genre;
 import com.example.first.databinding.ActivityDescriptionFilmBinding;
 import com.example.first.domain.models.LongFilmModel;
 import com.example.first.domain.models.ShortFilmModel;
+
+import java.util.Objects;
 
 public class DescriptionFilmActivity extends AppCompatActivity {
 
@@ -35,21 +40,31 @@ public class DescriptionFilmActivity extends AppCompatActivity {
         Log.i(Tag, "start");
         LongFilmModel filmModel = (LongFilmModel) getIntent().getSerializableExtra("filmModel");
         if (filmModel != null) {
+
+            if (!Objects.equals(filmModel.posterUrl, ""))
+                Glide.with(this)
+                        .load(filmModel.posterUrl)
+                        .into(binding.imageView);
+            else
+                Glide.with(this)
+                        .load("")
+                        .into(binding.imageView);
+
             binding.filmName.setText(filmModel.nameRu);
-//            binding.descriptionFilm.setText(filmModel.description);
+            binding.descriptionFilm.setText(filmModel.description);
             StringBuilder text = new StringBuilder();
-//            for (FilmModel.Genre genre : filmModel.genres){
-//                text.append(genre.genre);
-//                text.append(", ");
-//            }
+            for (Genre genre : filmModel.genres){
+                text.append(genre.genre);
+                text.append(", ");
+            }
             binding.genreFilm.setText(text);
             binding.ratingIMDBFilm.setText(filmModel.ratingImdb);
             binding.ratingKinoPoiskFilm.setText(filmModel.ratingKinopoisk);
             StringBuilder text2 = new StringBuilder();
-//            for (FilmModel.Country country : filmModel.countries){
-//                text2.append(country.country);
-//                text2.append(", ");
-//            }
+            for (Country country : filmModel.countries){
+                text2.append(country.country);
+                text2.append(", ");
+            }
             binding.countriesFilm.setText(text2);
         }
     }

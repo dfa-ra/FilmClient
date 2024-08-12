@@ -2,7 +2,7 @@ package com.example.first.data.dbqueries;
 
 import android.util.Log;
 
-import com.example.first.data.models.FilmModel;
+import com.example.first.data.models.mainModel.FilmModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

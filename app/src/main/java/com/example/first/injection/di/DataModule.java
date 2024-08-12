@@ -1,7 +1,7 @@
 package com.example.first.injection.di;
 
 import com.example.first.data.httpqueries.IRetrofit;
-import com.example.first.data.httpqueries.IRetrofitImpl;
+import com.example.first.data.httpqueries.RetrofitImpl;
 
 import javax.inject.Singleton;
 
@@ -14,6 +14,6 @@ public class DataModule {
     @Provides
     @Singleton
     IRetrofit provideRequests(){
-        return new IRetrofitImpl();
+        return new RetrofitImpl();
     }
 }

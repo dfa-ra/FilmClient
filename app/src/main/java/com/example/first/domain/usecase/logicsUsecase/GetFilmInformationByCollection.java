@@ -2,7 +2,7 @@ package com.example.first.domain.usecase.logicsUsecase;
 
 import com.example.first.data.dbqueries.DbQueries;
 import com.example.first.data.httpqueries.IRetrofit;
-import com.example.first.data.models.FilmModel;
+import com.example.first.data.models.mainModel.FilmModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,13 +24,18 @@ public class GetFilmInformationByCollection {
         return requestFilm.getFilmByCollection(type, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMapSingle(keywordCollectionModel ->
-                        Observable.fromIterable(keywordCollectionModel.items)
-                        .concatMapSingle(filmModel -> {
-                                DbQueries.getInstance().addNewFilm(filmModel);
-                                return getFilmInformationById.execute(filmModel.kinopoiskId);
-                            }
-                        ).toList())
-                .last(Collections.emptyList());
+                .flatMapSingle(keywordCollectionModel -> {
+                    if (keywordCollectionModel.isSuccessful()) {
+                        return Observable.fromIterable(keywordCollectionModel.body().items)
+                                .concatMapSingle(filmModel -> {
+                                            DbQueries.getInstance().addNewFilm(filmModel);
+                                            return getFilmInformationById.execute(filmModel.kinopoiskId);
+                                        }
+                                ).toList();
+                    } else {
+                        return Single.error(new Throwable("Ошибка: " + keywordCollectionModel.code() + " " + keywordCollectionModel.message()));
+                    }
+                }
+                ).last(Collections.emptyList());
     }
 }

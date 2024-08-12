@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.example.first.data.dbqueries.DbQueries;
 import com.example.first.data.httpqueries.IRetrofit;
-import com.example.first.data.models.FilmModel;
+import com.example.first.data.models.mainModel.FilmModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,13 +31,17 @@ public class GetFilmInformationByName {
             .observeOn(AndroidSchedulers.mainThread())  // Получаем результат в главном потоке
             .flatMapSingle(keywordCollectionModel -> {
                 // Обрабатываем каждый фильм в коллекции и собираем результаты в список
-                Single<List<FilmModel>> list = Observable.fromIterable(keywordCollectionModel.films)
-                    .concatMapSingle(filmModel -> {
-                            DbQueries.getInstance().addNewFilm(filmModel);
-                            return getFilmInformationById.execute(filmModel.filmId);
-                        }
-                    ).toList();
-                return list;
+                if (keywordCollectionModel.isSuccessful()) {
+                    return Observable.fromIterable(keywordCollectionModel.body().films)
+                            .concatMapSingle(filmModel -> {
+                                        DbQueries.getInstance().addNewFilm(filmModel);
+                                        return getFilmInformationById.execute(filmModel.filmId);
+                                    }
+                            ).toList();
+                }
+                else {
+                    return Single.error(new Throwable("Ошибка: " + keywordCollectionModel.code() + " " + keywordCollectionModel.message()));
+                }
             }).last(Collections.emptyList());
     }
 }
