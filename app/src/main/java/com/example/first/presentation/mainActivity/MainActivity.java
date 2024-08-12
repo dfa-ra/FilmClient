@@ -1,4 +1,4 @@
-package com.example.first.presentation;
+package com.example.first.presentation.mainActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -21,10 +21,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.first.presentation.Fragments.favoritesFragment.FavoritesFragment;
-import com.example.first.presentation.Fragments.mainFragment.MainFragment;
 import com.example.first.R;
 import com.example.first.databinding.ActivityMainBinding;
+import com.example.first.presentation.mainActivity.Fragments.favoritesFragment.FavoritesFragment;
+import com.example.first.presentation.mainActivity.Fragments.mainFragment.MainFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity{
         Log.i("aa99", "onCreate");
 
         TabLayout tabLayout = binding.tabLayout;
+        tabLayout.setVisibility(View.GONE);
         ViewPager2 viewPager = binding.viewPagerFragment;
 
         // Настройте адаптер для ViewPager
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity{
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(fragmentListNames.get(position));
+//                tab.setText(fragmentListNames.get(position));
             }
         }).attach();
 
@@ -143,6 +144,8 @@ public class MainActivity extends AppCompatActivity{
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                collectionName = "Поиск по \"" + query + "\"";
+                binding.fragmentNameTextView.setText("Поиск по \"" + query + "\"");
                 // Здесь вы можете обработать текст поиска, когда пользователь нажимает кнопку поиска
                 ((MainFragment) fragmentList.get(0)).searchFilmByName(query);
                 return false;
@@ -157,16 +160,16 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            if (tab != null) {
-                tab.setCustomView(R.layout.custom_tab);
-                TextView tabTextView = (TextView) tab.getCustomView();
-                if (tabTextView != null) {
-                    tabTextView.setText(fragmentListNames.get(i));
-                }
-            }
-        }
+//        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+//            TabLayout.Tab tab = tabLayout.getTabAt(i);
+//            if (tab != null) {
+//                tab.setCustomView(R.layout.custom_tab);
+//                TextView tabTextView = (TextView) tab.getCustomView();
+//                if (tabTextView != null) {
+//                    tabTextView.setText(fragmentListNames.get(i));
+//                }
+//            }
+//        }
     }
 
 

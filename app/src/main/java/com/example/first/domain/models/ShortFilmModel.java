@@ -1,5 +1,7 @@
 package com.example.first.domain.models;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
@@ -12,5 +14,7 @@ public class ShortFilmModel implements Serializable{
     public String ratingKinopoisk = "";
     public String ratingImdb = "";
     public String genre = "";
+    public String posterUrlPreview = "";
     public boolean isChecked = false;
+    public Bitmap posterPreview = null;
 }

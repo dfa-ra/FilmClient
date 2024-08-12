@@ -1,4 +1,4 @@
-package com.example.first.presentation.filmStrip;
+package com.example.first.presentation.mainActivity.filmStrip;
 
 import com.example.first.domain.models.ShortFilmModel;
 

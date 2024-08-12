@@ -1,5 +1,7 @@
 package com.example.first.data.models.mainModel;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class FilmModel implements Serializable {
+public class FilmModel{
     public int kinopoiskId;
     public int filmId;
     public String imdbId = "";
@@ -30,6 +32,8 @@ public class FilmModel implements Serializable {
     public String description = "";
     public String ratingAgeLimits = "";
     public boolean isChecked = false;
+
+    public Bitmap posterPreview;
 
 }
 

@@ -1,4 +1,4 @@
-package com.example.first.presentation.Fragments.mainFragment;
+package com.example.first.presentation.mainActivity.Fragments.mainFragment;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -8,7 +8,6 @@ import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollec
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
 import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById;
-
 public class MainViewModelFactory implements ViewModelProvider.Factory {
 
     private final GetFilmInformationByName getFilmInformationByName;

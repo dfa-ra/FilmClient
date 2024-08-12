@@ -19,7 +19,9 @@ public class AllToShortFilmsInformation {
                         model.ratingKinopoisk,
                         model.ratingImdb,
                         "-",
-                        model.isChecked));
+                        model.posterUrlPreview,
+                        model.isChecked,
+                        model.posterPreview));
             } else {
                 returnedList.add(new ShortFilmModel(
                         model.kinopoiskId,
@@ -27,7 +29,9 @@ public class AllToShortFilmsInformation {
                         model.ratingKinopoisk,
                         model.ratingImdb,
                         model.genres.get(0).genre,
-                        model.isChecked));
+                        model.posterUrlPreview,
+                        model.isChecked,
+                        model.posterPreview));
             }
         }
         return returnedList;

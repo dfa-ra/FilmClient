@@ -1,4 +1,4 @@
-package com.example.first.presentation.Fragments.mainFragment;
+package com.example.first.presentation.mainActivity.Fragments.mainFragment;
 
 
 import android.annotation.SuppressLint;
@@ -21,12 +21,13 @@ import com.example.first.domain.common.enums.CollectionType;
 import com.example.first.domain.models.LongFilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.injection.app.App;
-import com.example.first.presentation.DescriptionFilmActivity;
+import com.example.first.presentation.descriptionActivity.DescriptionFilmActivity;
 import com.example.first.R;
-import com.example.first.presentation.Fragments.favoritesFragment.FavoritesFragment;
-import com.example.first.presentation.Fragments.SendViewModel;
-import com.example.first.presentation.filmStrip.AdapterListener;
-import com.example.first.presentation.filmStrip.ItemAdapter;
+import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
+import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
+import com.example.first.presentation.mainActivity.Fragments.favoritesFragment.FavoritesFragment;
+import com.example.first.presentation.mainActivity.filmStrip.AdapterListener;
+import com.example.first.presentation.mainActivity.filmStrip.ItemAdapter;
 
 import javax.inject.Inject;
 
@@ -37,6 +38,9 @@ public class MainFragment extends Fragment implements AdapterListener {
 
     @Inject
     MainViewModelFactory mainViewModelFactory;
+
+    @Inject
+    SendViewModelFactory sendViewModelFactory;
 
     SendViewModel senderViewModel;
     MainViewModel mainViewModel;
@@ -69,7 +73,7 @@ public class MainFragment extends Fragment implements AdapterListener {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         binding = FragmentMainBinding.inflate(getLayoutInflater());
 
-        senderViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
+        senderViewModel = new ViewModelProvider(requireActivity(), sendViewModelFactory).get(SendViewModel.class);
         mainViewModel = new ViewModelProvider(requireActivity(), mainViewModelFactory).get(MainViewModel.class);
 
         mainViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
@@ -82,7 +86,6 @@ public class MainFragment extends Fragment implements AdapterListener {
 
         return view;
     }
-
 
     @Override
     public void onClick(ShortFilmModel filmModel) {
@@ -107,5 +110,7 @@ public class MainFragment extends Fragment implements AdapterListener {
     public void searchFilmCollection(String name) {
         mainViewModel.searchFilmByCollection(CollectionType.valueOf(name));
     }
+
+
 
 }

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.DescriptionFilmActivity">
+    tools:context=".presentation.descriptionActivity.DescriptionFilmActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Название"
+                android:text="Неизвестно"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
 
@@ -42,7 +42,7 @@
                 android:paddingEnd="30dp"
                 android:paddingRight="30dp"
                 android:paddingBottom="10dp"
-                android:text="Вы также можете объявить обработчик событий щелчка программно, а не в макете XML. Этот код обработчика событий является наиболее предпочтительным, поскольку его можно использовать как в действиях, так и в фрагментах." />
+                android:text="Описание не известно" />
 
             <LinearLayout
                 android:id="@+id/some_interesting_genre"
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="боевик" />
+                    android:text="-" />
 
             </LinearLayout>
 
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="5.5" />
+                    android:text="-" />
 
             </LinearLayout>
 
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="5.7" />
+                    android:text="-" />
 
             </LinearLayout>
 
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="СССР" />
+                    android:text="-" />
 
             </LinearLayout>
 

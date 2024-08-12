@@ -1,7 +1,9 @@
 package com.example.first.injection.di;
 
+import com.example.first.data.dbqueries.DbQueries;
 import com.example.first.data.httpqueries.IAPI;
 import com.example.first.data.httpqueries.RetrofitClient;
+import com.example.first.domain.interfaces.IDbQueries;
 import com.example.first.domain.interfaces.IRetrofit;
 
 import javax.inject.Singleton;
@@ -14,7 +16,13 @@ public class DataModule {
 
     @Provides
     @Singleton
-    IRetrofit provideRequests(){
+    IRetrofit provideRetrofit(){
         return new RetrofitClient();
+    }
+
+    @Provides
+    @Singleton
+    IDbQueries provideDbQueries(){
+        return new DbQueries();
     }
 }

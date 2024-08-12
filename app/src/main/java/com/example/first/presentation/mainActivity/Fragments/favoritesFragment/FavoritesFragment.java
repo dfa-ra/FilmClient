@@ -1,4 +1,4 @@
-package com.example.first.presentation.Fragments.favoritesFragment;
+package com.example.first.presentation.mainActivity.Fragments.favoritesFragment;
 
 import android.os.Bundle;
 
@@ -13,11 +13,12 @@ import android.view.ViewGroup;
 
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.injection.app.App;
-import com.example.first.presentation.Fragments.SendViewModel;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
-import com.example.first.presentation.filmStrip.AdapterListener;
-import com.example.first.presentation.filmStrip.ItemAdapter;
+import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
+import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
+import com.example.first.presentation.mainActivity.filmStrip.AdapterListener;
+import com.example.first.presentation.mainActivity.filmStrip.ItemAdapter;
 
 import javax.inject.Inject;
 
@@ -29,7 +30,10 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
     @Inject
     FavoritesViewModelFactory favoritesViewModelFactory;
 
-    SendViewModel sendViewModel;
+    @Inject
+    SendViewModelFactory sendViewModelFactory;
+
+    SendViewModel senderViewModel;
     FavoritesViewModel favoritesViewModel;
 
     public final static String Tag = "FavoritesFragmentTAG";
@@ -64,9 +68,9 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
         binding = FragmentFavoritesBinding.inflate(getLayoutInflater());
 
         favoritesViewModel = new ViewModelProvider(requireActivity(), favoritesViewModelFactory).get(FavoritesViewModel.class);
-        sendViewModel = new ViewModelProvider(requireActivity()).get(SendViewModel.class);
+        senderViewModel = new ViewModelProvider(requireActivity(), sendViewModelFactory).get(SendViewModel.class);
 
-        sendViewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
+        senderViewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
             favoritesViewModel.addToFavoritesList();
         });
 

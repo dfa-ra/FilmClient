@@ -1,5 +1,7 @@
-package com.example.first.presentation.Fragments.mainFragment;
+package com.example.first.presentation.mainActivity.Fragments.mainFragment;
 
+
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,6 +16,7 @@ import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
 import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -59,6 +62,7 @@ public class MainViewModel extends ViewModel{
     }
 
     public void searchFilmByName(String name) {
+        itemsLiveData.setValue(new ArrayList<>());
         getFilmsInformationByName.execute(name, 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -81,6 +85,7 @@ public class MainViewModel extends ViewModel{
     }
 
     public void searchFilmByCollection(CollectionType collectionType){
+        itemsLiveData.setValue(new ArrayList<>());
         getFilmInformationByCollection.execute(collectionType.getNameCollections(), 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

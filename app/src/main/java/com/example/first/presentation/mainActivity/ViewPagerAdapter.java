@@ -1,4 +1,4 @@
-package com.example.first.presentation;
+package com.example.first.presentation.mainActivity;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

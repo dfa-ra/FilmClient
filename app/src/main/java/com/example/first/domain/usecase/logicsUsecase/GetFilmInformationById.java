@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.interfaces.IRetrofit;
+import com.example.first.domain.usecase.outputUsecase.GetFilmPoster;
 
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -12,14 +13,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class GetFilmInformationById {
 
     private final IRetrofit requestFilm;
+    private final GetFilmPoster getFilmPoster;
 
-    public GetFilmInformationById(IRetrofit requestFilm){
+    public GetFilmInformationById(IRetrofit requestFilm, GetFilmPoster getFilmPoster){
         this.requestFilm = requestFilm;
+        this.getFilmPoster = getFilmPoster;
     }
 
     @SuppressLint("CheckResult")
     public Single<FilmModel> execute(int id) {
-        Log.i("aa99", "execute id");
         return requestFilm.getApi().getFilmById(id)
                 .singleOrError()
                 .subscribeOn(Schedulers.io())
@@ -28,6 +30,8 @@ public class GetFilmInformationById {
                     if (response.isSuccessful()) {
                         // Если запрос успешен, извлекаем тело ответа (FilmModel)
                         FilmModel film = response.body();
+                        assert film != null;
+                        film.posterPreview = getFilmPoster.execute(film.posterUrlPreview);
                         return Single.just(film);  // Возвращаем успешный результат
                     } else {
                         // Если запрос не успешен, создаем ошибку с кодом и сообщением от сервера

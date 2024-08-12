@@ -1,6 +1,8 @@
-package com.example.first.presentation.filmStrip;
+package com.example.first.presentation.mainActivity.filmStrip;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +56,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
         @SuppressLint("ClickableViewAccessibility")
         public void bind(ShortFilmModel item, AdapterListener adapterListener){
+            binding.posterPreview.setImageBitmap(item.posterPreview);
             binding.nameView.setText(item.nameRu);
             binding.ratingKinoPoisk.setText(item.ratingKinopoisk);
             binding.ratingIMDB.setText(item.ratingImdb);

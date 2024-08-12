@@ -1,4 +1,4 @@
-package com.example.first.presentation.Fragments.favoritesFragment;
+package com.example.first.presentation.mainActivity.Fragments.favoritesFragment;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -1,28 +1,34 @@
 package com.example.first.injection.di;
 
+import android.content.Context;
+
+import com.example.first.domain.interfaces.IDbQueries;
 import com.example.first.domain.interfaces.IRetrofit;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.logicsUsecase.SelectedFilmToFavorites;
+import com.example.first.domain.usecase.outputUsecase.GetFilmPoster;
 import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById;
 import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsDb;
 import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.http.POST;
 
 @Module
 public class DomainModule {
 
 
     @Provides
-    GetShortInformationAboutFilmsDb provideGetShortInformationAboutFilmsDb(){
-        return new GetShortInformationAboutFilmsDb();
+    GetShortInformationAboutFilmsDb provideGetShortInformationAboutFilmsDb(IDbQueries dbQueries){
+        return new GetShortInformationAboutFilmsDb(dbQueries);
     }
 
     @Provides
-    GetFilmInformationById provideGetFilmInformationById(IRetrofit requests){
-        return new GetFilmInformationById(requests);
+    GetFilmInformationById provideGetFilmInformationById(IRetrofit requests, GetFilmPoster getFilmPoster){
+        return new GetFilmInformationById(requests, getFilmPoster);
     }
 
     @Provides
@@ -31,19 +37,28 @@ public class DomainModule {
     }
 
     @Provides
-    GetFilmInformationByName provideGetFilmsInformationByName(IRetrofit requests, GetFilmInformationById getFilmInformationById) {
-        return new GetFilmInformationByName(requests, getFilmInformationById);
+    GetFilmInformationByName provideGetFilmsInformationByName(IRetrofit requests, GetFilmInformationById getFilmInformationById, IDbQueries dbQueries) {
+        return new GetFilmInformationByName(requests, getFilmInformationById, dbQueries);
     }
 
     @Provides
-    GetFilmInformationByCollection provideGetFilmInformationByCollection(IRetrofit requests, GetFilmInformationById getFilmInformationById) {
-        return new GetFilmInformationByCollection(requests, getFilmInformationById);
+    GetFilmInformationByCollection provideGetFilmInformationByCollection(IRetrofit requests, GetFilmInformationById getFilmInformationById, IDbQueries dbQueries) {
+        return new GetFilmInformationByCollection(requests, getFilmInformationById, dbQueries);
     }
 
     @Provides
-    GetLongFilmInformationById provideGetLongFilmInformationById() {
-        return new GetLongFilmInformationById();
+    GetLongFilmInformationById provideGetLongFilmInformationById(IDbQueries dbQueries) {
+        return new GetLongFilmInformationById(dbQueries);
     }
 
+    @Provides
+    SelectedFilmToFavorites provideSelectedFilmToFavorites(IDbQueries dbQueries) {
+        return new SelectedFilmToFavorites(dbQueries);
+    }
+
+    @Provides
+    GetFilmPoster provideGetFilmPoster(Context context){
+        return new GetFilmPoster(context);
+    }
 
 }

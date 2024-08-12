@@ -17,12 +17,21 @@
         android:orientation="horizontal"
         android:padding="6dp">
 
+        <ImageView
+            android:id="@+id/posterPreview"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="0.06"
+            card_view:srcCompat="@drawable/moai" />
+
         <TextView
             android:id="@+id/nameView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:padding="20dp"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp"
+            android:paddingEnd="20dp"
             android:text="Item Title"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -35,12 +44,12 @@
             android:orientation="horizontal">
 
 
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="right">
+                android:layout_weight="1"
+                android:gravity="right"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textGenre"
@@ -51,12 +60,12 @@
                     android:text="TextView" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:orientation="horizontal"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp">
 
                     <TextView
                         android:id="@+id/ratingIMDBView"
@@ -106,8 +115,11 @@
 
             <ImageView
                 android:id="@+id/selectedItemImage"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:maxWidth="@dimen/default_gap"
+                android:minWidth="@dimen/default_gap"
                 card_view:srcCompat="@android:drawable/btn_star" />
 
 

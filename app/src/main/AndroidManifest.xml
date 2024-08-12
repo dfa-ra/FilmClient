@@ -16,10 +16,10 @@
         android:theme="@style/Theme.First"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.DescriptionFilmActivity"
+            android:name=".presentation.descriptionActivity.DescriptionFilmActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.mainActivity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

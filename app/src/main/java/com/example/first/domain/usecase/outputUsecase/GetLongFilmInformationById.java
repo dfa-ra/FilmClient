@@ -1,13 +1,21 @@
 package com.example.first.domain.usecase.outputUsecase;
 
+import android.util.Log;
+
 import com.example.first.data.dbqueries.DbQueries;
 import com.example.first.data.models.mainModel.FilmModel;
+import com.example.first.domain.interfaces.IDbQueries;
 import com.example.first.domain.models.LongFilmModel;
 
 public class GetLongFilmInformationById {
-    public LongFilmModel execute(int id){
-        FilmModel model = DbQueries.getInstance().getLocalFilm(id);
+    private final IDbQueries dbQueries;
 
+    public GetLongFilmInformationById(IDbQueries dbQueries){
+        this.dbQueries = dbQueries;
+    }
+
+    public LongFilmModel execute(int id){
+        FilmModel model = dbQueries.getLocalFilm(id);
         return new LongFilmModel(
                 model.kinopoiskId,
                 model.nameRu,
@@ -16,8 +24,7 @@ public class GetLongFilmInformationById {
                 model.genres,
                 model.ratingKinopoisk,
                 model.ratingImdb,
-                model.posterUrl,
-                model.posterUrlPreview
+                model.posterUrl
         );
     }
 }

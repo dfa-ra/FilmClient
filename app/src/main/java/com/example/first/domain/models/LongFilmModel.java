@@ -1,5 +1,7 @@
 package com.example.first.domain.models;
 
+import android.graphics.Bitmap;
+
 import com.example.first.data.models.mainModel.Country;
 import com.example.first.data.models.mainModel.Genre;
 
@@ -24,5 +26,4 @@ public class LongFilmModel implements Serializable{
     public String ratingKinopoisk = "";
     public String ratingImdb = "";
     public String posterUrl = "";
-    public String posterUrlPreview = "";
 }

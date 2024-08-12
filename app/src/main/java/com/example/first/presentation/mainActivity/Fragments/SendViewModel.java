@@ -1,4 +1,4 @@
-package com.example.first.presentation.Fragments;
+package com.example.first.presentation.mainActivity.Fragments;
 
 import android.util.Log;
 
@@ -20,9 +20,8 @@ public class SendViewModel extends ViewModel{
 
     private final SelectedFilmToFavorites selectedFilmToFavorites;
 
-    public SendViewModel(){
-        Log.i("SendViewModel", "init send view model");
-        selectedFilmToFavorites = new SelectedFilmToFavorites();
+    public SendViewModel(SelectedFilmToFavorites selectedFilmToFavorites){
+        this.selectedFilmToFavorites = selectedFilmToFavorites;
     }
 
     public boolean selectItem(ShortFilmModel item) {
