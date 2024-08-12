@@ -1,6 +1,6 @@
 package com.example.first.injection.di;
 
-import com.example.first.data.httpqueries.IRetrofit;
+import com.example.first.domain.interfaces.IRetrofit;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;

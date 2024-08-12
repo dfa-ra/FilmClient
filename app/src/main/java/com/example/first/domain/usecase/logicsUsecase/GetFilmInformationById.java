@@ -3,8 +3,8 @@ package com.example.first.domain.usecase.logicsUsecase;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.example.first.data.httpqueries.IRetrofit;
 import com.example.first.data.models.mainModel.FilmModel;
+import com.example.first.domain.interfaces.IRetrofit;
 
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -19,7 +19,8 @@ public class GetFilmInformationById {
 
     @SuppressLint("CheckResult")
     public Single<FilmModel> execute(int id) {
-        return requestFilm.getFilmById(id)
+        Log.i("aa99", "execute id");
+        return requestFilm.getApi().getFilmById(id)
                 .singleOrError()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

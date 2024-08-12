@@ -3,8 +3,8 @@ package com.example.first.domain.usecase.logicsUsecase;
 import android.annotation.SuppressLint;
 
 import com.example.first.data.dbqueries.DbQueries;
-import com.example.first.data.httpqueries.IRetrofit;
 import com.example.first.data.models.mainModel.FilmModel;
+import com.example.first.domain.interfaces.IRetrofit;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +26,7 @@ public class GetFilmInformationByName {
 
     @SuppressLint("CheckResult")
     public Single<List<FilmModel>> execute(String name, Integer page) {
-        return requestFilm.getFilmByName(name, page)
+        return requestFilm.getApi().getFilmByName(name, page)
             .subscribeOn(Schedulers.io())  // Выполняем запрос в фоновом потоке
             .observeOn(AndroidSchedulers.mainThread())  // Получаем результат в главном потоке
             .flatMapSingle(keywordCollectionModel -> {

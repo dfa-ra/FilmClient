@@ -1,8 +1,10 @@
 package com.example.first.domain.usecase.logicsUsecase;
 
+import android.util.Log;
+
 import com.example.first.data.dbqueries.DbQueries;
-import com.example.first.data.httpqueries.IRetrofit;
 import com.example.first.data.models.mainModel.FilmModel;
+import com.example.first.domain.interfaces.IRetrofit;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +23,8 @@ public class GetFilmInformationByCollection {
     }
 
     public Single<List<FilmModel>> execute(String type, Integer page) {
-        return requestFilm.getFilmByCollection(type, page)
+        Log.i("aa99", "execute collection");
+        return requestFilm.getApi().getFilmByCollection(type, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .flatMapSingle(keywordCollectionModel -> {
