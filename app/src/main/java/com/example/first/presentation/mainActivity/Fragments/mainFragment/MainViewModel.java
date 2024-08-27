@@ -1,8 +1,6 @@
 package com.example.first.presentation.mainActivity.Fragments.mainFragment;
 
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -24,11 +22,15 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import lombok.Getter;
 
 
 public class MainViewModel extends ViewModel{
 
     private final MutableLiveData<List<ShortFilmModel>> itemsLiveData = new MutableLiveData<>();
+
+    @Getter
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
 
     private final GetFilmInformationByName getFilmsInformationByName;
     private final AllToShortFilmsInformation allToShortFilmsInformation;
@@ -63,6 +65,7 @@ public class MainViewModel extends ViewModel{
 
     public void searchFilmByName(String name) {
         itemsLiveData.setValue(new ArrayList<>());
+        isLoading.setValue(true);
         getFilmsInformationByName.execute(name, 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -75,6 +78,7 @@ public class MainViewModel extends ViewModel{
                 @Override
                 public void onSuccess(@NonNull List<FilmModel> filmModels) {
                     setItems(allToShortFilmsInformation.execute(filmModels));
+                    isLoading.setValue(false);
                 }
 
                 @Override
@@ -86,6 +90,7 @@ public class MainViewModel extends ViewModel{
 
     public void searchFilmByCollection(CollectionType collectionType){
         itemsLiveData.setValue(new ArrayList<>());
+        isLoading.setValue(true);
         getFilmInformationByCollection.execute(collectionType.getNameCollections(), 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -98,6 +103,7 @@ public class MainViewModel extends ViewModel{
                 @Override
                 public void onSuccess(@NonNull List<FilmModel> filmModels) {
                     setItems(allToShortFilmsInformation.execute(filmModels));
+                    isLoading.setValue(false);
                 }
 
                 @Override

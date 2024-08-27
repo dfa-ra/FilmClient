@@ -34,8 +34,9 @@ public class GetFilmInformationByCollection {
                     if (keywordCollectionModel.isSuccessful()) {
                         return Observable.fromIterable(keywordCollectionModel.body().items)
                                 .concatMapSingle(filmModel -> {
-                                            dbQueries.addNewFilm(filmModel);
-                                            return getFilmInformationById.execute(filmModel.kinopoiskId);
+                                            Single<FilmModel> film = getFilmInformationById.execute(filmModel.kinopoiskId);
+                                            dbQueries.addNewFilm(film.blockingGet());
+                                            return film;
                                         }
                                 )
                                 .subscribeOn(Schedulers.io())

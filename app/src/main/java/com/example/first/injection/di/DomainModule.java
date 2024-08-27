@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.first.domain.interfaces.IDbQueries;
 import com.example.first.domain.interfaces.IRetrofit;
+import com.example.first.domain.usecase.logicsUsecase.DeleteFilmById;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
@@ -61,4 +62,6 @@ public class DomainModule {
         return new GetFilmPoster(context);
     }
 
+    @Provides
+    DeleteFilmById provideDeleteFilmById(IDbQueries dbQueries){ return new DeleteFilmById(dbQueries);}
 }

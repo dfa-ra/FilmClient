@@ -3,31 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.Fragments.mainFragment.MainFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <LinearLayout
-        android:id="@+id/MainFragment"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/PopularRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/footer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_title">
+        android:paddingTop="1dp"
+        android:paddingBottom="10dp" />
 
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/PopularRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="1dp"
-            android:paddingBottom="10dp" />
-    </LinearLayout>
-
+    <ImageView
+        android:id="@+id/loadingGIF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="160dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:src="@drawable/ic_launcher_foreground"
+        />
 </FrameLayout>

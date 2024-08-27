@@ -157,19 +157,6 @@ public class MainActivity extends AppCompatActivity{
                 return false;
             }
         });
-
-
-
-//        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-//            TabLayout.Tab tab = tabLayout.getTabAt(i);
-//            if (tab != null) {
-//                tab.setCustomView(R.layout.custom_tab);
-//                TextView tabTextView = (TextView) tab.getCustomView();
-//                if (tabTextView != null) {
-//                    tabTextView.setText(fragmentListNames.get(i));
-//                }
-//            }
-//        }
     }
 
 

@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.injection.app.App;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
+import com.example.first.presentation.mainActivity.customBottomSheetDialog.CustomBottomSheetDialog;
 import com.example.first.presentation.mainActivity.filmStrip.AdapterListener;
 import com.example.first.presentation.mainActivity.filmStrip.ItemAdapter;
 
@@ -87,11 +89,12 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
 
     @Override
     public void onClick(ShortFilmModel filmModel) {
-
     }
 
     @Override
     public boolean longOnClick(ShortFilmModel filmModel) {
+        CustomBottomSheetDialog bottomSheetDialog = new CustomBottomSheetDialog(filmModel);
+        bottomSheetDialog.show(getParentFragmentManager(), "CustomBottomSheetDialog");
         return true;
     }
 }

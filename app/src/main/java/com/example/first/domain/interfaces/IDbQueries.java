@@ -23,4 +23,6 @@ public interface IDbQueries {
 
     boolean isFilmHere(FilmModel film);
 
+    void deleteFilmById(int id);
+
 }

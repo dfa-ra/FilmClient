@@ -60,8 +60,16 @@ dependencies {
     implementation libs.rxjava
     implementation libs.rxandroid
 
-    //Glide
+    //Picasso
     implementation libs.picasso
+
+    //Glide
+    implementation libs.glide // Убедитесь, что используете актуальную версию
+    annotationProcessor libs.compiler
+
+    //Room
+    implementation libs.room.runtime
+    annotationProcessor libs.room.compiler
 
     //Dagger
     implementation libs.javax.inject

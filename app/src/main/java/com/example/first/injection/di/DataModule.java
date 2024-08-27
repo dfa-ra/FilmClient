@@ -1,5 +1,7 @@
 package com.example.first.injection.di;
 
+import android.content.Context;
+
 import com.example.first.data.dbqueries.DbQueries;
 import com.example.first.data.httpqueries.IAPI;
 import com.example.first.data.httpqueries.RetrofitClient;
@@ -22,7 +24,7 @@ public class DataModule {
 
     @Provides
     @Singleton
-    IDbQueries provideDbQueries(){
-        return new DbQueries();
+    IDbQueries provideDbQueries(Context context){
+        return new DbQueries(context);
     }
 }

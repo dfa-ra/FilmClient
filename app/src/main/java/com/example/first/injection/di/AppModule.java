@@ -3,6 +3,7 @@ package com.example.first.injection.di;
 import android.content.Context;
 
 import com.example.first.domain.interfaces.IDbQueries;
+import com.example.first.domain.usecase.logicsUsecase.DeleteFilmById;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.logicsUsecase.SelectedFilmToFavorites;
@@ -14,6 +15,7 @@ import com.example.first.presentation.descriptionActivity.DescriptionViewModelFa
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
 import com.example.first.presentation.mainActivity.Fragments.favoritesFragment.FavoritesViewModelFactory;
 import com.example.first.presentation.mainActivity.Fragments.mainFragment.MainViewModelFactory;
+import com.example.first.presentation.mainActivity.customBottomSheetDialog.CustomBottomSheetDialogViewModelFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -73,6 +75,15 @@ public class AppModule {
     ){
         return new DescriptionViewModelFactory(
                 getFilmPoster
+        );
+    }
+
+    @Provides
+    CustomBottomSheetDialogViewModelFactory provideCustomBottomSheetDialogViewModelFactory(
+            DeleteFilmById deleteFilmById
+    ){
+        return new CustomBottomSheetDialogViewModelFactory(
+                deleteFilmById
         );
     }
 }
