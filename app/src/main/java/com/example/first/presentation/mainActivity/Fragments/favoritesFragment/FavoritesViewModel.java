@@ -21,13 +21,22 @@ public class FavoritesViewModel extends ViewModel {
                               GetLongFilmInformationById getLongFilmInformationById) {
         this.getShortInformationAboutFilmsDb = getShortInformationAboutFilmsDb;
         this.getLongFilmInformationById = getLongFilmInformationById;
+        updateFavoritesList();
     }
 
     public LiveData<List<ShortFilmModel>> getItems() {
         return favoritesList;
     }
 
+    public void updateFavoritesList(){
+        getShortInformationAboutFilmsDb.execute().thenAccept(
+                favoritesList::setValue
+        );
+    }
+
     public void addToFavoritesList() {
-        favoritesList.setValue(getShortInformationAboutFilmsDb.execute());
+        getShortInformationAboutFilmsDb.execute().thenAccept(
+                favoritesList::setValue
+        );
     }
 }

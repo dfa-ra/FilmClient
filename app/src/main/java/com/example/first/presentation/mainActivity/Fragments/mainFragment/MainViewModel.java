@@ -1,6 +1,8 @@
 package com.example.first.presentation.mainActivity.Fragments.mainFragment;
 
 
+import android.content.Intent;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,6 +18,7 @@ import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -69,15 +72,15 @@ public class MainViewModel extends ViewModel{
         getFilmsInformationByName.execute(name, 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new SingleObserver<List<FilmModel>>() {
+            .subscribe(new SingleObserver<List<ShortFilmModel>>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
 
                 }
 
                 @Override
-                public void onSuccess(@NonNull List<FilmModel> filmModels) {
-                    setItems(allToShortFilmsInformation.execute(filmModels));
+                public void onSuccess(@NonNull List<ShortFilmModel> shortFilmModels) {
+                    setItems(shortFilmModels);
                     isLoading.setValue(false);
                 }
 
@@ -94,15 +97,15 @@ public class MainViewModel extends ViewModel{
         getFilmInformationByCollection.execute(collectionType.getNameCollections(), 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new SingleObserver<List<FilmModel>>() {
+            .subscribe(new SingleObserver<List<ShortFilmModel>>() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
 
                 }
 
                 @Override
-                public void onSuccess(@NonNull List<FilmModel> filmModels) {
-                    setItems(allToShortFilmsInformation.execute(filmModels));
+                public void onSuccess(@NonNull List<ShortFilmModel> shortFilmModels) {
+                    setItems(shortFilmModels);
                     isLoading.setValue(false);
                 }
 
@@ -113,7 +116,11 @@ public class MainViewModel extends ViewModel{
             });
     }
 
-    public LongFilmModel getLongFilmModel(ShortFilmModel shortFilmModel){
-        return getLongFilmInformationById.execute(shortFilmModel.kinopoiskId);
+    public void getLongFilmModel(ShortFilmModel shortFilmModel, Intent intent){
+        getLongFilmInformationById.execute(shortFilmModel.kinopoiskId).thenAccept(
+                longFilmModel -> {
+                    intent.putExtra("filmModel", longFilmModel); //Optional parameters
+                }
+        );
     }
 }

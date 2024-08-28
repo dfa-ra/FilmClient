@@ -2,10 +2,11 @@ package com.example.first.domain.usecase.logicsUsecase;
 
 import android.annotation.SuppressLint;
 
-import com.example.first.data.dbqueries.DbQueries;
 import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.interfaces.IDbQueries;
+import com.example.first.domain.interfaces.ILocalDB;
 import com.example.first.domain.interfaces.IRetrofit;
+import com.example.first.domain.models.ShortFilmModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,18 +19,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class GetFilmInformationByName {
 
     private final IRetrofit requestFilm;
-    private final IDbQueries dbQueries;
+    private final ILocalDB localDB;
     private final GetFilmInformationById getFilmInformationById;
+    private final FilmModelToShortModel filmModelToShortModel;
 
-    public GetFilmInformationByName(IRetrofit requestFilm, GetFilmInformationById getFilmInformationById, IDbQueries dbQueries){
+    public GetFilmInformationByName(IRetrofit requestFilm, GetFilmInformationById getFilmInformationById, FilmModelToShortModel filmModelToShortModel ,ILocalDB localDB){
         this.requestFilm = requestFilm;
         this.getFilmInformationById = getFilmInformationById;
-        this.dbQueries = dbQueries;
+        this.localDB = localDB;
+        this.filmModelToShortModel = filmModelToShortModel;
     }
 
     @SuppressLint("CheckResult")
-    public Single<List<FilmModel>> execute(String name, Integer page) {
-        dbQueries.clearLocalBd();
+    public Single<List<ShortFilmModel>> execute(String name, Integer page) {
+        localDB.clearLocalBd();
         return requestFilm.getApi().getFilmByName(name, page)
             .subscribeOn(Schedulers.io())  // Выполняем запрос в фоновом потоке
             .observeOn(AndroidSchedulers.mainThread())  // Получаем результат в главном потоке
@@ -39,8 +42,8 @@ public class GetFilmInformationByName {
                     return Observable.fromIterable(keywordCollectionModel.body().films)
                             .concatMapSingle(filmModel -> {
                                         Single<FilmModel> modelSingle = getFilmInformationById.execute(filmModel.filmId);
-                                        dbQueries.addNewFilm(modelSingle.blockingGet());
-                                        return modelSingle;
+                                        localDB.addFilm(modelSingle.blockingGet());
+                                        return Single.just(filmModelToShortModel.execute(modelSingle.blockingGet()));
                                     }
                             ).toList();
                 }

@@ -4,14 +4,15 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import com.example.first.domain.interfaces.IDbQueries;
+
 import lombok.Getter;
 
-public class MainDB{
-    @Getter
+public class MainDB implements IDbQueries {
+
     private AppDatabase appDatabase;
-    private static MainDB instance = null;
-    
-    private MainDB(Context context){
+
+    public MainDB(Context context){
         appDatabase = Room.databaseBuilder(
                             context.getApplicationContext(),
                             AppDatabase.class,
@@ -19,8 +20,8 @@ public class MainDB{
                         ).build();
     }
 
-    public static MainDB getInstance(Context context) {
-        if (instance == null) instance = new MainDB(context);
-        return instance;
+    @Override
+    public AppDatabase getAppDatabase() {
+        return appDatabase;
     }
 }

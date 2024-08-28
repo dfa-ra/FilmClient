@@ -2,8 +2,7 @@ package com.example.first.injection.di;
 
 import android.content.Context;
 
-import com.example.first.domain.interfaces.IDbQueries;
-import com.example.first.domain.usecase.logicsUsecase.DeleteFilmById;
+import com.example.first.domain.usecase.dbUsecase.DeleteFilmByIdFromBd;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.logicsUsecase.SelectedFilmToFavorites;
@@ -80,10 +79,10 @@ public class AppModule {
 
     @Provides
     CustomBottomSheetDialogViewModelFactory provideCustomBottomSheetDialogViewModelFactory(
-            DeleteFilmById deleteFilmById
+            DeleteFilmByIdFromBd deleteFilmByIdFromBd
     ){
         return new CustomBottomSheetDialogViewModelFactory(
-                deleteFilmById
+                deleteFilmByIdFromBd
         );
     }
 }

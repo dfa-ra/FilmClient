@@ -2,10 +2,12 @@ package com.example.first.injection.di;
 
 import android.content.Context;
 
-import com.example.first.data.dbqueries.DbQueries;
+import com.example.first.data.dbqueries.LocalDB;
+import com.example.first.data.dbqueries.dbroom.MainDB;
 import com.example.first.data.httpqueries.IAPI;
 import com.example.first.data.httpqueries.RetrofitClient;
 import com.example.first.domain.interfaces.IDbQueries;
+import com.example.first.domain.interfaces.ILocalDB;
 import com.example.first.domain.interfaces.IRetrofit;
 
 import javax.inject.Singleton;
@@ -25,6 +27,12 @@ public class DataModule {
     @Provides
     @Singleton
     IDbQueries provideDbQueries(Context context){
-        return new DbQueries(context);
+        return new MainDB(context);
+    }
+
+    @Provides
+    @Singleton
+    ILocalDB provideLocalDB(){
+        return new LocalDB();
     }
 }

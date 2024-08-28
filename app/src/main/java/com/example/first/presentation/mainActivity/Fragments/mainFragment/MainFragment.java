@@ -138,8 +138,6 @@ public class MainFragment extends Fragment implements AdapterListener {
     @Override
     public void onClick(ShortFilmModel filmModel) {
         Intent intent = new Intent(getActivity(), DescriptionFilmActivity.class);
-        LongFilmModel model = mainViewModel.getLongFilmModel(filmModel);
-        intent.putExtra("filmModel", model); //Optional parameters
         startActivity(intent);
     }
 

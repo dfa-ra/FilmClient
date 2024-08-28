@@ -2,16 +2,16 @@ package com.example.first.presentation.mainActivity.customBottomSheetDialog;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.first.domain.usecase.logicsUsecase.DeleteFilmById;
+import com.example.first.domain.usecase.dbUsecase.DeleteFilmByIdFromBd;
 
 public class CustomBottomSheetDialogViewModel extends ViewModel {
-    private final DeleteFilmById deleteFilmById;
+    private final DeleteFilmByIdFromBd deleteFilmByIdFromBd;
 
-    public CustomBottomSheetDialogViewModel(DeleteFilmById deleteFilmById){
-        this.deleteFilmById = deleteFilmById;
+    public CustomBottomSheetDialogViewModel(DeleteFilmByIdFromBd deleteFilmByIdFromBd){
+        this.deleteFilmByIdFromBd = deleteFilmByIdFromBd;
     }
 
     public void deleteItemById(int id){
-        deleteFilmById.execute(id);
+        deleteFilmByIdFromBd.execute(id);
     }
 }

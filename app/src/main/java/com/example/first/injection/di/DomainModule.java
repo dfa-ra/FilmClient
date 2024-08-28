@@ -3,8 +3,13 @@ package com.example.first.injection.di;
 import android.content.Context;
 
 import com.example.first.domain.interfaces.IDbQueries;
+import com.example.first.domain.interfaces.ILocalDB;
 import com.example.first.domain.interfaces.IRetrofit;
-import com.example.first.domain.usecase.logicsUsecase.DeleteFilmById;
+import com.example.first.domain.usecase.dbUsecase.DeleteFilmByIdFromBd;
+import com.example.first.domain.usecase.dbUsecase.GetFilmByIdFromDb;
+import com.example.first.domain.usecase.dbUsecase.GetFilmsFromDb;
+import com.example.first.domain.usecase.dbUsecase.SetFilmToDb;
+import com.example.first.domain.usecase.logicsUsecase.FilmModelToShortModel;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
@@ -16,15 +21,33 @@ import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.http.POST;
 
 @Module
 public class DomainModule {
 
+    @Provides
+    GetFilmsFromDb provideGetFilmsFromDb(IDbQueries iDbQueries){
+        return new GetFilmsFromDb(iDbQueries);
+    }
 
     @Provides
-    GetShortInformationAboutFilmsDb provideGetShortInformationAboutFilmsDb(IDbQueries dbQueries){
-        return new GetShortInformationAboutFilmsDb(dbQueries);
+    GetFilmByIdFromDb provideGetFilmByIdFromDb(IDbQueries iDbQueries){
+        return new GetFilmByIdFromDb(iDbQueries);
+    }
+
+    @Provides
+    SetFilmToDb provideSetFilmToDb(IDbQueries iDbQueries){
+        return new SetFilmToDb(iDbQueries);
+    }
+
+    @Provides
+    DeleteFilmByIdFromBd provideDeleteFilmByIdFromBd(IDbQueries iDbQueries){
+        return new DeleteFilmByIdFromBd(iDbQueries);
+    }
+
+    @Provides
+    GetShortInformationAboutFilmsDb provideGetShortInformationAboutFilmsDb(GetFilmsFromDb getFilmsFromDb){
+        return new GetShortInformationAboutFilmsDb(getFilmsFromDb);
     }
 
     @Provides
@@ -38,23 +61,23 @@ public class DomainModule {
     }
 
     @Provides
-    GetFilmInformationByName provideGetFilmsInformationByName(IRetrofit requests, GetFilmInformationById getFilmInformationById, IDbQueries dbQueries) {
-        return new GetFilmInformationByName(requests, getFilmInformationById, dbQueries);
+    GetFilmInformationByName provideGetFilmsInformationByName(IRetrofit requests, GetFilmInformationById getFilmInformationById, FilmModelToShortModel filmModelToShortModel, ILocalDB iLocalDB) {
+        return new GetFilmInformationByName(requests, getFilmInformationById, filmModelToShortModel, iLocalDB);
     }
 
     @Provides
-    GetFilmInformationByCollection provideGetFilmInformationByCollection(IRetrofit requests, GetFilmInformationById getFilmInformationById, IDbQueries dbQueries) {
-        return new GetFilmInformationByCollection(requests, getFilmInformationById, dbQueries);
+    GetFilmInformationByCollection provideGetFilmInformationByCollection(IRetrofit requests, GetFilmInformationById getFilmInformationById, FilmModelToShortModel filmModelToShortModel, ILocalDB iLocalDB) {
+        return new GetFilmInformationByCollection(requests, getFilmInformationById, filmModelToShortModel, iLocalDB);
     }
 
     @Provides
-    GetLongFilmInformationById provideGetLongFilmInformationById(IDbQueries dbQueries) {
-        return new GetLongFilmInformationById(dbQueries);
+    GetLongFilmInformationById provideGetLongFilmInformationById(GetFilmByIdFromDb getFilmByIdFromDb) {
+        return new GetLongFilmInformationById(getFilmByIdFromDb);
     }
 
     @Provides
-    SelectedFilmToFavorites provideSelectedFilmToFavorites(IDbQueries dbQueries) {
-        return new SelectedFilmToFavorites(dbQueries);
+    SelectedFilmToFavorites provideSelectedFilmToFavorites(SetFilmToDb setFilmToDb, ILocalDB iLocalDB) {
+        return new SelectedFilmToFavorites(setFilmToDb, iLocalDB);
     }
 
     @Provides
@@ -63,5 +86,7 @@ public class DomainModule {
     }
 
     @Provides
-    DeleteFilmById provideDeleteFilmById(IDbQueries dbQueries){ return new DeleteFilmById(dbQueries);}
+    FilmModelToShortModel provideFilmModelToShortModel(){
+        return new FilmModelToShortModel();
+    }
 }

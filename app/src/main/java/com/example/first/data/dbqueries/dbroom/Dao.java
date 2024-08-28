@@ -10,6 +10,9 @@ import com.example.first.data.models.mainModel.FilmModel;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
+
 @androidx.room.Dao
 public interface Dao {
     @Insert
@@ -17,11 +20,11 @@ public interface Dao {
 
     @Transaction
     @Query("SELECT * FROM films")
-    List<FilmModel> getAllFilmDetails();
+    Single<List<FilmModel>> getAllFilmDetails();
 
     @Transaction
     @Query("SELECT * FROM films WHERE id = :id")
-    LiveData<List<FilmModel>> getFilmsById(int id);
+    Single<FilmModel> getFilmsById(int id);
 
     @Transaction
     @Query("DELETE FROM films WHERE id = :id")

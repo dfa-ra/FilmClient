@@ -69,6 +69,7 @@ dependencies {
 
     //Room
     implementation libs.room.runtime
+    implementation "androidx.room:room-rxjava3:2.6.1"
     annotationProcessor libs.room.compiler
 
     //Dagger
