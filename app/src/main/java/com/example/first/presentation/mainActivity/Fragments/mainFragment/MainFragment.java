@@ -45,7 +45,7 @@ import io.reactivex.rxjava3.annotations.Nullable;
 public class MainFragment extends Fragment implements AdapterListener {
 
     FragmentMainBinding binding;
-    ItemAdapter adapter = new ItemAdapter(this);
+    ItemAdapter adapter = new ItemAdapter(this, false);
 
     @Inject
     MainViewModelFactory mainViewModelFactory;
@@ -147,6 +147,11 @@ public class MainFragment extends Fragment implements AdapterListener {
         if (!senderViewModel.selectItem(filmModel))
             Toast.makeText(getContext(), "Данный элемент уже находится в избранное", Toast.LENGTH_SHORT).show();
         return true;
+    }
+
+    @Override
+    public void deleteFilm(ShortFilmModel filmModel) {
+
     }
 
     public void searchFilmByName(String name) {

@@ -12,7 +12,7 @@ public class FilmModelToShortModel {
                 model.ratingImdb,
                 model.genres.get(0).genre,
                 model.posterUrlPreview,
-                model.isChecked = true,
+                model.isChecked,
                 model.posterPreview);
     }
 }

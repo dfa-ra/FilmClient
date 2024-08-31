@@ -4,10 +4,13 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,6 +23,7 @@ import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
 import com.example.first.presentation.mainActivity.customBottomSheetDialog.CustomBottomSheetDialog;
 import com.example.first.presentation.mainActivity.filmStrip.AdapterListener;
+import com.example.first.presentation.mainActivity.filmStrip.CustomItemTouchHelper;
 import com.example.first.presentation.mainActivity.filmStrip.ItemAdapter;
 
 import javax.inject.Inject;
@@ -27,7 +31,7 @@ import javax.inject.Inject;
 public class FavoritesFragment extends Fragment implements AdapterListener {
 
     FragmentFavoritesBinding binding;
-    private final ItemAdapter adapter = new ItemAdapter(this);
+    private final ItemAdapter adapter = new ItemAdapter(this, true);
 
     @Inject
     FavoritesViewModelFactory favoritesViewModelFactory;
@@ -72,17 +76,19 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
         favoritesViewModel = new ViewModelProvider(requireActivity(), favoritesViewModelFactory).get(FavoritesViewModel.class);
         senderViewModel = new ViewModelProvider(requireActivity(), sendViewModelFactory).get(SendViewModel.class);
 
-        senderViewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
-            favoritesViewModel.addToFavoritesList();
-        });
-
         favoritesViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
+            Log.d("aa77", "update items");
             adapter.setItems(items);
         });
 
         RecyclerView recyclerView = view.findViewById(binding.FavoriteRecyclerView.getId());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//        CustomItemTouchHelper simpleCallBack = new CustomItemTouchHelper(0, ItemTouchHelper.LEFT );
+//
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallBack);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return view;
     }
@@ -96,5 +102,10 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
         CustomBottomSheetDialog bottomSheetDialog = new CustomBottomSheetDialog(filmModel);
         bottomSheetDialog.show(getParentFragmentManager(), "CustomBottomSheetDialog");
         return true;
+    }
+
+    @Override
+    public void deleteFilm(ShortFilmModel filmModel) {
+        favoritesViewModel.deleteFilmById(filmModel.kinopoiskId);
     }
 }

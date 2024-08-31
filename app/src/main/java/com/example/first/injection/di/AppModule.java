@@ -51,11 +51,13 @@ public class AppModule {
     @Provides
     FavoritesViewModelFactory provideFavoritesViewModelFactory(
             GetShortInformationAboutFilmsDb getShortInformationAboutFilmsDb,
-            GetLongFilmInformationById getLongFilmInformationById
+            GetLongFilmInformationById getLongFilmInformationById,
+            DeleteFilmByIdFromBd deleteFilmByIdFromBd
     ){
         return new FavoritesViewModelFactory(
                 getShortInformationAboutFilmsDb,
-                getLongFilmInformationById
+                getLongFilmInformationById,
+                deleteFilmByIdFromBd
         );
     }
 

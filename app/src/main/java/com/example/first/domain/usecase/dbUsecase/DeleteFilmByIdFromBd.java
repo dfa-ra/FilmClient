@@ -1,5 +1,7 @@
 package com.example.first.domain.usecase.dbUsecase;
 
+import android.util.Log;
+
 import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.interfaces.IDbQueries;
 
@@ -16,8 +18,6 @@ public class DeleteFilmByIdFromBd {
     }
 
     public void execute(int id){
-        executor.execute(() -> {
-            queries.getAppDatabase().dao().deleteById(id);
-        });
+        executor.execute(() -> queries.getAppDatabase().dao().deleteById(id));
     }
 }

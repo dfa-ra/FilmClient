@@ -11,6 +11,7 @@ import com.example.first.domain.interfaces.IDbQueries;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -22,7 +23,7 @@ public class GetFilmsFromDb {
     }
 
     @SuppressLint("CheckResult")
-    public Single<List<FilmModel>> execute(){
+    public Flowable<List<FilmModel>> execute(){
         return db.getAppDatabase().dao().getAllFilmDetails()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 public class GetShortInformationAboutFilmsDb {
 
     private final GetFilmsFromDb getFilmsFromDb;
@@ -19,12 +22,11 @@ public class GetShortInformationAboutFilmsDb {
     }
 
     @SuppressLint("CheckResult")
-    public CompletableFuture<List<ShortFilmModel>> execute(){
-        CompletableFuture<List<ShortFilmModel>> shfilms = new CompletableFuture<>();
-        getFilmsFromDb.execute()
-                .subscribe(models -> {
+    public Flowable<List<ShortFilmModel>> execute(){
+        return getFilmsFromDb.execute()
+                .map(longModel -> {
                     List<ShortFilmModel> shmodels = new ArrayList<>();
-                    for (FilmModel model: models){
+                    for (FilmModel model: longModel){
                         shmodels.add(new ShortFilmModel(
                                 model.kinopoiskId,
                                 model.nameRu,
@@ -35,9 +37,8 @@ public class GetShortInformationAboutFilmsDb {
                                 model.isChecked,
                                 model.posterPreview));
                     }
-                    shfilms.complete(shmodels);
+                    return shmodels;
                 });
-        return shfilms;
     }
 }
 

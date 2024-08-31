@@ -1,127 +1,183 @@
-
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="4dp"
     android:layout_margin="6dp"
     android:background="@drawable/border_items">
-
     <LinearLayout
-        android:id="@+id/filmLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="6dp">
-
-        <ImageView
-            android:id="@+id/posterPreview"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="0.06"
-            card_view:srcCompat="@drawable/moai" />
-
-        <TextView
-            android:id="@+id/nameView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:paddingStart="20dp"
-            android:paddingLeft="20dp"
-            android:paddingEnd="20dp"
-            android:text="Item Title"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <!-- Основное содержимое элемента -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/filmLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:gravity="right"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
+            <ImageView
+                android:id="@+id/posterPreview"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="0.06"
+                card_view:srcCompat="@drawable/moai" />
+
+            <TextView
+                android:id="@+id/nameView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="Item Title"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
                 android:gravity="right"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textGenre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|right"
-                    android:padding="10dp"
-                    android:text="TextView" />
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="0dp">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    tools:ignore="NestedWeights">
 
                     <TextView
-                        android:id="@+id/ratingIMDBView"
+                        android:id="@+id/textGenre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="IMDB: "
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
+                        android:gravity="center|right"
+                        android:padding="10dp"
+                        android:text="TextView"
+                        tools:ignore="RtlHardcoded" />
 
-                    <TextView
-                        android:id="@+id/ratingIMDB"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="6dp"
-                        android:text="0"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
+                        android:gravity="end"
+                        android:orientation="horizontal"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp">
 
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="6dp"
-                        android:paddingEnd="6dp"
-                        android:text="|"
-                        android:textSize="8sp" />
+                        <TextView
+                            android:id="@+id/ratingIMDBView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="IMDB: "
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            tools:ignore="SmallSp" />
 
-                    <TextView
-                        android:id="@+id/ratingKinoPoiskView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="КиноПоиск:"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/ratingIMDB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="6dp"
+                            android:text="0"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            tools:ignore="RtlSymmetry,SmallSp" />
 
-                    <TextView
-                        android:id="@+id/ratingKinoPoisk"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="6dp"
-                        android:text="0"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:text="|"
+                            android:textSize="8sp"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:id="@+id/ratingKinoPoiskView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="КиноПоиск:"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:id="@+id/ratingKinoPoisk"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="6dp"
+                            android:text="0"
+                            android:textSize="8sp"
+                            android:textStyle="bold"
+                            tools:ignore="RtlSymmetry,SmallSp" />
+                    </LinearLayout>
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/selectedItemImage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1"
+                    android:maxWidth="@dimen/default_gap"
+                    android:minWidth="@dimen/default_gap"
+                    card_view:srcCompat="@android:drawable/btn_star" />
             </LinearLayout>
+        </LinearLayout>
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:background="@color/line" />
+
+        <LinearLayout
+            android:id="@+id/actions_layout"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:visibility="gone"
+            tools:ignore="RtlHardcoded">
 
             <ImageView
-                android:id="@+id/selectedItemImage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.1"
-                android:maxWidth="@dimen/default_gap"
-                android:minWidth="@dimen/default_gap"
-                card_view:srcCompat="@android:drawable/btn_star" />
+                android:id="@+id/button_watch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="@drawable/action_button_selector"
+                android:hapticFeedbackEnabled="false"
+                android:padding="5dp"
+                card_view:srcCompat="@drawable/galochka"/>
 
+            <ImageView
+                android:id="@+id/button_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:padding="5dp"
+                android:hapticFeedbackEnabled="false"
+                android:background="@drawable/action_button_selector"
+                card_view:srcCompat="@drawable/myediter" />
+
+            <ImageView
+                android:id="@+id/button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:padding="5dp"
+                android:hapticFeedbackEnabled="false"
+                android:background="@drawable/action_button_selector"
+                card_view:srcCompat="@drawable/mytrash"/>
 
         </LinearLayout>
     </LinearLayout>

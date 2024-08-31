@@ -1,6 +1,7 @@
 package com.example.first.presentation.mainActivity.customBottomSheetDialog;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
 import com.example.first.presentation.mainActivity.Fragments.favoritesFragment.FavoritesViewModelFactory;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
