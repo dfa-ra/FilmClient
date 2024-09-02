@@ -1,12 +1,11 @@
-package com.example.first.data.dbqueries.dbroom;
+package com.example.first.data.dbqueries;
 
 import android.content.Context;
 
 import androidx.room.Room;
 
+import com.example.first.data.dbqueries.dbroom.AppDatabase;
 import com.example.first.domain.interfaces.IDbQueries;
-
-import lombok.Getter;
 
 public class MainDB implements IDbQueries {
 
@@ -17,7 +16,9 @@ public class MainDB implements IDbQueries {
                             context.getApplicationContext(),
                             AppDatabase.class,
                             "favorites.db"
-                        ).build();
+                        )
+                        .fallbackToDestructiveMigration()
+                        .build();
     }
 
     @Override

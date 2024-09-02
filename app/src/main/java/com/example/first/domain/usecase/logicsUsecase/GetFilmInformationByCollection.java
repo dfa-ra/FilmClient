@@ -1,9 +1,6 @@
 package com.example.first.domain.usecase.logicsUsecase;
 
-import android.util.Log;
-
 import com.example.first.data.models.mainModel.FilmModel;
-import com.example.first.domain.interfaces.IDbQueries;
 import com.example.first.domain.interfaces.ILocalDB;
 import com.example.first.domain.interfaces.IRetrofit;
 import com.example.first.domain.models.ShortFilmModel;

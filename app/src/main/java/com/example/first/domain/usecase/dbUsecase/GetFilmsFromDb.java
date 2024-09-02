@@ -2,9 +2,6 @@ package com.example.first.domain.usecase.dbUsecase;
 
 import android.annotation.SuppressLint;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.interfaces.IDbQueries;
 
@@ -12,7 +9,6 @@ import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class GetFilmsFromDb {

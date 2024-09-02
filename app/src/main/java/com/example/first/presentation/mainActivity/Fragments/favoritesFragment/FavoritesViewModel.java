@@ -6,12 +6,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.first.domain.models.LongFilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.domain.usecase.dbUsecase.DeleteFilmByIdFromBd;
-import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById;
+import com.example.first.domain.usecase.dbUsecase.UpdateComment;
+import com.example.first.domain.usecase.dbUsecase.UpdateIsReadable;
+import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromBd;
 import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsDb;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -24,15 +28,21 @@ public class FavoritesViewModel extends ViewModel {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final GetShortInformationAboutFilmsDb getShortInformationAboutFilmsDb;
-    private final GetLongFilmInformationById getLongFilmInformationById;
+    private final GetLongFilmInformationByIdFromBd getLongFilmInformationByIdFromBd;
     private final DeleteFilmByIdFromBd deleteFilmByIdFromBd;
+    private final UpdateComment updateComment;
+    private final UpdateIsReadable updateIsReadable;
 
     public FavoritesViewModel(GetShortInformationAboutFilmsDb getShortInformationAboutFilmsDb,
-                              GetLongFilmInformationById getLongFilmInformationById,
-                              DeleteFilmByIdFromBd deleteFilmByIdFromBd) {
+                              GetLongFilmInformationByIdFromBd getLongFilmInformationById,
+                              DeleteFilmByIdFromBd deleteFilmByIdFromBd,
+                              UpdateIsReadable updateIsReadable,
+                              UpdateComment updateComment) {
         this.getShortInformationAboutFilmsDb = getShortInformationAboutFilmsDb;
-        this.getLongFilmInformationById = getLongFilmInformationById;
+        this.getLongFilmInformationByIdFromBd = getLongFilmInformationById;
         this.deleteFilmByIdFromBd = deleteFilmByIdFromBd;
+        this.updateComment = updateComment;
+        this.updateIsReadable = updateIsReadable;
         loadFilms();
     }
 
@@ -41,6 +51,7 @@ public class FavoritesViewModel extends ViewModel {
     }
 
     private void loadFilms() {
+        Log.d("aa66","loadFilms1");
         Disposable disposable = getShortInformationAboutFilmsDb.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,6 +61,7 @@ public class FavoritesViewModel extends ViewModel {
                             Log.e("UserViewModel", "Unable to get users", throwable);
                         }
                 );
+        Log.d("aa66","loadFilms2");
         compositeDisposable.add(disposable);
     }
 
@@ -61,5 +73,17 @@ public class FavoritesViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         compositeDisposable.clear();
+    }
+
+    public void updateComment(int id, String comment){
+        updateComment.execute(id, comment);
+    }
+
+    public void updateIsReadable(int id, boolean isReadable){
+        updateIsReadable.execute(id, isReadable);
+    }
+
+    public CompletableFuture<LongFilmModel> getLongFilmModel(ShortFilmModel shortFilmModel){
+        return getLongFilmInformationByIdFromBd.execute(shortFilmModel.kinopoiskId);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.first.domain.usecase.dbUsecase;
 
+import android.util.Log;
+
 import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.interfaces.IDbQueries;
 
@@ -17,6 +19,8 @@ public class SetFilmToDb {
 
     public void execute(FilmModel model){
         executor.execute(() -> {
+            Log.d("aa66", "SetFilmToDb");
+
             queries.getAppDatabase().dao().insertFilm(model);
         });
     }

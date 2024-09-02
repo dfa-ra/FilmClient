@@ -9,13 +9,17 @@ import com.example.first.domain.usecase.dbUsecase.DeleteFilmByIdFromBd;
 import com.example.first.domain.usecase.dbUsecase.GetFilmByIdFromDb;
 import com.example.first.domain.usecase.dbUsecase.GetFilmsFromDb;
 import com.example.first.domain.usecase.dbUsecase.SetFilmToDb;
+import com.example.first.domain.usecase.dbUsecase.UpdateComment;
+import com.example.first.domain.usecase.dbUsecase.UpdateIsReadable;
 import com.example.first.domain.usecase.logicsUsecase.FilmModelToShortModel;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.logicsUsecase.MergeFlowFromDbAndApi;
 import com.example.first.domain.usecase.logicsUsecase.SelectedFilmToFavorites;
 import com.example.first.domain.usecase.outputUsecase.GetFilmPoster;
-import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById;
+import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromBd;
+import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromLocal;
 import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsDb;
 import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
 
@@ -24,6 +28,26 @@ import dagger.Provides;
 
 @Module
 public class DomainModule {
+
+    @Provides
+    MergeFlowFromDbAndApi provideMergeFlowFromDbAndApi(){
+        return new MergeFlowFromDbAndApi();
+    }
+
+    @Provides
+    GetLongFilmInformationByIdFromLocal provideGetLongFilmInformationByIdFromLocal(ILocalDB iLocalDB){
+        return new GetLongFilmInformationByIdFromLocal(iLocalDB);
+    }
+
+    @Provides
+    UpdateIsReadable provideUpdateIsReadable(IDbQueries iDbQueries){
+        return new UpdateIsReadable(iDbQueries);
+    }
+
+    @Provides
+    UpdateComment provideUpdateComment(IDbQueries iDbQueries){
+        return new UpdateComment(iDbQueries);
+    }
 
     @Provides
     GetFilmsFromDb provideGetFilmsFromDb(IDbQueries iDbQueries){
@@ -71,13 +95,13 @@ public class DomainModule {
     }
 
     @Provides
-    GetLongFilmInformationById provideGetLongFilmInformationById(GetFilmByIdFromDb getFilmByIdFromDb) {
-        return new GetLongFilmInformationById(getFilmByIdFromDb);
+    GetLongFilmInformationByIdFromBd provideGetLongFilmInformationById(GetFilmByIdFromDb getFilmByIdFromDb) {
+        return new GetLongFilmInformationByIdFromBd(getFilmByIdFromDb);
     }
 
     @Provides
-    SelectedFilmToFavorites provideSelectedFilmToFavorites(SetFilmToDb setFilmToDb, ILocalDB iLocalDB) {
-        return new SelectedFilmToFavorites(setFilmToDb, iLocalDB);
+    SelectedFilmToFavorites provideSelectedFilmToFavorites(SetFilmToDb setFilmToDb, ILocalDB iLocalDB, GetFilmPoster getFilmPoster) {
+        return new SelectedFilmToFavorites(setFilmToDb, iLocalDB, getFilmPoster);
     }
 
     @Provides

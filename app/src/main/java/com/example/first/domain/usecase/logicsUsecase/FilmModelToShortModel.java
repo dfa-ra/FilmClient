@@ -13,6 +13,7 @@ public class FilmModelToShortModel {
                 model.genres.get(0).genre,
                 model.posterUrlPreview,
                 model.isChecked,
+                model.isReadable,
                 model.posterPreview);
     }
 }

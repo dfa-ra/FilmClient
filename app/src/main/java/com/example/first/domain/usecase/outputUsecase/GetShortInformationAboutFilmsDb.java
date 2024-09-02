@@ -1,6 +1,7 @@
 package com.example.first.domain.usecase.outputUsecase;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
@@ -23,6 +24,8 @@ public class GetShortInformationAboutFilmsDb {
 
     @SuppressLint("CheckResult")
     public Flowable<List<ShortFilmModel>> execute(){
+
+        Log.d("aa66","GetShortInformationAboutFilmsDb");
         return getFilmsFromDb.execute()
                 .map(longModel -> {
                     List<ShortFilmModel> shmodels = new ArrayList<>();
@@ -35,6 +38,7 @@ public class GetShortInformationAboutFilmsDb {
                                 model.genres.get(0).genre,
                                 model.posterUrlPreview,
                                 model.isChecked,
+                                model.isReadable,
                                 model.posterPreview));
                     }
                     return shmodels;

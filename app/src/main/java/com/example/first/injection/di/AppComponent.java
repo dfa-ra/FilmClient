@@ -3,7 +3,6 @@ package com.example.first.injection.di;
 import com.example.first.presentation.descriptionActivity.DescriptionFilmActivity;
 import com.example.first.presentation.mainActivity.Fragments.favoritesFragment.FavoritesFragment;
 import com.example.first.presentation.mainActivity.Fragments.mainFragment.MainFragment;
-import com.example.first.presentation.mainActivity.customBottomSheetDialog.CustomBottomSheetDialog;
 
 import javax.inject.Singleton;
 
@@ -16,5 +15,4 @@ public interface AppComponent {
     void inject(MainFragment mainFragment);
     void inject(FavoritesFragment favoritesFragment);
     void inject(DescriptionFilmActivity descriptionFilmActivity);
-    void inject(CustomBottomSheetDialog customBottomSheetDialog);
 }

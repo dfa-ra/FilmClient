@@ -3,18 +3,21 @@ package com.example.first.injection.di;
 import android.content.Context;
 
 import com.example.first.domain.usecase.dbUsecase.DeleteFilmByIdFromBd;
+import com.example.first.domain.usecase.dbUsecase.UpdateComment;
+import com.example.first.domain.usecase.dbUsecase.UpdateIsReadable;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.logicsUsecase.MergeFlowFromDbAndApi;
 import com.example.first.domain.usecase.logicsUsecase.SelectedFilmToFavorites;
 import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
 import com.example.first.domain.usecase.outputUsecase.GetFilmPoster;
-import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById;
+import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromBd;
+import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromLocal;
 import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsDb;
 import com.example.first.presentation.descriptionActivity.DescriptionViewModelFactory;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
 import com.example.first.presentation.mainActivity.Fragments.favoritesFragment.FavoritesViewModelFactory;
 import com.example.first.presentation.mainActivity.Fragments.mainFragment.MainViewModelFactory;
-import com.example.first.presentation.mainActivity.customBottomSheetDialog.CustomBottomSheetDialogViewModelFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -36,28 +39,36 @@ public class AppModule {
 
     @Provides
     MainViewModelFactory provideMainViewModelFactory(
-            GetFilmInformationByName getFilmInformationByName,
+            GetFilmInformationByName getFilmsInformationByName,
             AllToShortFilmsInformation allToShortFilmsInformation,
             GetFilmInformationByCollection getFilmInformationByCollection,
-            GetLongFilmInformationById getLongFilmInformationById
-    ){
+            GetLongFilmInformationByIdFromLocal getLongFilmInformationByIdFromLocal,
+            MergeFlowFromDbAndApi mergeFlowFromDbAndApi,
+            GetShortInformationAboutFilmsDb getShortInformationAboutFilmsDb)
+    {
         return new MainViewModelFactory(
-                getFilmInformationByName,
+                getFilmsInformationByName,
                 allToShortFilmsInformation,
                 getFilmInformationByCollection,
-                getLongFilmInformationById);
+                getLongFilmInformationByIdFromLocal,
+                mergeFlowFromDbAndApi,
+                getShortInformationAboutFilmsDb);
     }
 
     @Provides
     FavoritesViewModelFactory provideFavoritesViewModelFactory(
             GetShortInformationAboutFilmsDb getShortInformationAboutFilmsDb,
-            GetLongFilmInformationById getLongFilmInformationById,
-            DeleteFilmByIdFromBd deleteFilmByIdFromBd
+            GetLongFilmInformationByIdFromBd getLongFilmInformationById,
+            DeleteFilmByIdFromBd deleteFilmByIdFromBd,
+            UpdateIsReadable updateIsReadable,
+            UpdateComment updateComment
     ){
         return new FavoritesViewModelFactory(
                 getShortInformationAboutFilmsDb,
                 getLongFilmInformationById,
-                deleteFilmByIdFromBd
+                deleteFilmByIdFromBd,
+                updateIsReadable,
+                updateComment
         );
     }
 
@@ -72,19 +83,15 @@ public class AppModule {
 
     @Provides
     DescriptionViewModelFactory provideDescriptionViewModelFactory(
-            GetFilmPoster getFilmPoster
+            GetFilmPoster getFilmPoster,
+            GetLongFilmInformationByIdFromBd getLongFilmInformationByIdFromBd,
+            GetLongFilmInformationByIdFromLocal getLongFilmInformationByIdFromLocal
     ){
         return new DescriptionViewModelFactory(
-                getFilmPoster
-        );
+                        getFilmPoster,
+                getLongFilmInformationByIdFromLocal,
+                getLongFilmInformationByIdFromBd
+                );
     }
 
-    @Provides
-    CustomBottomSheetDialogViewModelFactory provideCustomBottomSheetDialogViewModelFactory(
-            DeleteFilmByIdFromBd deleteFilmByIdFromBd
-    ){
-        return new CustomBottomSheetDialogViewModelFactory(
-                deleteFilmByIdFromBd
-        );
-    }
 }

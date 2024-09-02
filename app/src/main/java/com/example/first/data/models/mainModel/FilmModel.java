@@ -47,8 +47,13 @@ public class FilmModel {
     public String description = "";
     public String ratingAgeLimits = "";
     public boolean isChecked = false;
+    public boolean isReadable = false;
+    public String comment = "";
 
     @TypeConverters(Converters.class)
     public Bitmap posterPreview;
+
+    @TypeConverters(Converters.class)
+    public Bitmap poster = null;
 }
 

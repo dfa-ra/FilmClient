@@ -26,4 +26,6 @@ public class LongFilmModel implements Serializable{
     public String ratingKinopoisk = "";
     public String ratingImdb = "";
     public String posterUrl = "";
+    public String comment = "";
+    public Bitmap poster = null;
 }

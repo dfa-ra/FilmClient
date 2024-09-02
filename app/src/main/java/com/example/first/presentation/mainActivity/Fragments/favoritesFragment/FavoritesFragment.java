@@ -1,37 +1,32 @@
 package com.example.first.presentation.mainActivity.Fragments.favoritesFragment;
 
 import android.os.Bundle;
+import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.injection.app.App;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
+import com.example.first.presentation.descriptionActivity.DescriptionFilmActivity;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
-import com.example.first.presentation.mainActivity.customBottomSheetDialog.CustomBottomSheetDialog;
-import com.example.first.presentation.mainActivity.filmStrip.AdapterListener;
-import com.example.first.presentation.mainActivity.filmStrip.CustomItemTouchHelper;
-import com.example.first.presentation.mainActivity.filmStrip.ItemAdapter;
 
 import javax.inject.Inject;
 
 public class FavoritesFragment extends Fragment implements AdapterListener {
 
     FragmentFavoritesBinding binding;
-    private final ItemAdapter adapter = new ItemAdapter(this, true);
+    private final ItemAdapter adapter = new ItemAdapter(this);
 
     @Inject
     FavoritesViewModelFactory favoritesViewModelFactory;
@@ -77,7 +72,7 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
         senderViewModel = new ViewModelProvider(requireActivity(), sendViewModelFactory).get(SendViewModel.class);
 
         favoritesViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
-            Log.d("aa77", "update items");
+            Log.d("aa66", "update items");
             adapter.setItems(items);
         });
 
@@ -85,27 +80,35 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-//        CustomItemTouchHelper simpleCallBack = new CustomItemTouchHelper(0, ItemTouchHelper.LEFT );
-//
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallBack);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
+        Log.d("aa66", "init");
 
         return view;
     }
 
     @Override
     public void onClick(ShortFilmModel filmModel) {
+        Intent intent = new Intent(getActivity(), DescriptionFilmActivity.class);
+        intent.putExtra("filmModel", filmModel.kinopoiskId);
+        startActivity(intent);
     }
 
     @Override
     public boolean longOnClick(ShortFilmModel filmModel) {
-        CustomBottomSheetDialog bottomSheetDialog = new CustomBottomSheetDialog(filmModel);
-        bottomSheetDialog.show(getParentFragmentManager(), "CustomBottomSheetDialog");
         return true;
     }
 
     @Override
     public void deleteFilm(ShortFilmModel filmModel) {
         favoritesViewModel.deleteFilmById(filmModel.kinopoiskId);
+    }
+
+    @Override
+    public void updateIsReadable(int id, boolean isReadable) {
+        favoritesViewModel.updateIsReadable(id, isReadable);
+    }
+
+    @Override
+    public void updateComment(int id, boolean isReadable) {
+
     }
 }

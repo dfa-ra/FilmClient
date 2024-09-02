@@ -5,16 +5,15 @@ import com.example.first.domain.interfaces.IDbQueries;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class DeleteFilmByIdFromBd {
-    private final IDbQueries queries;
+public class UpdateComment {
+    private final IDbQueries db;
     private final Executor executor = Executors.newSingleThreadExecutor();
 
-
-    public DeleteFilmByIdFromBd(IDbQueries queries){
-        this.queries = queries;
+    public UpdateComment(IDbQueries db){
+        this.db = db;
     }
 
-    public void execute(int id){
-        executor.execute(() -> queries.getAppDatabase().dao().deleteById(id));
+    public void execute(int id, String comment){
+        executor.execute(() -> db.getAppDatabase().dao().updateComment(id, comment));
     }
 }

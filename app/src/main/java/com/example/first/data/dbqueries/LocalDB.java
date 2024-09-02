@@ -1,22 +1,11 @@
 package com.example.first.data.dbqueries;
 
-import android.content.Context;
-import android.util.Log;
-
-import androidx.loader.app.LoaderManager;
-
-import com.example.first.data.dbqueries.dbroom.MainDB;
 import com.example.first.data.models.mainModel.FilmModel;
-import com.example.first.domain.interfaces.IDbQueries;
 import com.example.first.domain.interfaces.ILocalDB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class LocalDB implements ILocalDB {
     private static String Tag = "LocalDBTAG";

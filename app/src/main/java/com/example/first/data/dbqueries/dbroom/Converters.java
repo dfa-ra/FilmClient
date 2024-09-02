@@ -1,4 +1,5 @@
 package com.example.first.data.dbqueries.dbroom;
+
 import androidx.room.TypeConverter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -57,5 +58,4 @@ public class Converters {
         }
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
-
 }

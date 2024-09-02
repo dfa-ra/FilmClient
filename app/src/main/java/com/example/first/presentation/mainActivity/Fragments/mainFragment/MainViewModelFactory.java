@@ -6,29 +6,42 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.logicsUsecase.MergeFlowFromDbAndApi;
 import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
-import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationById;
+import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromBd;
+import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromLocal;
+import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsDb;
+
 public class MainViewModelFactory implements ViewModelProvider.Factory {
 
-    private final GetFilmInformationByName getFilmInformationByName;
+    private final GetFilmInformationByName getFilmsInformationByName;
     private final AllToShortFilmsInformation allToShortFilmsInformation;
     private final GetFilmInformationByCollection getFilmInformationByCollection;
-    private final GetLongFilmInformationById getLongFilmInformationById;
+    private final MergeFlowFromDbAndApi mergeFlowFromDbAndApi;
+    private final GetLongFilmInformationByIdFromLocal getLongFilmInformationByIdFromLocal;
+    private final GetShortInformationAboutFilmsDb getShortInformationAboutFilmsDb;
+
 
     public MainViewModelFactory(
-            GetFilmInformationByName getFilmInformationByName,
+            GetFilmInformationByName getFilmsInformationByName,
             AllToShortFilmsInformation allToShortFilmsInformation,
             GetFilmInformationByCollection getFilmInformationByCollection,
-            GetLongFilmInformationById getLongFilmInformationById){
+            GetLongFilmInformationByIdFromLocal getLongFilmInformationByIdFromLocal,
+            MergeFlowFromDbAndApi mergeFlowFromDbAndApi,
+            GetShortInformationAboutFilmsDb getShortInformationAboutFilmsDb) {
 
-        this.getFilmInformationByName = getFilmInformationByName;
-        this.allToShortFilmsInformation = allToShortFilmsInformation;
+        this.getFilmsInformationByName = getFilmsInformationByName;
         this.getFilmInformationByCollection = getFilmInformationByCollection;
-        this.getLongFilmInformationById = getLongFilmInformationById;
+        this.allToShortFilmsInformation = allToShortFilmsInformation;
+        this.getLongFilmInformationByIdFromLocal = getLongFilmInformationByIdFromLocal;
+        this.mergeFlowFromDbAndApi = mergeFlowFromDbAndApi;
+        this.getShortInformationAboutFilmsDb = getShortInformationAboutFilmsDb;
+
     }
+
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new MainViewModel(getFilmInformationByName, allToShortFilmsInformation, getFilmInformationByCollection, getLongFilmInformationById);
+        return (T) new MainViewModel(getFilmsInformationByName, allToShortFilmsInformation, getFilmInformationByCollection, getLongFilmInformationByIdFromLocal, mergeFlowFromDbAndApi, getShortInformationAboutFilmsDb);
     }
 }

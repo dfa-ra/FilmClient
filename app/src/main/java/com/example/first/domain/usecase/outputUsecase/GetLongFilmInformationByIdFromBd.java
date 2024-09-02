@@ -1,28 +1,26 @@
 package com.example.first.domain.usecase.outputUsecase;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
-import com.example.first.data.models.mainModel.FilmModel;
-import com.example.first.domain.interfaces.IDbQueries;
+import androidx.room.rxjava3.EmptyResultSetException;
+
 import com.example.first.domain.models.LongFilmModel;
-import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.domain.usecase.dbUsecase.GetFilmByIdFromDb;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
-import io.reactivex.rxjava3.functions.Consumer;
-
-public class GetLongFilmInformationById {
+public class GetLongFilmInformationByIdFromBd {
     public final GetFilmByIdFromDb getFilmByIdFromDb;
 
-    public GetLongFilmInformationById(GetFilmByIdFromDb getFilmByIdFromDb){
+    public GetLongFilmInformationByIdFromBd(GetFilmByIdFromDb getFilmByIdFromDb){
         this.getFilmByIdFromDb = getFilmByIdFromDb;
     }
 
     @SuppressLint("CheckResult")
     public CompletableFuture<LongFilmModel> execute(int id){
         CompletableFuture<LongFilmModel> lfilm = new CompletableFuture<>();
+
         getFilmByIdFromDb.execute(id)
                 .subscribe(model -> {
                             lfilm.complete(new LongFilmModel(
@@ -33,8 +31,17 @@ public class GetLongFilmInformationById {
                                     model.genres,
                                     model.ratingKinopoisk,
                                     model.ratingImdb,
-                                    model.posterUrl
+                                    model.posterUrl,
+                                    model.comment,
+                                    model.poster
                             ));
+                        }, throwable -> {
+                            if (throwable instanceof EmptyResultSetException) {
+                                lfilm.completeExceptionally(throwable); // Пробрасываем ошибку пустого результата
+                            } else {
+                                Log.e("aa99", throwable.getMessage());
+                                // Обработка другой ошибки
+                            }
                         }
                 );
         return lfilm;

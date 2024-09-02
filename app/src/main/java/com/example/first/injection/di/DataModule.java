@@ -3,8 +3,7 @@ package com.example.first.injection.di;
 import android.content.Context;
 
 import com.example.first.data.dbqueries.LocalDB;
-import com.example.first.data.dbqueries.dbroom.MainDB;
-import com.example.first.data.httpqueries.IAPI;
+import com.example.first.data.dbqueries.MainDB;
 import com.example.first.data.httpqueries.RetrofitClient;
 import com.example.first.domain.interfaces.IDbQueries;
 import com.example.first.domain.interfaces.ILocalDB;

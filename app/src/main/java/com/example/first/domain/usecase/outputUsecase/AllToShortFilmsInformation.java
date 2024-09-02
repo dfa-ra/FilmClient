@@ -21,6 +21,7 @@ public class AllToShortFilmsInformation {
                         "-",
                         model.posterUrlPreview,
                         model.isChecked,
+                        model.isReadable,
                         model.posterPreview));
             } else {
                 returnedList.add(new ShortFilmModel(
@@ -31,6 +32,7 @@ public class AllToShortFilmsInformation {
                         model.genres.get(0).genre,
                         model.posterUrlPreview,
                         model.isChecked,
+                        model.isReadable,
                         model.posterPreview));
             }
         }
