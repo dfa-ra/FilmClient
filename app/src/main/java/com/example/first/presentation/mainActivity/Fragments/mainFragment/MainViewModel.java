@@ -4,42 +4,39 @@ package com.example.first.presentation.mainActivity.Fragments.mainFragment;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.first.domain.common.enums.CollectionType;
+import com.example.first.data.common.enums.CollectionType;
 import com.example.first.domain.models.LongFilmModel;
 import com.example.first.domain.models.ShortFilmModel;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.outputUsecase.GetFilmInformationByCollection;
+import com.example.first.domain.usecase.outputUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.logicsUsecase.MergeFlowFromDbAndApi;
-import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
-import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromBd;
+import com.example.first.domain.usecase.logicsUsecase.AllToShortFilmsInformation;
 import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromLocal;
 import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsDb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.SingleObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.Getter;
-
 
 public class MainViewModel extends ViewModel{
 
     private final MutableLiveData<List<ShortFilmModel>> itemsLiveData = new MutableLiveData<>();
 
     @Getter
-    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
+    private final MutableLiveData<Integer> isLoading = new MutableLiveData<>(0);
+
+    @Getter
+    private Pair<String, String> lastQuery;
 
     private final GetFilmInformationByName getFilmsInformationByName;
-    private final AllToShortFilmsInformation allToShortFilmsInformation;
     private final GetFilmInformationByCollection getFilmInformationByCollection;
     private final MergeFlowFromDbAndApi mergeFlowFromDbAndApi;
     private final GetLongFilmInformationByIdFromLocal getLongFilmInformationByIdFromLocal;
@@ -47,7 +44,6 @@ public class MainViewModel extends ViewModel{
 
     public MainViewModel(
             GetFilmInformationByName getFilmsInformationByName,
-            AllToShortFilmsInformation allToShortFilmsInformation,
             GetFilmInformationByCollection getFilmInformationByCollection,
             GetLongFilmInformationByIdFromLocal getLongFilmInformationByIdFromLocal,
             MergeFlowFromDbAndApi mergeFlowFromDbAndApi,
@@ -55,7 +51,6 @@ public class MainViewModel extends ViewModel{
 
         this.getFilmsInformationByName = getFilmsInformationByName;
         this.getFilmInformationByCollection = getFilmInformationByCollection;
-        this.allToShortFilmsInformation = allToShortFilmsInformation;
         this.getLongFilmInformationByIdFromLocal = getLongFilmInformationByIdFromLocal;
         this.mergeFlowFromDbAndApi = mergeFlowFromDbAndApi;
         this.getShortInformationAboutFilmsDb = getShortInformationAboutFilmsDb;
@@ -64,7 +59,7 @@ public class MainViewModel extends ViewModel{
     }
 
     public void init(){
-       searchFilmByCollection(CollectionType.TOP_250_MOVIES);
+       searchFilmByCollection(CollectionType.TOP_250_MOVIES.getNameCollections());
     }
 
     public void setItems(List<ShortFilmModel> items) {
@@ -75,46 +70,46 @@ public class MainViewModel extends ViewModel{
         return itemsLiveData;
     }
 
+    @SuppressLint("CheckResult")
     public void searchFilmByName(String name) {
+        lastQuery = new Pair<>("searchFilmByName", name);;
         itemsLiveData.setValue(new ArrayList<>());
-        isLoading.setValue(true);
-        getFilmsInformationByName.execute(name, 1)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new SingleObserver<List<ShortFilmModel>>() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
-
-                }
-
-                @Override
-                public void onSuccess(@NonNull List<ShortFilmModel> shortFilmModels) {
-                    setItems(shortFilmModels);
-                    isLoading.setValue(false);
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-
-                }
-            });
+        isLoading.setValue(0);
+        mergeFlowFromDbAndApi.execute(
+                        getShortInformationAboutFilmsDb.execute(),
+                        getFilmsInformationByName.execute(name, 1)
+                ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        item -> {
+                            itemsLiveData.setValue(item);
+                            isLoading.setValue(2);
+                        },
+                        throwable -> {
+                            isLoading.setValue(1);
+                            Log.e("UserViewModel", "Unable to get users", throwable);
+                        }
+                );
     }
 
     @SuppressLint("CheckResult")
-    public void searchFilmByCollection(CollectionType collectionType){
+    public void searchFilmByCollection(String collectionType){
+        lastQuery = new Pair<>("searchFilmByCollection", collectionType);
         itemsLiveData.setValue(new ArrayList<>());
-        isLoading.setValue(true);
+        isLoading.setValue(0);
+        Log.d("aa11", "searchFilmByCollection");
         mergeFlowFromDbAndApi.execute(
                 getShortInformationAboutFilmsDb.execute(),
-                getFilmInformationByCollection.execute(collectionType.getNameCollections(), 1)
+                getFilmInformationByCollection.execute(collectionType, 1)
                 ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         item -> {
                                     itemsLiveData.setValue(item);
-                                    isLoading.setValue(false);
+                                    isLoading.setValue(2);
                         },
                         throwable -> {
+                            isLoading.setValue(1);
                             Log.e("UserViewModel", "Unable to get users", throwable);
                         }
                 );

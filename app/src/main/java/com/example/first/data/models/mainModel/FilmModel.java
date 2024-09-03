@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.example.first.data.common.enums.CollectionType;
 import com.example.first.data.dbqueries.dbroom.Converters;
 
 import java.util.List;
@@ -49,6 +50,8 @@ public class FilmModel {
     public boolean isChecked = false;
     public boolean isReadable = false;
     public String comment = "";
+
+    public CollectionType collection;
 
     @TypeConverters(Converters.class)
     public Bitmap posterPreview;

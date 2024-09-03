@@ -5,13 +5,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.first.presentation.mainActivity.Fragments.MyMainFragment;
+import com.example.first.presentation.mainActivity.Fragments.mainFragment.MainFragment;
+
 import java.util.List;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
-    private List<Fragment> fragmentList;
+    private List<MyMainFragment> fragmentList;
 
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, List<Fragment> fragmentList) {
+    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, List<MyMainFragment> fragmentList) {
         super(fragmentActivity);
         this.fragmentList = fragmentList;
     }

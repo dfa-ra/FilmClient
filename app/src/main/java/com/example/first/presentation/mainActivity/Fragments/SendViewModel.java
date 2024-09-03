@@ -27,9 +27,8 @@ public class SendViewModel extends ViewModel{
     public boolean selectItem(ShortFilmModel item) {
 
         Log.d("aa66", "selectItem");
-        for (ShortFilmModel film: allSelectedItem){
-            if (film.kinopoiskId == item.kinopoiskId) return false;
-        }
+        if (item.isChecked) return false;
+        
         allSelectedItem.add(item);
         selectedFilmToFavorites.execute(item.kinopoiskId);
         selectedItem.setValue(item);

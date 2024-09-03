@@ -17,6 +17,8 @@ public interface MyDao {
     @Insert
     void insertFilm(FilmModel film);
 
+
+
     @Transaction
     @Query("SELECT * FROM films")
     Flowable<List<FilmModel>> getAllFilmDetails();
@@ -24,6 +26,14 @@ public interface MyDao {
     @Transaction
     @Query("SELECT * FROM films WHERE kinopoiskId = :id")
     Single<FilmModel> getFilmsById(int id);
+
+    @Transaction
+    @Query("SELECT * FROM films WHERE (nameRu = :text OR nameEn = :text OR nameOriginal = :text)")
+    Flowable<List<FilmModel>> getFilmsByText(String text);
+
+    @Transaction
+    @Query("SELECT * FROM films WHERE collection = :collection")
+    Flowable<List<FilmModel>> getFilmsByCollection(String collection);
 
     @Transaction
     @Query("DELETE FROM films WHERE kinopoiskId = :id")

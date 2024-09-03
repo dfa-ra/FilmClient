@@ -7,27 +7,40 @@ import com.example.first.domain.interfaces.ILocalDB;
 import com.example.first.domain.interfaces.IRetrofit;
 import com.example.first.domain.usecase.dbUsecase.DeleteFilmByIdFromBd;
 import com.example.first.domain.usecase.dbUsecase.GetFilmByIdFromDb;
+import com.example.first.domain.usecase.dbUsecase.GetFilmsByCollectionFromBd;
+import com.example.first.domain.usecase.dbUsecase.GetFilmsByTextFromBd;
 import com.example.first.domain.usecase.dbUsecase.GetFilmsFromDb;
 import com.example.first.domain.usecase.dbUsecase.SetFilmToDb;
 import com.example.first.domain.usecase.dbUsecase.UpdateComment;
 import com.example.first.domain.usecase.dbUsecase.UpdateIsReadable;
 import com.example.first.domain.usecase.logicsUsecase.FilmModelToShortModel;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
+import com.example.first.domain.usecase.outputUsecase.GetFilmInformationByCollection;
 import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.outputUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.logicsUsecase.MergeFlowFromDbAndApi;
 import com.example.first.domain.usecase.logicsUsecase.SelectedFilmToFavorites;
 import com.example.first.domain.usecase.outputUsecase.GetFilmPoster;
 import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromBd;
 import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromLocal;
 import com.example.first.domain.usecase.outputUsecase.GetShortInformationAboutFilmsDb;
-import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
+import com.example.first.domain.usecase.logicsUsecase.AllToShortFilmsInformation;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 public class DomainModule {
+
+
+    @Provides
+    GetFilmsByTextFromBd provideGetFilmsByTextFromBd(IDbQueries iDbQueries, AllToShortFilmsInformation allToShortFilmsInformation){
+        return new GetFilmsByTextFromBd(iDbQueries, allToShortFilmsInformation);
+    }
+
+    @Provides
+    GetFilmsByCollectionFromBd provideGetFilmsByCollectionFromBd(IDbQueries iDbQueries, AllToShortFilmsInformation allToShortFilmsInformation){
+        return new GetFilmsByCollectionFromBd(iDbQueries, allToShortFilmsInformation);
+    }
 
     @Provides
     MergeFlowFromDbAndApi provideMergeFlowFromDbAndApi(){

@@ -3,13 +3,15 @@ package com.example.first.injection.di;
 import android.content.Context;
 
 import com.example.first.domain.usecase.dbUsecase.DeleteFilmByIdFromBd;
+import com.example.first.domain.usecase.dbUsecase.GetFilmsByCollectionFromBd;
+import com.example.first.domain.usecase.dbUsecase.GetFilmsByTextFromBd;
 import com.example.first.domain.usecase.dbUsecase.UpdateComment;
 import com.example.first.domain.usecase.dbUsecase.UpdateIsReadable;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByCollection;
-import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationByName;
+import com.example.first.domain.usecase.outputUsecase.GetFilmInformationByCollection;
+import com.example.first.domain.usecase.outputUsecase.GetFilmInformationByName;
 import com.example.first.domain.usecase.logicsUsecase.MergeFlowFromDbAndApi;
 import com.example.first.domain.usecase.logicsUsecase.SelectedFilmToFavorites;
-import com.example.first.domain.usecase.outputUsecase.AllToShortFilmsInformation;
+import com.example.first.domain.usecase.logicsUsecase.AllToShortFilmsInformation;
 import com.example.first.domain.usecase.outputUsecase.GetFilmPoster;
 import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromBd;
 import com.example.first.domain.usecase.outputUsecase.GetLongFilmInformationByIdFromLocal;
@@ -40,7 +42,6 @@ public class AppModule {
     @Provides
     MainViewModelFactory provideMainViewModelFactory(
             GetFilmInformationByName getFilmsInformationByName,
-            AllToShortFilmsInformation allToShortFilmsInformation,
             GetFilmInformationByCollection getFilmInformationByCollection,
             GetLongFilmInformationByIdFromLocal getLongFilmInformationByIdFromLocal,
             MergeFlowFromDbAndApi mergeFlowFromDbAndApi,
@@ -48,7 +49,6 @@ public class AppModule {
     {
         return new MainViewModelFactory(
                 getFilmsInformationByName,
-                allToShortFilmsInformation,
                 getFilmInformationByCollection,
                 getLongFilmInformationByIdFromLocal,
                 mergeFlowFromDbAndApi,

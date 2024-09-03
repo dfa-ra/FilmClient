@@ -18,12 +18,14 @@ import com.example.first.injection.app.App;
 import com.example.first.R;
 import com.example.first.databinding.FragmentFavoritesBinding;
 import com.example.first.presentation.descriptionActivity.DescriptionFilmActivity;
+import com.example.first.presentation.mainActivity.Fragments.Fragments;
+import com.example.first.presentation.mainActivity.Fragments.MyMainFragment;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
 
 import javax.inject.Inject;
 
-public class FavoritesFragment extends Fragment implements AdapterListener {
+public class FavoritesFragment extends MyMainFragment implements AdapterListener {
 
     FragmentFavoritesBinding binding;
     private final ItemAdapter adapter = new ItemAdapter(this);
@@ -109,6 +111,16 @@ public class FavoritesFragment extends Fragment implements AdapterListener {
 
     @Override
     public void updateComment(int id, boolean isReadable) {
+
+    }
+
+    @Override
+    public void searchFilmByCollection(String collectionType) {
+
+    }
+
+    @Override
+    public void searchFilmByName(String name) {
 
     }
 }

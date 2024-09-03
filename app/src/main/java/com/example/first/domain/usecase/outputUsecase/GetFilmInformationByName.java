@@ -1,12 +1,13 @@
-package com.example.first.domain.usecase.logicsUsecase;
+package com.example.first.domain.usecase.outputUsecase;
 
 import android.annotation.SuppressLint;
 
 import com.example.first.data.models.mainModel.FilmModel;
-import com.example.first.domain.interfaces.IDbQueries;
 import com.example.first.domain.interfaces.ILocalDB;
 import com.example.first.domain.interfaces.IRetrofit;
 import com.example.first.domain.models.ShortFilmModel;
+import com.example.first.domain.usecase.logicsUsecase.FilmModelToShortModel;
+import com.example.first.domain.usecase.logicsUsecase.GetFilmInformationById;
 
 import java.util.Collections;
 import java.util.List;

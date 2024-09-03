@@ -9,4 +9,5 @@
     <color name="holo_blue_light">#33B5E5</color>
     <color name="holo_blue_dark">#2F81A8</color>
     <color name="line">#33000000</color>
+    <color name="gray">#8C8C8C</color>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.first.domain.usecase.outputUsecase;
+package com.example.first.domain.usecase.logicsUsecase;
 
 import com.example.first.data.models.mainModel.FilmModel;
 import com.example.first.domain.models.ShortFilmModel;

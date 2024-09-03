@@ -7,7 +7,7 @@ import androidx.room.TypeConverters;
 import com.example.first.data.models.mainModel.FilmModel;
 
 
-@Database(entities = {FilmModel.class}, version = 3)
+@Database(entities = {FilmModel.class}, version = 4)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract MyDao dao();

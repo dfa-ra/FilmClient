@@ -23,6 +23,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.first.R;
 import com.example.first.databinding.ActivityMainBinding;
+import com.example.first.presentation.mainActivity.Fragments.Fragments;
+import com.example.first.presentation.mainActivity.Fragments.MyMainFragment;
 import com.example.first.presentation.mainActivity.Fragments.favoritesFragment.FavoritesFragment;
 import com.example.first.presentation.mainActivity.Fragments.mainFragment.MainFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -35,10 +37,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding binding;
+    private int currentPos = 0;
     protected String collectionName = "Популярное";
     protected String favoriteFragmentName = "Избранное";
 
-    List<Fragment> fragmentList = new ArrayList<Fragment>(){{
+    List<MyMainFragment> fragmentList = new ArrayList<MyMainFragment>(){{
         add(MainFragment.getInstance());
         add(FavoritesFragment.getInstance());
     }};
@@ -88,9 +91,11 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0){
-                    binding.fragmentNameTextView.setText(collectionName);
+                    currentPos = 0;
+                    binding.fragmentNameTextView.setText(fragmentListNames.get(0));
                 }else {
-                    binding.fragmentNameTextView.setText(favoriteFragmentName);
+                    currentPos = 1;
+                    binding.fragmentNameTextView.setText(fragmentListNames.get(1));
                 }
             }
 
@@ -108,9 +113,10 @@ public class MainActivity extends AppCompatActivity{
         binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                ((MainFragment) fragmentList.get(0)).searchFilmCollection(String.valueOf(item.getTitleCondensed()));
-                collectionName = (String) item.getTitle();
-                binding.fragmentNameTextView.setText(collectionName);
+                fragmentList.get(currentPos).searchFilmByCollection(String.valueOf(item.getTitleCondensed()));
+
+                fragmentListNames.set(currentPos, (String) item.getTitle());
+                binding.fragmentNameTextView.setText(fragmentListNames.get(0));
                 binding.drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
@@ -144,10 +150,9 @@ public class MainActivity extends AppCompatActivity{
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                collectionName = "Поиск по \"" + query + "\"";
-                binding.fragmentNameTextView.setText("Поиск по \"" + query + "\"");
+                fragmentListNames.set(currentPos, "Поиск по \"" + query + "\"");
                 // Здесь вы можете обработать текст поиска, когда пользователь нажимает кнопку поиска
-                ((MainFragment) fragmentList.get(0)).searchFilmByName(query);
+                fragmentList.get(currentPos).searchFilmByName(query);
                 return false;
             }
 

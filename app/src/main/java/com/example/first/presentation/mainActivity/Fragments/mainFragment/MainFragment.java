@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,22 +25,25 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.first.R;
 import com.example.first.databinding.FragmentMainBinding;
-import com.example.first.domain.common.enums.CollectionType;
+import com.example.first.data.common.enums.CollectionType;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.injection.app.App;
 import com.example.first.presentation.descriptionActivity.DescriptionFilmActivity;
+import com.example.first.presentation.mainActivity.Fragments.Fragments;
+import com.example.first.presentation.mainActivity.Fragments.MyMainFragment;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
 import com.example.first.presentation.mainActivity.Fragments.favoritesFragment.FavoritesFragment;
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
-import java.util.concurrent.ExecutionException;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class MainFragment extends Fragment implements AdapterListener {
+public class MainFragment extends MyMainFragment implements AdapterListener {
 
     FragmentMainBinding binding;
     ItemAdapter adapter = new ItemAdapter(this);
@@ -90,9 +95,23 @@ public class MainFragment extends Fragment implements AdapterListener {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mainViewModel.getIsLoading().observe(getViewLifecycleOwner(), aBoolean -> {
-            Log.d(Tag, String.valueOf(aBoolean));
-            if (aBoolean) {
+        binding.noInternet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Pair<String, String> lastQuery = mainViewModel.getLastQuery();
+                if (Objects.equals(lastQuery.first, "searchFilmByName")){
+                    mainViewModel.searchFilmByName(lastQuery.second);
+                }
+                else if (Objects.equals(lastQuery.first, "searchFilmByCollection")){
+                    mainViewModel.searchFilmByCollection(lastQuery.second);
+                }
+            }
+        });
+
+        mainViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoad -> {
+            Log.d(Tag, String.valueOf(isLoad));
+            if (isLoad == 0) {
+                binding.noInternet.setVisibility(View.GONE);
                 binding.PopularRecyclerView.setVisibility(View.GONE);
                 binding.loadingGIF.setVisibility(View.VISIBLE);
 
@@ -116,9 +135,17 @@ public class MainFragment extends Fragment implements AdapterListener {
                         })
                         .into(binding.loadingGIF);
 
-            } else {
-                binding.PopularRecyclerView.setVisibility(View.VISIBLE);
+            } else if (isLoad == 1) {
+                Picasso.get().load(R.drawable.oblachko).into(binding.noInternetImage);
                 binding.loadingGIF.setVisibility(View.GONE);
+                binding.PopularRecyclerView.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.VISIBLE);
+
+            }
+            else {
+                binding.noInternet.setVisibility(View.GONE);
+                binding.loadingGIF.setVisibility(View.GONE);
+                binding.PopularRecyclerView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -147,11 +174,15 @@ public class MainFragment extends Fragment implements AdapterListener {
         return true;
     }
 
+    @Override
+    public void searchFilmByCollection(String collectionType) {
+
+        mainViewModel.searchFilmByCollection(collectionType);
+    }
+
+    @Override
     public void searchFilmByName(String name) {
         mainViewModel.searchFilmByName(name);
     }
 
-    public void searchFilmCollection(String name) {
-        mainViewModel.searchFilmByCollection(CollectionType.valueOf(name));
-    }
 }

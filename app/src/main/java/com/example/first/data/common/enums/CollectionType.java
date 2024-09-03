@@ -1,4 +1,4 @@
-package com.example.first.domain.common.enums;
+package com.example.first.data.common.enums;
 
 import lombok.Getter;
 
