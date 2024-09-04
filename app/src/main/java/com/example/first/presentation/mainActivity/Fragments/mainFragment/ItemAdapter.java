@@ -92,8 +92,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
             binding.filmLayout.setOnLongClickListener(view -> {
                 Log.d(Tag, String.valueOf(getPosition()));
-                items.get(getPosition()).isChecked = true;
                 adapterListener.longOnClick(item);
+                items.get(getPosition()).isChecked = true;
                 notifyItemChanged(getPosition());
                 return false;
             });

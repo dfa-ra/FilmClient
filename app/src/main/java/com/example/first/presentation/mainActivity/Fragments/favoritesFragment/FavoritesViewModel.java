@@ -65,8 +65,13 @@ public class FavoritesViewModel extends ViewModel {
         compositeDisposable.add(disposable);
     }
 
-    public void deleteFilmById(int id){
-        deleteFilmByIdFromBd.execute(id);
+    public void deleteFilm(ShortFilmModel model){
+        deleteFilmByIdFromBd.execute(model.kinopoiskId);
+    }
+
+    public void deleteFilms(List<ShortFilmModel> list){
+        Log.d("aa--", "deleteFilms");
+        for (ShortFilmModel model: list) deleteFilm(model);
     }
 
     @Override

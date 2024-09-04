@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,11 +24,9 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.first.R;
 import com.example.first.databinding.FragmentMainBinding;
-import com.example.first.data.common.enums.CollectionType;
 import com.example.first.domain.models.ShortFilmModel;
 import com.example.first.injection.app.App;
 import com.example.first.presentation.descriptionActivity.DescriptionFilmActivity;
-import com.example.first.presentation.mainActivity.Fragments.Fragments;
 import com.example.first.presentation.mainActivity.Fragments.MyMainFragment;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModel;
 import com.example.first.presentation.mainActivity.Fragments.SendViewModelFactory;
@@ -117,8 +114,8 @@ public class MainFragment extends MyMainFragment implements AdapterListener {
 
                 Glide.with(requireContext())
                         .asGif()  // Загрузка как GIF
-                        .load(R.drawable.koala)  // Используйте URL или ресурс
-                        .placeholder(R.drawable.moai)  // Плейсхолдер пока GIF загружается
+                        .load(R.drawable.my_koala)  // Используйте URL или ресурс
+                        .placeholder(R.drawable.my_moai)  // Плейсхолдер пока GIF загружается
                         .error(R.drawable.ic_launcher_foreground)  // Показать в случае ошибки
                         .listener(new RequestListener<GifDrawable>() {
                             @Override
@@ -136,7 +133,7 @@ public class MainFragment extends MyMainFragment implements AdapterListener {
                         .into(binding.loadingGIF);
 
             } else if (isLoad == 1) {
-                Picasso.get().load(R.drawable.oblachko).into(binding.noInternetImage);
+                Picasso.get().load(R.drawable.my_oblachko).into(binding.noInternetImage);
                 binding.loadingGIF.setVisibility(View.GONE);
                 binding.PopularRecyclerView.setVisibility(View.GONE);
                 binding.noInternet.setVisibility(View.VISIBLE);

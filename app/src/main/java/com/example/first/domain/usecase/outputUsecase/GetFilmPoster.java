@@ -10,8 +10,6 @@ import com.example.first.R;
 import com.example.first.domain.common.Md5Hash;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-
 public class GetFilmPoster {
 
     private final Context context;
@@ -23,7 +21,7 @@ public class GetFilmPoster {
     @SuppressLint("UseCompatLoadingForDrawables")
     public Bitmap execute(String posterUrl) {
         if (posterUrl.isEmpty())
-            return ((BitmapDrawable) context.getResources().getDrawable(R.drawable.moai, null)).getBitmap();
+            return ((BitmapDrawable) context.getResources().getDrawable(R.drawable.my_moai, null)).getBitmap();
 
         Bitmap bitmap = null;
         try{
@@ -35,7 +33,7 @@ public class GetFilmPoster {
         }
         if (Md5Hash.getInstance().isPlug(bitmap)) {
             // Если это заглушка, возвращаем null или другой битмап по умолчанию
-            return ((BitmapDrawable) context.getResources().getDrawable(R.drawable.moai, null)).getBitmap();
+            return ((BitmapDrawable) context.getResources().getDrawable(R.drawable.my_moai, null)).getBitmap();
         }
 
         return bitmap;

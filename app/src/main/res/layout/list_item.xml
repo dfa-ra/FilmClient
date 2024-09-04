@@ -2,14 +2,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="4dp"
-    android:layout_margin="6dp"
-    android:background="@drawable/border_items">
+    android:layout_margin="6dp">
     <LinearLayout
+        android:id="@+id/mainItemLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -27,7 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight="0.06"
-                card_view:srcCompat="@drawable/moai" />
+                card_view:srcCompat="@drawable/my_moai" />
 
             <TextView
                 android:id="@+id/nameView"
@@ -157,7 +156,7 @@
                 android:background="@drawable/action_button_selector"
                 android:hapticFeedbackEnabled="false"
                 android:padding="5dp"
-                card_view:srcCompat="@drawable/galochka"/>
+                card_view:srcCompat="@drawable/my_galochka"/>
 
             <ImageView
                 android:id="@+id/button_edit"
@@ -167,7 +166,7 @@
                 android:padding="5dp"
                 android:hapticFeedbackEnabled="false"
                 android:background="@drawable/action_button_selector"
-                card_view:srcCompat="@drawable/myediter" />
+                card_view:srcCompat="@drawable/my_editer" />
 
             <ImageView
                 android:id="@+id/button_delete"
@@ -177,7 +176,7 @@
                 android:padding="5dp"
                 android:hapticFeedbackEnabled="false"
                 android:background="@drawable/action_button_selector"
-                card_view:srcCompat="@drawable/mytrash"/>
+                card_view:srcCompat="@drawable/my_trash"/>
 
         </LinearLayout>
     </LinearLayout>
